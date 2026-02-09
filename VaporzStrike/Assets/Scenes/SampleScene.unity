@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
+  - component: {fileID: 330585548}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -256,6 +257,55 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &330585548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b04e1087a8823b488a1ec77612bbafd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  players: []
+  followSpeed: 4
+  offset: {x: 0, y: 0, z: -10}
+  minFOV: 50
+  maxFOV: 65
+  maxPlayerSpread: 12
+  fovSmoothSpeed: 3
+--- !u!1 &398436900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+  m_PrefabInstance: {fileID: 1721125256}
+  m_PrefabAsset: {fileID: 0}
+--- !u!143 &398436901
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398436900}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -591,6 +641,128 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1657682055 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+  m_PrefabInstance: {fileID: 6651067772912851043}
+  m_PrefabAsset: {fileID: 0}
+--- !u!143 &1657682056
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657682055}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &1721125256
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_Name
+      value: PlayerDummyForCameraTests
+      objectReference: {fileID: 0}
+    - target: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: c
+      value: 
+      objectReference: {fileID: 398436901}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: moveX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: weight
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: airSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: moveSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: playerName
+      value: Lebron James
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 398436901}
+  m_SourcePrefab: {fileID: 100100000, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
 --- !u!1 &1807998797
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,9 +1127,37 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: c
+      value: 
+      objectReference: {fileID: 1657682056}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: moveX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: weight
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: airSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: moveSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: playerName
+      value: Lebron James
+      objectReference: {fileID: 0}
     - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -9.77
       objectReference: {fileID: 0}
     - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -998,7 +1198,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1657682056}
   m_SourcePrefab: {fileID: 100100000, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -1009,3 +1212,4 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 1807998803}
   - {fileID: 6651067772912851043}
+  - {fileID: 1721125256}
