@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        players = new Transform[2]; //for the future, change to be a dynamic var based on player count
+        players = new Transform[GameManager.playerCount]; 
 
         int count = 0;
         foreach(GameObject p in GameObject.FindGameObjectsWithTag("Player"))

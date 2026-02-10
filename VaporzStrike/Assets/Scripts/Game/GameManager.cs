@@ -6,5 +6,6 @@ public enum gameState
 }
 public class GameManager : MonoBehaviour
 {
-    
+    [Header("Static/Global Variables/Constants")]
+    public static int playerCount = 2; //this defaults to 2
 }
