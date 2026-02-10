@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 public enum playerState
 {
-    actionable, attacking, blocking, falling, hitstun, blockstun, landlag
+    actionable, attacking, blocking, falling, hitstun, blockstun, landlag, parry
 }
 
 public class GenericCharacter : MonoBehaviour
@@ -14,10 +14,14 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private float airSpeed;
     [SerializeField] private float maxFallSpeed;
     [SerializeField] private Moveset moveset;
+    [SerializeField] private InputReader inputReader;
 
     [Header("Runtime Character Variables")]
     [SerializeField] private float damagePercent = 0f;
     [SerializeField] private playerState currentState;
+
+    [Header("Constants")] 
+    public const float minMovementStep = .5f;
 
     [Header("TEMPORARY MOVEMENT VARIABLES, DONT GET TOO ATTACHED!")]
     public bool isJumping;
@@ -39,73 +43,40 @@ public class GenericCharacter : MonoBehaviour
 
     private void Update()
     {
-        doMove();
+        doMove(readInputBuffer());
         doPlatformHandle();
     }
 
-    public virtual void doMove()
+    InputType readInputBuffer()
     {
-        //this is just test code, max please change later k thx
-        isJumping = Input.GetButtonDown("Jump");
-        float pMoveX = Input.GetAxisRaw("Horizontal");
-        float pMoveZ = Input.GetAxisRaw("Vertical");
-        float fallSpeed = -weight;
-        float jumpPower = airSpeed;
+       return inputReader.GetBuffer()[0];
+    }
 
-        Vector3 moveDir = new Vector3(pMoveX, pMoveZ).normalized;
-
-        if (c.isGrounded)
+    public virtual void doMove(InputType input)
+    {
+        switch (input)
         {
-            isGrounded = true;
-            isActionable = true;
-
-            
+            case InputType.attack:
+                currentState = playerState.attacking;
+                break;
+            case InputType.special:
+                currentState = playerState.attacking;
+                break;
+            case InputType.parry:
+                currentState = playerState.parry;
+                break;
+            case InputType.block:
+                currentState = playerState.blocking;
+                break;
+            default: //for movement
+                break;
         }
-        else
-        {
-            isGrounded = false;
-            isActionable = false;
-
-            //keep momentum from takeoff in air
-            movementInput = storedMomentum;
-        }
-
-        //update movement while grounded
-        if (moveDir == Vector3.zero)
-        {
-            movementInput = Vector3.zero;
-            storedMomentum = Vector3.zero;
-        }
-        else
-        {
-            movementInput = moveDir * moveSpeed;
-            storedMomentum = movementInput;   //save last ground movement
-        }
-
-        if (isGrounded && isJumping)
-        {
-            velocity.y = Mathf.Sqrt(jumpPower * -2f * fallSpeed);
-        }
-
-
-        velocity.y += fallSpeed * Time.deltaTime;
-
-        if (velocity.y < -maxFallSpeed) velocity.y = -maxFallSpeed;
-
-        Vector3 move = movementInput * Time.deltaTime;
-        move.y = velocity.y * Time.deltaTime;
-
-        c.Move(move);
-
 
     }
 
     public virtual void doPlatformHandle()
     {
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.Space)) //againt, debug code plz fix thx
-        {
-            StartCoroutine(DropThrough());
-        }
+        
     }
 
     public virtual void doAttack()
