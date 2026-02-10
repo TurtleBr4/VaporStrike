@@ -1639,6 +1639,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3636455083823897788, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: m_Name
       value: TestPlayer
@@ -1678,6 +1682,10 @@ PrefabInstance:
     - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: dropDuration
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: maxFallSpeed
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: groundCheckDistance
