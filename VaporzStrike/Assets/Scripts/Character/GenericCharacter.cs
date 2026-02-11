@@ -5,20 +5,29 @@ public enum playerState
     actionable, attacking, blocking, falling, hitstun, blockstun, landlag, parry
 }
 
+public enum playerGroundState //all this does is track if a player is in the air or on the ground
+{
+    grounded, air
+}
+
 public class GenericCharacter : MonoBehaviour
 {
     [Header("Static Character Variables")]
     [SerializeField] private string playerName;
     [SerializeField] private float weight;  //determines knockback, fall speed
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float jumpPower;
     [SerializeField] private float airSpeed;
     [SerializeField] private float maxFallSpeed;
     [SerializeField] private Moveset moveset;
     [SerializeField] private InputReader inputReader;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
 
     [Header("Runtime Character Variables")]
     [SerializeField] private float damagePercent = 0f;
     [SerializeField] private playerState currentState;
+    [SerializeField] private playerGroundState currentGroundState;
 
     [Header("Constants")] 
     public const float minMovementStep = .5f;
@@ -41,9 +50,27 @@ public class GenericCharacter : MonoBehaviour
         oneWayLayer = LayerMask.NameToLayer("OneWayPlatform");
     }
 
+    private void Start()
+    {
+        inputReader = GetComponent<InputReader>();
+    }
+
     private void Update()
     {
-        doMove(readInputBuffer());
+
+
+        
+        takeInput(readInputBuffer());
+        doMove();
+        if (doGroundCheck())
+        {
+            currentGroundState = playerGroundState.grounded;
+        }
+        else
+        {
+            currentGroundState = playerGroundState.air;
+        }
+
         doPlatformHandle();
     }
 
@@ -52,7 +79,7 @@ public class GenericCharacter : MonoBehaviour
        return inputReader.GetBuffer()[0];
     }
 
-    public virtual void doMove(InputType input)
+    public virtual void takeInput(InputType input)
     {
         switch (input)
         {
@@ -61,6 +88,7 @@ public class GenericCharacter : MonoBehaviour
                 break;
             case InputType.special:
                 currentState = playerState.attacking;
+                doAttack();
                 break;
             case InputType.parry:
                 currentState = playerState.parry;
@@ -68,10 +96,49 @@ public class GenericCharacter : MonoBehaviour
             case InputType.block:
                 currentState = playerState.blocking;
                 break;
+            case InputType.neutral:
+                break;
             default: //for movement
+                currentState = playerState.actionable;
+   
                 break;
         }
 
+    }
+
+    public virtual void doMove()
+    {
+
+        float x = inputReader.pollMovementInput().x;
+
+        //deadzone
+        if (Mathf.Abs(x) < 0.1f) x = 0f;
+
+        Vector3 horizontal = new Vector3(x, 0f, 0f) * moveSpeed;
+
+
+        //jump triggers only once per tap/button
+        if (currentGroundState == playerGroundState.grounded && (inputReader.tapJumpPressed || inputReader.jumpPressed))
+        {
+            velocity.y = Mathf.Sqrt(jumpPower * 2f * weight);
+            inputReader.tapJumpPressed = false;
+            inputReader.jumpPressed = false;
+        }
+
+        //grav
+        velocity.y += -weight * Time.deltaTime;
+        if (velocity.y < -maxFallSpeed) velocity.y = -maxFallSpeed;
+
+       
+        Vector3 move = horizontal * Time.deltaTime;
+        move.y = velocity.y * Time.deltaTime;
+
+        c.Move(move);
+    }
+
+    public virtual bool doGroundCheck()
+    {
+        return Physics.CheckSphere(groundCheck.position, 0.2f, groundLayer);
     }
 
     public virtual void doPlatformHandle()
@@ -81,7 +148,14 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void doAttack()
     {
+        Move move = moveset.GetMatchingMove(inputReader.GetBuffer());
 
+        if (move != null)
+        {
+            print("wahoo!");
+            //PerformMove(move);
+            inputReader.ClearBuffer(); // consume the inputs
+        }
     }
 
     public virtual void doGetHit()
@@ -134,10 +208,8 @@ public class GenericCharacter : MonoBehaviour
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        print("fuck");
         if (ShouldIgnorePlatform(hit.collider))
         {
-            print("double fuck");
             // Cancel upward collision
             
             if (hit.moveDirection.y > 0f)

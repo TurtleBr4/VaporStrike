@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cf34dddea58176fdbd72dca85e48c71, type: 3}
   m_Name: TestCharacter
   m_EditorClassIdentifier: 
+  moves:
+  - {fileID: 11400000, guid: c46ae1e73cfef4748a8e2fc7fcb6fb36, type: 2}

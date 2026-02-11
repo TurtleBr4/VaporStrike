@@ -4,18 +4,23 @@ using UnityEngine.InputSystem;
 
 public enum InputType
 {
-    left, right, up, down, attack, special, parry, block
+    neutral, left, right, up, down, attack, special, parry, block
 }
 public class InputReader : MonoBehaviour
 {
     [Header("Basic Input")] 
     public int inputBufferFrames = 4; //the amount of time (in frames) the player has to input something and have it be counted
-    private InputType[] inputBuffer; //the actual storage of inputs
+    [SerializeField]private InputType[] inputBuffer; //the actual storage of inputs
     public PlayerInput playerInput;
     public int framesSinceLastInput = 0;
+    private Vector2 moveInput;
     [Header("Required References")]
     private GenericCharacter character;
     private GameManager gameManager;
+
+    public bool tapJumpPressed;
+    public bool jumpPressed;
+    private Vector2 previousMoveInput;
 
     void Start()
     {
@@ -29,20 +34,34 @@ public class InputReader : MonoBehaviour
         framesSinceLastInput++;
 
         if (framesSinceLastInput > inputBufferFrames)
+        {
             ClearBuffer();
+        }
+            
     }
+
 
     void PushInput(InputType input)
     {
+        //print(input.ToString());
         framesSinceLastInput = 0;
 
         for (int i = inputBuffer.Length - 1; i > 0; i--)
             inputBuffer[i] = inputBuffer[i - 1];
 
         inputBuffer[0] = input;
+        debugPrintBuffer();
     }
 
-    void ClearBuffer()
+    public void debugPrintBuffer()
+    {
+        foreach(InputType i in inputBuffer)
+        {
+            print(i.ToString());
+        }
+    }
+
+    public void ClearBuffer()
     {
         Array.Clear(inputBuffer, 0, inputBuffer.Length);
     }
@@ -63,21 +82,29 @@ public class InputReader : MonoBehaviour
 
     public InputType[] GetBuffer() => inputBuffer;
 
+    public Vector2 pollMovementInput()
+    {
+        return moveInput;
+    }
+
     public void OnMove(InputAction.CallbackContext ctx)
     {
-        if (!ctx.performed) return;
 
         Vector2 dir = ctx.ReadValue<Vector2>();
 
-        if (dir.x > 0.5f)
-            PushInput(InputType.right);
-        else if (dir.x < -0.5f)
-            PushInput(InputType.left);
+        // Tap jump edge detection
+        if (dir.y > 0.7f && previousMoveInput.y <= 0.7f)
+            tapJumpPressed = true;
 
-        if (dir.y > 0.5f)
-            PushInput(InputType.up);
-        else if (dir.y < -0.5f)
-            PushInput(InputType.down);
+        // Directional buffer for specials
+        if (dir.x > 0.5f) PushInput(InputType.right);
+        else if (dir.x < -0.5f) PushInput(InputType.left);
+
+        if (dir.y > 0.5f) PushInput(InputType.up);
+        else if (dir.y < -0.5f) PushInput(InputType.down);
+
+        moveInput = dir;
+        previousMoveInput = dir;
     }
 
     public void OnAttack(InputAction.CallbackContext ctx)
@@ -103,4 +130,11 @@ public class InputReader : MonoBehaviour
         if (ctx.performed)
             PushInput(InputType.block);
     }
+
+    public void OnJump(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            jumpPressed = true;
+    }
+
 }
