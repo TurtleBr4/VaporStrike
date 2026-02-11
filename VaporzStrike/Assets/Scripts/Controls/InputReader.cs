@@ -50,7 +50,7 @@ public class InputReader : MonoBehaviour
             inputBuffer[i] = inputBuffer[i - 1];
 
         inputBuffer[0] = input;
-        debugPrintBuffer();
+        //debugPrintBuffer();
     }
 
     public void debugPrintBuffer()

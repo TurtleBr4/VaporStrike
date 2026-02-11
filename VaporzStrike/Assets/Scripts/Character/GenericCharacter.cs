@@ -150,9 +150,9 @@ public class GenericCharacter : MonoBehaviour
     {
         Move move = moveset.GetMatchingMove(inputReader.GetBuffer());
 
-        if (move != null)
+        if (move)
         {
-            print("wahoo!");
+            //print("wahoo!");
             //PerformMove(move);
             inputReader.ClearBuffer(); // consume the inputs
         }
