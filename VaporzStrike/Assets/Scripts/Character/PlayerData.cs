@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerData : ScriptableObject
 {
     public string playerName;
+    public int playerId;
     public float weight;  //determines knockback, fall speed
     public float moveSpeed;
     public float jumpPower;

@@ -60,6 +60,7 @@ public class GenericCharacter : MonoBehaviour
     public void assignPlayerData(PlayerData p)
     {
         playerData = p;
+       // print("hello");
     }
 
     private void populateFromPlayerData()
