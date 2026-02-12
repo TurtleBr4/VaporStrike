@@ -13,6 +13,7 @@ public enum playerGroundState //all this does is track if a player is in the air
 public class GenericCharacter : MonoBehaviour
 {
     [Header("Static Character Variables")]
+    [SerializeField] private PlayerData playerData;
     [SerializeField] private string playerName;
     [SerializeField] private float weight;  //determines knockback, fall speed
     [SerializeField] private float moveSpeed;
@@ -53,6 +54,26 @@ public class GenericCharacter : MonoBehaviour
     private void Start()
     {
         inputReader = GetComponent<InputReader>();
+        populateFromPlayerData();
+    }
+
+    public void assignPlayerData(PlayerData p)
+    {
+        playerData = p;
+    }
+
+    private void populateFromPlayerData()
+    {
+        if (playerData != null)
+        {
+            moveset = playerData.moveset;
+            moveSpeed  = playerData.moveSpeed;
+            weight = playerData.weight;
+            airSpeed = playerData.airSpeed;
+            playerName = playerData.playerName;
+            maxFallSpeed =  playerData.maxFallSpeed;
+            jumpPower = playerData.jumpPower;
+        }
     }
 
     private void Update()
@@ -126,10 +147,12 @@ public class GenericCharacter : MonoBehaviour
         }
 
         //grav
-        velocity.y += -weight * Time.deltaTime;
-        if (velocity.y < -maxFallSpeed) velocity.y = -maxFallSpeed;
-
-       
+        if (currentGroundState != playerGroundState.grounded)
+        {
+            velocity.y += -weight * Time.deltaTime;
+            if (velocity.y < -maxFallSpeed) velocity.y = -maxFallSpeed;
+        }
+        
         Vector3 move = horizontal * Time.deltaTime;
         move.y = velocity.y * Time.deltaTime;
 
