@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum gameState
 {
@@ -14,7 +15,11 @@ public class GameManager : MonoBehaviour
     public static gameState gameState = gameState.Game;
     
     public static int playerCount = 2; //this defaults to 2
-    
+
+    [Header("Multiplayer Stuff")]
+    [SerializeField] private PlayerInputManager pInputManager;
+    [SerializeField] private int index;
+
     [SerializeField]private PlayerData[] playerDataArray = new PlayerData[playerCount];
     [SerializeField]private GenericCharacter[] characterArray = new GenericCharacter[playerCount];
 
@@ -28,6 +33,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        pickPlayer(0, 0);
+        pickPlayer(1, 0);
         onGameStateChanged(gameState);
         if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
         {
@@ -40,10 +47,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z)) //just to test
         {
             pickPlayer(0, 0);
+            assignPlayerDataToPlayer(playerDataArray[0], 1);
         }
     }
 
-    public void pickPlayer(int playerIndex, int charID) //called via the menu or something
+    public void pickPlayer(int playerIndex, int charID) //called via the menu or something, assigns the player data to its corresponding player slot
     {
         playerDataArray[playerIndex] = playerDatabase.getPlayerById(charID);
     }
@@ -52,13 +60,44 @@ public class GameManager : MonoBehaviour
     {
         if (newState == gameState.Game)
         {
+            if (pInputManager)
+            {
+                pInputManager.DisableJoining();
+            }
+            pInputManager.enabled = false; //just in case
+
             Application.targetFrameRate = gameFrameRate;
+            
             characterArray = FindObjectsByType<GenericCharacter>(FindObjectsSortMode.None);
             for (int i = 0; i < playerCount; i++)
             {
                 assignPlayerDataToPlayer(playerDataArray[i], i);
             }
         }
+        else //this is where we handle the cursor spawning fuck shit >:)
+        {
+            if (!pInputManager)
+            {
+                pInputManager = GetComponent<PlayerInputManager>();
+
+            }
+            pInputManager.DisableJoining();
+            index = 0;
+            pInputManager.playerPrefab = playerDataArray[index].playerPrefab;
+        }
+    }
+
+    public void switchAndSpawnNext(PlayerInput pi)
+    {
+        index++;
+
+        //Stash the device that was used to spawn this character
+        InputDevice device = pi.GetDevice<InputDevice>();
+        InputReader spawnedCharacter = pi.gameObject.GetComponent<InputReader>();
+        spawnedCharacter.controllerID = device.displayName == "Keyboard" || device.displayName == "Mouse" ? "Mouse" : "Controller";
+
+        pInputManager.playerPrefab = playerDataArray[Mathf.Min(playerCount - 1, index)].playerPrefab;
+
     }
 
     void assignPlayerDataToPlayer(PlayerData p, int playerIndex)

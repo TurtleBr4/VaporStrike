@@ -17,6 +17,8 @@ public class InputReader : MonoBehaviour
     [Header("Required References")]
     private GenericCharacter character;
     private GameManager gameManager;
+    public string controllerID;
+    public string playerID;
 
     public bool tapJumpPressed;
     public bool jumpPressed;

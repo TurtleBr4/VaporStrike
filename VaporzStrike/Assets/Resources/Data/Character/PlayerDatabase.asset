@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerDatabase
   m_EditorClassIdentifier: 
   players:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 8e32b8e6fc79111daa20abc0a6379063, type: 2}

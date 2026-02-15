@@ -30,6 +30,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private playerState currentState;
     [SerializeField] private playerGroundState currentGroundState;
 
+
     [Header("Constants")] 
     public const float minMovementStep = .5f;
 
@@ -75,6 +76,11 @@ public class GenericCharacter : MonoBehaviour
             maxFallSpeed =  playerData.maxFallSpeed;
             jumpPower = playerData.jumpPower;
         }
+    }
+
+    public void recieveCharacterPrefab(GameObject prefab)
+    {
+
     }
 
     private void Update()
