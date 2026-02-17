@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 public enum playerState
 {
     actionable, attacking, blocking, falling, hitstun, blockstun, landlag, parry
@@ -12,6 +13,7 @@ public enum playerGroundState //all this does is track if a player is in the air
 
 public class GenericCharacter : MonoBehaviour
 {
+    public TextMeshProUGUI perecentTxt;
     [Header("Static Character Variables")]
     [SerializeField] private string playerName;
     [SerializeField] private float weight;  //determines knockback, fall speed
@@ -58,7 +60,7 @@ public class GenericCharacter : MonoBehaviour
     private void Update()
     {
 
-
+        perecentTxt.text  = damagePercent.ToString() +"%";
         
         takeInput(readInputBuffer());
         doMove();
