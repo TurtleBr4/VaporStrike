@@ -1,0 +1,4 @@
+I didnt feel like going through and making another edit to the first one. BUT
+
+when you export the file to put in unity make sure you use .fbx;
+that perserves rigging data which is very important.
