@@ -22,11 +22,17 @@ public class InputReader : MonoBehaviour
     public bool jumpPressed;
     private Vector2 previousMoveInput;
 
+    //Max's debug code
+    public bool printInputs;
+
     void Start()
     {
         inputBuffer = new InputType[inputBufferFrames];
         character = GetComponent<GenericCharacter>();
         gameManager = FindFirstObjectByType<GameManager>();
+
+        //Max's debug code
+        printInputs = false;
     }
 
     void Update()
@@ -37,28 +43,35 @@ public class InputReader : MonoBehaviour
         {
             ClearBuffer();
         }
-            
+
+        if (Input.GetKeyDown(KeyCode.P)) printInputs = !printInputs;
     }
 
 
     void PushInput(InputType input)
     {
-        //print(input.ToString());
+        //Max's debug code
+        if (printInputs) print(input.ToString());
+
         framesSinceLastInput = 0;
 
         for (int i = inputBuffer.Length - 1; i > 0; i--)
             inputBuffer[i] = inputBuffer[i - 1];
 
         inputBuffer[0] = input;
-        //debugPrintBuffer();
+
+        //Max's debug code
+        if(printInputs) debugPrintBuffer();
     }
 
     public void debugPrintBuffer()
     {
+        string buffer = "Input Buffer: ";
         foreach(InputType i in inputBuffer)
         {
-            print(i.ToString());
+            buffer += i.ToString();
         }
+        print(buffer);
     }
 
     public void ClearBuffer()
