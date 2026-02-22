@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 public enum playerState
 {
     actionable, attacking, blocking, falling, hitstun, blockstun, landlag, parry
@@ -89,7 +90,7 @@ public class GenericCharacter : MonoBehaviour
 
         
         takeInput(readInputBuffer());
-        doMove();
+        doMovement();
         if (doGroundCheck())
         {
             currentGroundState = playerGroundState.grounded;
@@ -102,39 +103,50 @@ public class GenericCharacter : MonoBehaviour
         doPlatformHandle();
     }
 
-    InputType readInputBuffer()
+    Move readInputBuffer()
     {
-       return inputReader.GetBuffer()[0];
+       return moveset.GetMatchingMove(inputReader.GetBuffer());
     }
 
-    public virtual void takeInput(InputType input)
+    public virtual void takeInput(Move move)
     {
-        switch (input)
-        {
-            case InputType.attack:
-                currentState = playerState.attacking;
-                break;
-            case InputType.special:
-                currentState = playerState.attacking;
-                doAttack();
-                break;
-            case InputType.parry:
-                currentState = playerState.parry;
-                break;
-            case InputType.block:
-                currentState = playerState.blocking;
-                break;
-            case InputType.neutral:
-                break;
-            default: //for movement
-                currentState = playerState.actionable;
-   
-                break;
-        }
+
+        //Switches state based on move
+        if(move.inputSequence.Contains<InputType>(InputType.attack) || move.inputSequence.Contains<InputType>(InputType.special))
+            currentState = playerState.attacking;
+        else if(move.inputSequence.Contains<InputType>(InputType.parry))
+            currentState = playerState.parry;
+        else if(move.inputSequence.Contains<InputType>(InputType.block))
+            currentState = playerState.blocking;
+        else 
+            currentState = playerState.actionable;
+
+        //switch (input)
+        //{
+        //    case InputType.attack:
+        //        currentState = playerState.attacking;
+        //        break;
+        //    case InputType.special:
+        //        currentState = playerState.attacking;
+        //        doAttack();
+        //        break;
+        //    case InputType.parry:
+        //        currentState = playerState.parry;
+        //        break;
+        //    case InputType.block:
+        //        currentState = playerState.blocking;
+        //        break;
+        //    case InputType.neutral:
+        //        break;
+        //    default: //for movement
+        //        currentState = playerState.actionable;
+        //        break;
+        //}
 
     }
 
-    public virtual void doMove()
+    //I renamed this so it's less confusing when talking about moves
+    public virtual void doMovement()
     {
 
         float x = inputReader.pollMovementInput().x;
