@@ -14,7 +14,6 @@ public enum playerGroundState //all this does is track if a player is in the air
 
 public class GenericCharacter : MonoBehaviour
 {
-    public TextMeshProUGUI perecentTxt;
     [Header("Static Character Variables")]
     [SerializeField] private PlayerData playerData;
     [SerializeField] private string playerName;
@@ -32,6 +31,8 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private float damagePercent = 0f;
     [SerializeField] private playerState currentState;
     [SerializeField] private playerGroundState currentGroundState;
+    public TextMeshProUGUI perecentTxt; //auto asign in the future
+
 
 
     [Header("Constants")] 
@@ -114,15 +115,21 @@ public class GenericCharacter : MonoBehaviour
     {
 
         //Switches state based on move
-        if(move.inputSequence.Contains<InputType>(InputType.attack) || move.inputSequence.Contains<InputType>(InputType.special))
-            currentState = playerState.attacking;
-        else if(move.inputSequence.Contains<InputType>(InputType.parry))
-            currentState = playerState.parry;
-        else if(move.inputSequence.Contains<InputType>(InputType.block))
-            currentState = playerState.blocking;
-        else 
+        if (move)
+        {
+            if(move.inputSequence.Contains<InputType>(InputType.attack) || move.inputSequence.Contains<InputType>(InputType.special))
+                currentState = playerState.attacking;
+            else if(move.inputSequence.Contains<InputType>(InputType.parry))
+                currentState = playerState.parry;
+            else if (move.inputSequence.Contains<InputType>(InputType.block))
+                currentState = playerState.blocking;
+        }
+        else
+        {
             currentState = playerState.actionable;
 
+        }
+ 
         //switch (input)
         //{
         //    case InputType.attack:
