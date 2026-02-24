@@ -24,4 +24,14 @@ public class PlatformBottomDetector : MonoBehaviour
         }
         
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        if (!bottom && other.GetComponent<GenericCharacter>().dropping) //not the greatest function call no
+        {
+            p.handlePlayerFromBottom(other);
+        }
+    }
 }

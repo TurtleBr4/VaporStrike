@@ -1457,6 +1457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameFrameRate: 60
   platformFrameTime: 24
+  ffMult: 2
   pInputManager: {fileID: 1536826519}
   index: 0
   playerDataArray:
