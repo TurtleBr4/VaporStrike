@@ -1201,7 +1201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c93f2043bfb890e2f8e532644a701f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputBufferFrames: 4
+  inputBufferFrames: 8
   inputBuffer: 
   playerInput: {fileID: 1298792527}
   framesSinceLastInput: 0
@@ -2815,6 +2815,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1010610887676286886, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: inputBufferFrames
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3636455083823897788, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: m_Enabled
       value: 0

@@ -263,7 +263,7 @@ public class GenericCharacter : MonoBehaviour
 
         if (move)
         {
-            //print("wahoo!");
+            print(move.name);
             performMove(move.animationId);
             inputReader.ClearBuffer(); // consume the inputs
         }

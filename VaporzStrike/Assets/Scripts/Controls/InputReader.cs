@@ -9,7 +9,7 @@ public enum InputType
 public class InputReader : MonoBehaviour
 {
     [Header("Basic Input")] 
-    public int inputBufferFrames = 4; //the amount of time (in frames) the player has to input something and have it be counted
+    public int inputBufferFrames = 8; //the amount of time (in frames) the player has to input something and have it be counted
     [SerializeField]private InputType[] inputBuffer; //the actual storage of inputs
     public PlayerInput playerInput;
     public int framesSinceLastInput = 0;
@@ -41,9 +41,9 @@ public class InputReader : MonoBehaviour
     {
         framesSinceLastInput++;
 
-        if (framesSinceLastInput > inputBufferFrames)
+        if (framesSinceLastInput > (inputBufferFrames))
         {
-            ClearBuffer();
+            clearFirstInputFromBuffer();
         }
 
         if (Input.GetKeyDown(KeyCode.P)) printInputs = !printInputs;
@@ -79,6 +79,19 @@ public class InputReader : MonoBehaviour
     public void ClearBuffer()
     {
         Array.Clear(inputBuffer, 0, inputBuffer.Length);
+    }
+
+    public void clearFirstInputFromBuffer()
+    {
+        for (int i = 0; i < inputBuffer.Length; i++)
+        {
+            if (i + 1 < inputBuffer.Length)
+            {
+                inputBuffer[i] = inputBuffer[i + 1];
+
+            }
+        }
+        inputBuffer[inputBuffer.Length - 1] = InputType.neutral;
     }
 
     public bool CheckInputSequence(InputType[] sequence)
