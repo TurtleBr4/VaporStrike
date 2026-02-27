@@ -10,12 +10,8 @@ public class Hurtbox : MonoBehaviour
         player = GetComponentInParent<GenericCharacter>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void passDamageToPlayer(float damage)
     {
-        if (other.CompareTag("Hitbox"))
-        {
-            player.doTakeDamage();
-            
-        }
+        player.doTakeDamage();
     }
 }
