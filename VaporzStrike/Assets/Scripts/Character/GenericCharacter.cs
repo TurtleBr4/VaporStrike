@@ -14,6 +14,8 @@ public enum playerGroundState //all this does is track if a player is in the air
 
 public class GenericCharacter : MonoBehaviour
 {
+    private static readonly int Property = Animator.StringToHash("Animation ID"); //thanks jetbrains rider for the effecient lookup or whatever
+
     [Header("Static Character Variables")]
     [SerializeField] private PlayerData playerData;
     [SerializeField] private string playerName;
@@ -31,25 +33,30 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private float damagePercent = 0f;
     [SerializeField] private playerState currentState;
     [SerializeField] private playerGroundState currentGroundState;
+    [SerializeField] private Vector3 storedMomentum = Vector3.zero;
+    [SerializeField] private Vector3 movementInput;
+    [SerializeField] private Vector3 velocity;
     public TextMeshProUGUI perecentTxt; //auto asign in the future
+    public bool dropping = false;
+    public bool fastFalling = false;
+    public bool isInAnimation = false;
 
-
-
-    [Header("Constants")] 
+    [Header("Constants and Dependencies")] 
+    public CharacterController c;
+    public Animator anim;
+    public GameManager gameManager;
     public const float minMovementStep = .5f;
+    public float ffMult;
 
     [Header("TEMPORARY MOVEMENT VARIABLES, DONT GET TOO ATTACHED!")]
     public bool isJumping;
     public bool isGrounded;
     public bool isActionable;
-    public CharacterController c;
+
     public float groundCheckDistance = 0.15f;
     public float dropDuration = 0.25f;
     int oneWayLayer;
-    public bool dropping;
-    private Vector3 storedMomentum = Vector3.zero;
-    private Vector3 movementInput;
-    private Vector3 velocity;
+    
 
     private void Awake()
     {
@@ -59,18 +66,20 @@ public class GenericCharacter : MonoBehaviour
     private void Start()
     {
         inputReader = GetComponent<InputReader>();
-        populateFromPlayerData();
+        gameManager = FindFirstObjectByType<GameManager>();
+
+        ffMult = gameManager.ffMult;
     }
 
     public void assignPlayerData(PlayerData p)
     {
         playerData = p;
-       // print("hello");
+        populateFromPlayerData();
     }
 
     private void populateFromPlayerData()
     {
-        if (playerData != null)
+        if (playerData)
         {
             moveset = playerData.moveset;
             moveSpeed  = playerData.moveSpeed;
@@ -79,6 +88,10 @@ public class GenericCharacter : MonoBehaviour
             playerName = playerData.playerName;
             maxFallSpeed =  playerData.maxFallSpeed;
             jumpPower = playerData.jumpPower;
+        }
+        else
+        {
+            Debug.LogError("No PlayerData assigned!"); //rider shut up about performance challenge failed
         }
     }
 
@@ -103,7 +116,7 @@ public class GenericCharacter : MonoBehaviour
             currentGroundState = playerGroundState.air;
         }
 
-        doPlatformHandle();
+        //doDownHandle();
     }
 
     Move readInputBuffer()
@@ -117,8 +130,11 @@ public class GenericCharacter : MonoBehaviour
         //Switches state based on move
         if (move)
         {
-            if(move.inputSequence.Contains<InputType>(InputType.attack) || move.inputSequence.Contains<InputType>(InputType.special))
-                currentState = playerState.attacking;
+            if (move.inputSequence.Contains<InputType>(InputType.attack) ||
+                move.inputSequence.Contains<InputType>(InputType.special))
+            {
+               doAttack(move);
+            }
             else if(move.inputSequence.Contains<InputType>(InputType.parry))
                 currentState = playerState.parry;
             else if (move.inputSequence.Contains<InputType>(InputType.block))
@@ -159,11 +175,24 @@ public class GenericCharacter : MonoBehaviour
     {
 
         float x = inputReader.pollMovementInput().x;
+        float y = inputReader.pollMovementInput().y;
 
         //deadzone
         if (Mathf.Abs(x) < 0.1f) x = 0f;
+        if (Mathf.Abs(y) < 0.1f)  y = 0f;
 
-        Vector3 horizontal = new Vector3(x, 0f, 0f) * moveSpeed;
+        Vector3 horizontal;
+
+        if (currentGroundState == playerGroundState.air) //use the airspeed
+        {
+            horizontal = new Vector3(x, 0f, 0f) * airSpeed;
+        }
+        else
+        {
+            horizontal = new Vector3(x, 0f, 0f) * moveSpeed;
+            fastFalling = false; //turned off the fast fall here because why not
+        }
+
 
 
         //jump triggers only once per tap/button
@@ -173,18 +202,43 @@ public class GenericCharacter : MonoBehaviour
             inputReader.tapJumpPressed = false;
             inputReader.jumpPressed = false;
         }
+        
+        //down check, using the raw input data instead of the buffer for rn
+        if (y < -0.5f)
+        {
+            doDownHandle(true);
+        }
+        else
+        {
+            doDownHandle(false);
+        }
 
         //grav
         if (currentGroundState != playerGroundState.grounded)
         {
-            velocity.y += -weight * Time.deltaTime;
-            if (velocity.y < -maxFallSpeed) velocity.y = -maxFallSpeed;
+            if (dropping)
+            {
+                fastFalling = true;
+            }
+            if (fastFalling)
+            {
+                velocity.y += -(weight * ffMult) * Time.deltaTime;
+                if (velocity.y < -(maxFallSpeed * ffMult)) velocity.y = -(maxFallSpeed + 10); //i love arbitrary numbers!!!!
+            }
+            else
+            {
+                velocity.y += -weight * Time.deltaTime;
+                if (velocity.y < -maxFallSpeed) velocity.y = -maxFallSpeed;
+            }
+
         }
         
         Vector3 move = horizontal * Time.deltaTime;
         move.y = velocity.y * Time.deltaTime;
 
         c.Move(move);
+        
+        
     }
 
     public virtual bool doGroundCheck()
@@ -192,20 +246,35 @@ public class GenericCharacter : MonoBehaviour
         return Physics.CheckSphere(groundCheck.position, 0.2f, groundLayer);
     }
 
-    public virtual void doPlatformHandle()
+    public virtual void doDownHandle(bool isDown) //handles fastfalling, platform dropthru
     {
-        
+        if (isDown)
+        {
+            dropping = true;
+        }
+        else
+        {
+            dropping = false;
+        }
     }
 
-    public virtual void doAttack()
+    public virtual void doAttack(Move move)
     {
-        Move move = moveset.GetMatchingMove(inputReader.GetBuffer());
 
         if (move)
         {
-            //print("wahoo!");
-            //PerformMove(move);
+            print(move.name);
+            performMove(move.animationId);
             inputReader.ClearBuffer(); // consume the inputs
+        }
+    }
+
+    public virtual void performMove(int animID)
+    {
+        if (anim)
+        {
+            isInAnimation = true;
+            anim.SetInteger(Property, animID);
         }
     }
 
@@ -233,50 +302,35 @@ public class GenericCharacter : MonoBehaviour
     {
 
     }
+    
+    #region Animator Flags
 
-
-    IEnumerator DropThrough()
+    public void StartAnimation()
     {
-        dropping = true;
-        yield return new WaitForSeconds(dropDuration);
-        dropping = false;
+        isInAnimation = true;
     }
 
-    public bool ShouldIgnorePlatform(Collider platform)
+    public void StopAnimation()
     {
-        if (!platform.gameObject.layer.Equals(oneWayLayer))
-            return false;
-
-        if (dropping)
-            return true;
-
-        // Player feet position
-        Vector3 feet = transform.position + Vector3.up * c.skinWidth;
-
-        // Is the platform above the player?
-        return platform.bounds.min.y > feet.y;
+        isInAnimation = false;
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
+    public void CreateHitbox(Transform hitbox)
     {
-        if (ShouldIgnorePlatform(hit.collider))
-        {
-            // Cancel upward collision
-            
-            if (hit.moveDirection.y > 0f)
-            {
-                Physics.IgnoreCollision(hit.collider, gameObject.GetComponent<Collider>(), true);
-                velocity.y = Mathf.Min(velocity.y, 0f);
-            }
-            else
-            {
-                // Land normally
-                Physics.IgnoreCollision(hit.collider, gameObject.GetComponent<Collider>(), false);
-                if (hit.moveDirection.y < 0f)
-                    velocity.y = 0f;
-            }
-        }
+        
     }
+
+    public void DestroyHitbox()
+    {
+        
+    }
+
+    public void ModifyHurtbox()
+    {
+        
+    }
+    
+    #endregion
 
 
 

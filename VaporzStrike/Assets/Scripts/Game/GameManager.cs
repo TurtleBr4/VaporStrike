@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [Header("Static/Global Variables/Constants")]
     public int gameFrameRate = 60;
     public float platformFrameTime = 24f;
+    public float ffMult = 1.25f;
     
     public static gameState gameState = gameState.Game;
     
@@ -19,11 +20,9 @@ public class GameManager : MonoBehaviour
     [Header("Multiplayer Stuff")]
     [SerializeField] private PlayerInputManager pInputManager;
     [SerializeField] private int index;
-
-    [SerializeField]private PlayerData[] playerDataArray = new PlayerData[playerCount];
-    [SerializeField]private GenericCharacter[] characterArray = new GenericCharacter[playerCount];
-
-    [SerializeField]private PlayerDatabase playerDatabase;
+    [SerializeField] private PlayerData[] playerDataArray = new PlayerData[playerCount];
+    [SerializeField] private GenericCharacter[] characterArray = new GenericCharacter[playerCount];
+    [SerializeField] private PlayerDatabase playerDatabase;
 
     private void Awake()
     {

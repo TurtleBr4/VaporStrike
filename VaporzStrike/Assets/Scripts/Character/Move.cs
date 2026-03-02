@@ -8,6 +8,7 @@ public class Move : ScriptableObject
     public float damage;
     public float hitStun;
     public float knockback;
+    public int animationId;
     public string animationTrigger;   // optional Animator trigger
 
     [Header("Other Move Data")]
