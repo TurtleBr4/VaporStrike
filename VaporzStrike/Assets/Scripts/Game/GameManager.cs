@@ -24,14 +24,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GenericCharacter[] characterArray = new GenericCharacter[playerCount];
     [SerializeField] private PlayerDatabase playerDatabase;
 
+    public static GameManager instance;
     private void Awake()
     {
-        if (GameObject.Find(this.name))
+        if (instance != null && instance == this)
         {
             Destroy(gameObject);
         }
-        playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
-        DontDestroyOnLoad(this);
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+            playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
+        
     }
 
     private void Start()
