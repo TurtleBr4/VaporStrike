@@ -27,8 +27,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (GameObject.Find(this.name))
+        {
+            Destroy(gameObject);
+        }
         playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
-        
+        DontDestroyOnLoad(this);
     }
 
     private void Start()
