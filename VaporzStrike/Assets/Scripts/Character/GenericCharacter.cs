@@ -37,6 +37,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private Vector3 storedMomentum = Vector3.zero;
     [SerializeField] private Vector3 movementInput;
     [SerializeField] private Vector3 velocity;
+    [SerializeField] private int frameTimer;
     public TextMeshProUGUI perecentTxt; //auto assign in the future
     public bool dropping = false;
     public bool fastFalling = false;
@@ -86,12 +87,37 @@ public class GenericCharacter : MonoBehaviour
 
     }
 
+    private void debugInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) //simulate
+        {
+            currentState = playerState.hitstun;
+            doTakeKnockback(new Vector2(.5f,2), 20f);
+            frameTimer = 12;
+        }
+    }
+
+    public virtual void stateManager()
+    {
+
+        if (currentState == playerState.hitstun && frameTimer != 0)
+        {
+            frameTimer--;
+        }
+        else
+        {
+            currentState = playerState.actionable;
+        }
+    }
+
     private void Update()
     {
 
         perecentTxt.text  = damagePercent.ToString() +"%";
         
         takeInput(readInputBuffer());
+        debugInputs();
+        stateManager();
         doMovement();
         if (doGroundCheck())
         {
@@ -206,6 +232,32 @@ public class GenericCharacter : MonoBehaviour
 
             c.Move(move);
         }
+        else //just got hit here
+        {
+            if (currentGroundState != playerGroundState.grounded)
+            {
+                if (dropping)
+                {
+                    fastFalling = true;
+                }
+                if (fastFalling)
+                {
+                    velocity.y += -(weight * ffMult) * Time.deltaTime;
+                    if (velocity.y < -(maxFallSpeed * ffMult)) velocity.y = -(maxFallSpeed + 10); //i love arbitrary numbers!!!!
+                }
+                else
+                {
+                    velocity.y += -weight * Time.deltaTime;
+                    if (velocity.y < -maxFallSpeed) velocity.y = -maxFallSpeed;
+                }
+
+            }
+        
+            Vector3 move = velocity * Time.deltaTime;
+            move.y += velocity.y * Time.deltaTime;
+
+            c.Move(move);
+        }
         
     }
 
@@ -265,16 +317,17 @@ public class GenericCharacter : MonoBehaviour
 
     }
 
-    public virtual void doTakeKnockback(Vector2 direction, float knockbackPower)
+    public virtual void doTakeKnockback(Vector2 direction, float knockbackPower) //possibly redundant
     {
-        
+        velocity = (direction * knockbackPower);
     }
 
     public virtual void doTakeDamage(HitboxData hitbox)
     {
         currentState = playerState.hitstun;
+        frameTimer = hitbox.hitStun;
         damagePercent += hitbox.damage;
-        doTakeKnockback(hitbox.launchDirection, hitbox.knockback);
+        doTakeKnockback(hitbox.launchDirection, hitbox.knockback); 
     }
     
     #region Animator Flags
