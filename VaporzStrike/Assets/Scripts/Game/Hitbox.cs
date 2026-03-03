@@ -3,23 +3,17 @@ using UnityEngine;
 
 public class Hitbox : MonoBehaviour
 {
-    public float damage;
-    bool damageSet = false;
-
-    public void setDamage(float d)
-    {
-        damage = d;
-        damageSet = true;
-    }
+    public HitboxData data; //i love my scriptable objects
+    
     private void OnTriggerEnter(Collider other)
     {
-        if (damageSet && other.CompareTag("Hurtbox"))
+        if (other.CompareTag("Hurtbox"))
         {
-            other.gameObject.SendMessage("passDamageToPlayer", damage);
+            other.gameObject.SendMessage("passDamageToPlayer", data, SendMessageOptions.RequireReceiver);
         }
         else
         {
-            Debug.LogWarning("Hitbox damage hasn't been set!");
+            Debug.LogWarning("Not A Hitbox!");
         }
     }
 }
