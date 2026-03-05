@@ -49,13 +49,21 @@ public class GenericCharacter : MonoBehaviour
     public GameManager gameManager;
     public const float minMovementStep = .5f;
     public float ffMult; //fast fall multiplier
+    public int pFrameTime;
     
     private void Start()
     {
         inputReader = GetComponent<InputReader>();
         gameManager = FindFirstObjectByType<GameManager>();
 
+        getConstantsFromGameManager();
+    }
+
+    public void getConstantsFromGameManager()
+    {
+        pFrameTime = gameManager.parryFrameTime;
         ffMult = gameManager.ffMult;
+        
     }
 
     public void assignPlayerData(PlayerData p)
@@ -89,11 +97,11 @@ public class GenericCharacter : MonoBehaviour
 
     private void debugInputs()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) //simulate
+        if (Input.GetKeyDown(KeyCode.Alpha1)) //simulate taking a hit
         {
             currentState = playerState.hitstun;
             doTakeKnockback(new Vector2(.5f,2), 20f);
-            frameTimer = 12;
+            frameTimer = 36;
         }
     }
 

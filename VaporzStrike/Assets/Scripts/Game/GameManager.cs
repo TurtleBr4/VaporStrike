@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public int gameFrameRate = 60;
     public float platformFrameTime = 24f;
     public float ffMult = 1.25f;
+    public int parryFrameTime = 30;
     
     public static gameState gameState = gameState.Game;
     

@@ -6,6 +6,8 @@ public class Move : ScriptableObject
     public string moveName;           // e.g., "Side Special"
     public InputType[] inputSequence;    // e.g., { "right", "special" }
     public float damage;
+    public int moveTime;
+    public int blockStun;
     public float hitStun;
     public float knockback;
     public int animationId;
