@@ -14,10 +14,11 @@ public enum playerGroundState //all this does is track if a player is in the air
 
 public class GenericCharacter : MonoBehaviour
 {
-    private static readonly int Property = Animator.StringToHash("Animation ID"); //thanks jetbrains rider for the effecient lookup or whatever
+    private static readonly int AnimationID = Animator.StringToHash("Animation ID"); //thanks jetbrains rider for the effecient lookup or whatever
 
     [Header("Static Character Variables")]
     [SerializeField] private PlayerData playerData;
+    [SerializeField] private int playerID;
     [SerializeField] private string playerName;
     [SerializeField] private float weight;  //determines knockback, fall speed
     [SerializeField] private float moveSpeed;
@@ -83,6 +84,7 @@ public class GenericCharacter : MonoBehaviour
             playerName = playerData.playerName;
             maxFallSpeed =  playerData.maxFallSpeed;
             jumpPower = playerData.jumpPower;
+            recieveCharacterPrefab(playerData.playerPrefab);
         }
         else
         {
@@ -92,7 +94,9 @@ public class GenericCharacter : MonoBehaviour
 
     public void recieveCharacterPrefab(GameObject prefab)
     {
-
+        GameObject guy = Instantiate(prefab, transform);
+        guy.transform.position = transform.position;
+        anim = guy.GetComponent<Animator>();
     }
 
     private void debugInputs()
@@ -302,7 +306,7 @@ public class GenericCharacter : MonoBehaviour
         if (anim)
         {
             isInAnimation = true;
-            anim.SetInteger(Property, animID);
+            anim.SetInteger(AnimationID, animID);
         }
     }
     public virtual void doGetHit()
@@ -340,9 +344,10 @@ public class GenericCharacter : MonoBehaviour
     
     #region Animator Flags
 
-    public void StartAnimation()
+    public void StartAnimation(int animID)
     {
         isInAnimation = true;
+        anim.SetInteger(AnimationID, animID);
     }
 
     public void StopAnimation()
