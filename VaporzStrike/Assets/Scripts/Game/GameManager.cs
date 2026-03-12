@@ -102,6 +102,6 @@ public class GameManager : MonoBehaviour
 
     void assignPlayerDataToPlayer(PlayerData p, int playerIndex)
     {
-        characterArray[playerIndex].assignPlayerData(p);
+        characterArray[playerIndex].assignPlayerData(p, playerIndex);
     }
 }

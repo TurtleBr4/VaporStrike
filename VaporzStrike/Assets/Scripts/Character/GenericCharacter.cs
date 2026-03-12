@@ -7,6 +7,11 @@ public enum playerState
     actionable, attacking, blocking, falling, hitstun, blockstun, landlag, parry
 }
 
+public enum faceDirection
+{
+    left, right
+}
+
 public enum playerGroundState //all this does is track if a player is in the air or on the ground
 {
     grounded, air
@@ -39,6 +44,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private Vector3 movementInput;
     [SerializeField] private Vector3 velocity;
     [SerializeField] private int frameTimer;
+    [SerializeField] private faceDirection faceDirection;
     public TextMeshProUGUI perecentTxt; //auto assign in the future
     public bool dropping = false;
     public bool fastFalling = false;
@@ -56,7 +62,7 @@ public class GenericCharacter : MonoBehaviour
     {
         inputReader = GetComponent<InputReader>();
         gameManager = FindFirstObjectByType<GameManager>();
-
+        faceDirection = faceDirection.right;
         getConstantsFromGameManager();
     }
 
@@ -67,9 +73,14 @@ public class GenericCharacter : MonoBehaviour
         
     }
 
-    public void assignPlayerData(PlayerData p)
+    public void assignPlayerData(PlayerData p, int pid)
     {
         playerData = p;
+        playerID = pid;
+        if (pid % 2 == 0)
+        {
+            faceDirection = faceDirection.left;
+        }
         populateFromPlayerData();
     }
 
@@ -96,6 +107,7 @@ public class GenericCharacter : MonoBehaviour
     {
         GameObject guy = Instantiate(prefab, transform);
         guy.transform.position = transform.position;
+        if(faceDirection == faceDirection.left) guy.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
         anim = guy.GetComponent<Animator>();
     }
 
@@ -142,7 +154,7 @@ public class GenericCharacter : MonoBehaviour
 
         //doDownHandle();
     }
-
+    
     Move readInputBuffer()
     {
        return moveset.GetMatchingMove(inputReader.GetBuffer());
@@ -243,6 +255,7 @@ public class GenericCharacter : MonoBehaviour
             move.y = velocity.y * Time.deltaTime;
 
             c.Move(move);
+            switchFaceDirection(move);
         }
         else //just got hit here
         {
@@ -272,6 +285,26 @@ public class GenericCharacter : MonoBehaviour
         }
         
     }
+    
+    public virtual void switchFaceDirection(Vector3 moveDirection) //fix later
+    {
+        float rot = transform.eulerAngles.y;
+        if (moveDirection.x > 0)
+        {
+            rot += 180f;
+            if(rot > 180f)  rot = 180f;
+            faceDirection = faceDirection.right;
+            transform.localEulerAngles = new Vector3(0f, rot, 0f);
+        }
+        else if (moveDirection.x < 0)
+        {
+            rot -= 180f;
+            if(rot < 0f)  rot = 0f;
+            faceDirection = faceDirection.left;
+            transform.localEulerAngles = new Vector3(0f, rot, 0f);
+        }
+    }
+
 
     public virtual bool doGroundCheck()
     {
