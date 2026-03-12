@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestPlayerData
   m_EditorClassIdentifier: 
   playerName: Micheal Jordan
-  playerPrefab: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+  playerPrefab: {fileID: 5808588097857046191, guid: c07aa77d010659dd7bdaab8a9e023d2c, type: 3}
   playerId: 0
   weight: 100
   moveSpeed: 15
