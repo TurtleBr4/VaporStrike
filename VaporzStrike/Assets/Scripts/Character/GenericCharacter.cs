@@ -289,20 +289,41 @@ public class GenericCharacter : MonoBehaviour
     public virtual void switchFaceDirection(Vector3 moveDirection) //fix later
     {
         float rot = transform.eulerAngles.y;
-        if (moveDirection.x > 0)
+        if (playerID % 2 == 0) //even players
         {
-            rot += 180f;
-            if(rot > 180f)  rot = 180f;
-            faceDirection = faceDirection.right;
-            transform.localEulerAngles = new Vector3(0f, rot, 0f);
+            if (moveDirection.x > 0)
+            {
+                rot += 180f;
+                if(rot > 180f)  rot = 180f;
+                faceDirection = faceDirection.right;
+                transform.localEulerAngles = new Vector3(0f, rot, 0f);
+            }
+            else if (moveDirection.x < 0)
+            {
+                rot -= 180f;
+                if(rot < 0f)  rot = 0f;
+                faceDirection = faceDirection.left;
+                transform.localEulerAngles = new Vector3(0f, rot, 0f);
+            }
         }
-        else if (moveDirection.x < 0)
+        else
         {
-            rot -= 180f;
-            if(rot < 0f)  rot = 0f;
-            faceDirection = faceDirection.left;
-            transform.localEulerAngles = new Vector3(0f, rot, 0f);
+            if (moveDirection.x > 0)
+            {
+                rot -= 180f;
+                if(rot < 0f)  rot = 0f;
+                faceDirection = faceDirection.right;
+                transform.localEulerAngles = new Vector3(0f, rot, 0f);
+            }
+            else if (moveDirection.x < 0)
+            {
+                rot += 180f;
+                if(rot > 180f)  rot = 180f;
+                faceDirection = faceDirection.left;
+                transform.localEulerAngles = new Vector3(0f, rot, 0f);
+            }
         }
+        
     }
 
 

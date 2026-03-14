@@ -2909,6 +2909,10 @@ PrefabInstance:
       propertyPath: maxFallSpeed
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: faceDirection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8953057901355937437, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.77
