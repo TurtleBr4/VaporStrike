@@ -13,6 +13,7 @@ public class Cursor : MonoBehaviour
     public RectTransform element;
     public GraphicRaycaster _graphicRaycaster;
     [SerializeField] private int _id = 0;
+    [SerializeField] private RectTransform r;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
@@ -20,13 +21,14 @@ public class Cursor : MonoBehaviour
         _id = cursorID++;
         //playerControls.DeactivateInput();
         _graphicRaycaster = GameObject.Find("Canvas").GetComponentInChildren<GraphicRaycaster>();
+        r = GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        GetComponent<RectTransform>().anchoredPosition += dir * speed;
-        var pointer = new PointerEventData(EventSystem.current) { position = GetComponent<RectTransform>().anchoredPosition };
+        r.anchoredPosition += dir * speed;
+        var pointer = new PointerEventData(EventSystem.current) { position = r.anchoredPosition };
        
         List<RaycastResult> raycastResults = new List<RaycastResult>();
         _graphicRaycaster.Raycast(pointer, raycastResults);

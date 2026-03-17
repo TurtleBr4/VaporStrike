@@ -14,11 +14,11 @@ public class CharacterSelect : MonoBehaviour
             Back();
         }
 
-        if (GameManager.instance.GetPlayer(0) != null)
+        if (GameManager.instance.GetPlayer(0))
         {
             player1Name.text = GameManager.instance.GetPlayer(0).playerName;
         }
-        if (GameManager.instance.GetPlayer(1) != null)
+        if (GameManager.instance.GetPlayer(1))
         {
             player2Name.text = GameManager.instance.GetPlayer(1).playerName;
         }
