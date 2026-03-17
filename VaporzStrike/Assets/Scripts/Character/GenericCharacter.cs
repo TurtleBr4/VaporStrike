@@ -99,7 +99,10 @@ public class GenericCharacter : MonoBehaviour
     {
 
     }
-
+    public PlayerData GetPlayerData()
+    {
+        return playerData;
+    }
     private void Update()
     {
 

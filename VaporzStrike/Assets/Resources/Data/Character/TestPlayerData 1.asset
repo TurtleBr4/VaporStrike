@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Stephen Curry
   playerPrefab: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
-  playerId: 0
+  playerId: 1
   weight: 30
   moveSpeed: 15
   jumpPower: 15
