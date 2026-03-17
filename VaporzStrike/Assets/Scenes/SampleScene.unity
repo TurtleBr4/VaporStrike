@@ -2810,6 +2810,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4048057018745279687, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
+      propertyPath: p1Percent
+      value: 
+      objectReference: {fileID: 888470011}
+    - target: {fileID: 4048057018745279687, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
+      propertyPath: p2Percent
+      value: 
+      objectReference: {fileID: 447921529191987367}
     - target: {fileID: 6750442758410344656, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
       propertyPath: m_TagString
       value: PercentTrack
@@ -2823,6 +2831,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
+--- !u!114 &447921529191987367 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1749902856773853744, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
+  m_PrefabInstance: {fileID: 447921529191987366}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5352670951735283704
 PrefabInstance:
   m_ObjectHideFlags: 0

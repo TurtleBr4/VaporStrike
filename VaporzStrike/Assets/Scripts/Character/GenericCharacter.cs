@@ -142,7 +142,7 @@ public class GenericCharacter : MonoBehaviour
     private void Update()
     {
 
-        perecentTxt.text  = damagePercent.ToString() +"%";
+        //perecentTxt.text  = damagePercent.ToString() +"%";
         
         takeInput(readInputBuffer());
         debugInputs();

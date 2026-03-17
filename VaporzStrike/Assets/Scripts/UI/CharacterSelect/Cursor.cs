@@ -32,7 +32,7 @@ public class Cursor : MonoBehaviour
        
         List<RaycastResult> raycastResults = new List<RaycastResult>();
         _graphicRaycaster.Raycast(pointer, raycastResults);
-        Debug.Log(raycastResults.Count);
+        //Debug.Log(raycastResults.Count);
         foreach (RaycastResult raycastResult in raycastResults)
         {
             
