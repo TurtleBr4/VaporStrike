@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public enum gameState
 {
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerData[] playerDataArray = new PlayerData[playerCount];
     [SerializeField] private GenericCharacter[] characterArray = new GenericCharacter[playerCount];
     [SerializeField] private PlayerDatabase playerDatabase;
+    [SerializeField] private GameObject[] playerPercentsArray = new GameObject[playerCount];
 
     public static GameManager instance { get; private set; }
     private void Awake()
@@ -38,8 +40,9 @@ public class GameManager : MonoBehaviour
             Debug.Log("Creating Instance");
             instance = this;
             DontDestroyOnLoad(gameObject);
-        }
-            playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
+        } 
+        
+        playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
         
     }
 
@@ -127,7 +130,7 @@ public class GameManager : MonoBehaviour
     {
         if (playerIndex > characterArray.Length || characterArray.Length <=0) { return; } else
         {
-            characterArray[playerIndex].assignPlayerData(p);
+            characterArray[playerIndex].assignPlayerData(p, playerIndex);
         }
             
         //characterArray[playerIndex].assignPlayerData(p, playerIndex);

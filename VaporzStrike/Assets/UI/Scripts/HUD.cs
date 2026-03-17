@@ -8,10 +8,13 @@ public class HUD : MonoBehaviour
     public GameObject player1;
     public TextMeshProUGUI player1Name;
     public TextMeshProUGUI player2Name;
+
+    public TextMeshProUGUI p1Percent;
+    public TextMeshProUGUI p2Percent;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player1 = GameObject.Find("TestPlayer");
+        //player1 = GameObject.Find("TestPlayer");
         GameManager.instance.Init();
     }
 

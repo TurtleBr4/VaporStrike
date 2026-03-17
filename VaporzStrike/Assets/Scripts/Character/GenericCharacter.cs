@@ -45,7 +45,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private Vector3 velocity;
     [SerializeField] private int frameTimer;
     [SerializeField] private faceDirection faceDirection;
-    public TextMeshProUGUI perecentTxt; //auto assign in the future
+    public TMP_Text perecentTxt; //auto assign in the future
     public bool dropping = false;
     public bool fastFalling = false;
     public bool isInAnimation = false;
@@ -54,6 +54,7 @@ public class GenericCharacter : MonoBehaviour
     public CharacterController c;
     public Animator anim;
     public GameManager gameManager;
+    public HUD hud;
     public const float minMovementStep = .5f;
     public float ffMult; //fast fall multiplier
     public int pFrameTime;
@@ -63,6 +64,7 @@ public class GenericCharacter : MonoBehaviour
         inputReader = GetComponent<InputReader>();
         gameManager = FindFirstObjectByType<GameManager>();
         faceDirection = faceDirection.right;
+        hud = FindFirstObjectByType<HUD>();
         getConstantsFromGameManager();
     }
 
@@ -83,7 +85,7 @@ public class GenericCharacter : MonoBehaviour
         }
         populateFromPlayerData();
     }
-
+    
     private void populateFromPlayerData()
     {
         if (playerData)
@@ -156,6 +158,20 @@ public class GenericCharacter : MonoBehaviour
         }
 
         //doDownHandle();
+        updatePercentText();
+    }
+
+    public void updatePercentText()
+    {
+        if (playerID == 0)
+        {
+            hud.p1Percent.text = damagePercent.ToString();
+        }
+        else
+        {
+            hud.p2Percent.text = damagePercent.ToString();
+
+        }
     }
     
     Move readInputBuffer()
