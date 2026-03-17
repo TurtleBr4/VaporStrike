@@ -133,7 +133,10 @@ public class GenericCharacter : MonoBehaviour
             currentState = playerState.actionable;
         }
     }
-
+    public PlayerData GetPlayerData()
+    {
+        return playerData;
+    }
     private void Update()
     {
 

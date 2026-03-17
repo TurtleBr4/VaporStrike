@@ -25,23 +25,42 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GenericCharacter[] characterArray = new GenericCharacter[playerCount];
     [SerializeField] private PlayerDatabase playerDatabase;
 
+    public static GameManager instance { get; private set; }
     private void Awake()
     {
-        playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            Debug.Log("Destroying");
+        }
+        else
+        {
+            Debug.Log("Creating Instance");
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+            playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
         
     }
 
     private void Start()
     {
-        pickPlayer(0, 0);
-        pickPlayer(1, 0);
+        //pickPlayer(0, 0);
+        //pickPlayer(1, 1);
         onGameStateChanged(gameState);
         if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
         {
             Application.targetFrameRate = gameFrameRate;
         }
     }
-
+    public void Init()
+    {
+        onGameStateChanged(gameState);
+        if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
+        {
+            Application.targetFrameRate = gameFrameRate;
+        }
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z)) //just to test
@@ -56,6 +75,10 @@ public class GameManager : MonoBehaviour
         playerDataArray[playerIndex] = playerDatabase.getPlayerById(charID);
     }
 
+    public PlayerData GetPlayer(int playerIndex)
+    {
+        return playerDataArray[playerIndex];
+    }
     void onGameStateChanged(gameState newState)
     {
         if (newState == gameState.Game)
@@ -68,7 +91,7 @@ public class GameManager : MonoBehaviour
 
             Application.targetFrameRate = gameFrameRate;
             
-            characterArray = FindObjectsByType<GenericCharacter>(FindObjectsSortMode.None);
+            characterArray = FindObjectsByType<GenericCharacter>(FindObjectsSortMode.InstanceID);
             for (int i = 0; i < playerCount; i++)
             {
                 assignPlayerDataToPlayer(playerDataArray[i], i);
@@ -102,6 +125,11 @@ public class GameManager : MonoBehaviour
 
     void assignPlayerDataToPlayer(PlayerData p, int playerIndex)
     {
-        characterArray[playerIndex].assignPlayerData(p, playerIndex);
+        if (playerIndex > characterArray.Length || characterArray.Length <=0) { return; } else
+        {
+            characterArray[playerIndex].assignPlayerData(p);
+        }
+            
+        //characterArray[playerIndex].assignPlayerData(p, playerIndex);
     }
 }
