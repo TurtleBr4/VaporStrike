@@ -302,6 +302,11 @@ public class GenericCharacter : MonoBehaviour
 
             c.Move(move);
         }
+
+        if (!Mathf.Approximately(transform.position.z, 4.5f))
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, 4.5f);
+        }
         
     }
     
