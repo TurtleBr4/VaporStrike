@@ -16,7 +16,7 @@ public class BlastZone : MonoBehaviour
         }
     }
 
-    public void doPlayerDeath(GameObject g)
+    public void doPlayerDeath(GameObject g) //rewrite to work with stocks later
     {
         CharacterController cc = g.GetComponent<CharacterController>();
         cc.enabled = false;

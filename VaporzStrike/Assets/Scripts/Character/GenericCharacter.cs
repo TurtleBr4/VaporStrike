@@ -121,6 +121,11 @@ public class GenericCharacter : MonoBehaviour
             doTakeKnockback(new Vector2(.5f,2), 20f);
             frameTimer = 36;
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2)) //hitbox testing
+        {
+            //doAttack();
+        }
     }
 
     public virtual void stateManager()
@@ -310,7 +315,7 @@ public class GenericCharacter : MonoBehaviour
         
     }
     
-    public virtual void switchFaceDirection(Vector3 moveDirection) //fix later
+    public virtual void switchFaceDirection(Vector3 moveDirection) //fixed?
     {
         float rot = transform.eulerAngles.y;
         if (playerID % 2 == 0) //even players
@@ -374,6 +379,11 @@ public class GenericCharacter : MonoBehaviour
         if (move)
         {
             print(move.name);
+            
+            //debug
+            Hitbox hitbox = Instantiate(Resources.Load("HitboxTemplate") as Hitbox, transform);
+            hitbox.takeInHitboxData(move.hds);
+            
             performMove(move.animationId);
             inputReader.ClearBuffer(); // consume the inputs
         }
@@ -386,10 +396,6 @@ public class GenericCharacter : MonoBehaviour
             isInAnimation = true;
             anim.SetInteger(AnimationID, animID);
         }
-    }
-    public virtual void doGetHit()
-    {
-
     }
 
     public virtual void doParry()
