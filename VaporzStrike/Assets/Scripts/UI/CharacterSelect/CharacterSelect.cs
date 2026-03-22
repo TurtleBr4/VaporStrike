@@ -24,15 +24,13 @@ public class CharacterSelect : MonoBehaviour
 
     public void LoadLevelOne()
     {
-        chosenLevel.levelName = "Level1";
-        //assign level prefab
+        chosenLevel.levelID = 1;
         
         SceneManager.LoadScene("Battlefield");
     }
     public void LoadLevelTwo()
     {
-        chosenLevel.levelName = "Level2";
-        //assign level prefab
+        chosenLevel.levelID = 2;
         
         SceneManager.LoadScene("Battlefield");
     }

@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]private PlayerDatabase playerDatabase;
 
     private LevelData chosenLevel;
+    private GameObject[] levels;
 
     private void Awake()
     {
@@ -110,6 +111,7 @@ public class GameManager : MonoBehaviour
 
     public void LoadLevel()
     {
-        Instantiate(chosenLevel.levelPrefab);
+        GameObject levelPrefab = levels[chosenLevel.levelID];
+        Instantiate(levelPrefab);
     }
 }
