@@ -28,6 +28,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] playerPercentsArray = new GameObject[playerCount];
 
     public static GameManager instance { get; private set; }
+    [SerializeField]private PlayerData[] playerDataArray = new PlayerData[playerCount];
+    [SerializeField]private GenericCharacter[] characterArray = new GenericCharacter[playerCount];
+
+    [SerializeField]private PlayerDatabase playerDatabase;
+
+    private LevelData chosenLevel;
+    private GameObject[] levels;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -43,7 +51,7 @@ public class GameManager : MonoBehaviour
         } 
         
         playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
-        
+        chosenLevel = Resources.Load<LevelData>("Data/Levels/ChosenLevel");
     }
 
     private void Start()
@@ -59,6 +67,7 @@ public class GameManager : MonoBehaviour
     public void Init()
     {
         onGameStateChanged(gameState);
+        LoadLevel();
         if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
         {
             Application.targetFrameRate = gameFrameRate;
@@ -134,5 +143,11 @@ public class GameManager : MonoBehaviour
         }
             
         //characterArray[playerIndex].assignPlayerData(p, playerIndex);
+    }
+
+    public void LoadLevel()
+    {
+        GameObject levelPrefab = levels[chosenLevel.levelID];
+        Instantiate(levelPrefab);
     }
 }
