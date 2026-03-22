@@ -25,10 +25,12 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]private PlayerDatabase playerDatabase;
 
+    private LevelData chosenLevel;
+
     private void Awake()
     {
         playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
-        
+        chosenLevel = Resources.Load<LevelData>("Data/Levels/ChosenLevel");
     }
 
     private void Start()
@@ -36,6 +38,7 @@ public class GameManager : MonoBehaviour
         pickPlayer(0, 0);
         pickPlayer(1, 0);
         onGameStateChanged(gameState);
+        LoadLevel();
         if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
         {
             Application.targetFrameRate = gameFrameRate;
@@ -103,5 +106,10 @@ public class GameManager : MonoBehaviour
     void assignPlayerDataToPlayer(PlayerData p, int playerIndex)
     {
         characterArray[playerIndex].assignPlayerData(p);
+    }
+
+    public void LoadLevel()
+    {
+        Instantiate(chosenLevel.levelPrefab);
     }
 }
