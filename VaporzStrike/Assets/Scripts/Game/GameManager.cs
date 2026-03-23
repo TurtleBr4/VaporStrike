@@ -28,10 +28,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] playerPercentsArray = new GameObject[playerCount];
 
     public static GameManager instance { get; private set; }
-    [SerializeField]private PlayerData[] playerDataArray = new PlayerData[playerCount];
-    [SerializeField]private GenericCharacter[] characterArray = new GenericCharacter[playerCount];
-
-    [SerializeField]private PlayerDatabase playerDatabase;
 
     private LevelData chosenLevel;
     private GameObject[] levels;
