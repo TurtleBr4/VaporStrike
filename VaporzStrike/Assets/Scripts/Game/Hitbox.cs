@@ -3,24 +3,39 @@ using UnityEngine;
 
 public class Hitbox : MonoBehaviour
 {
-    public float damage;
-    bool damageSet = false;
+    public HitboxDataStruct data;
+    public SphereCollider c;
 
-    public void setDamage(float d)
+    private void Start()
     {
-        damage = d;
-        damageSet = true;
+        c = GetComponent<SphereCollider>();
     }
+
+    public void takeInHitboxData(HitboxDataStruct d)
+    {
+        data = d;
+        c.radius = data.radius;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (damageSet && other.CompareTag("Hurtbox"))
+        if (other.CompareTag("Hurtbox"))
         {
-            other.gameObject.SendMessage("passDamageToPlayer", damage);
+            other.gameObject.SendMessage("passDamageToPlayer", data, SendMessageOptions.RequireReceiver);
         }
         else
         {
-            Debug.LogWarning("Hitbox damage hasn't been set!");
+            Debug.LogWarning("Not A Hitbox!");
         }
     }
+}
+
+public struct HitboxDataStruct
+{
+    public float radius;
+    public float damage;
+    public float knockback;
+    public int hitStun;
+    public Vector2 launchDirection;
 }
   

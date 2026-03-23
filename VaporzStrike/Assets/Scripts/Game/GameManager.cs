@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public enum gameState
 {
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     public int gameFrameRate = 60;
     public float platformFrameTime = 24f;
     public float ffMult = 1.25f;
+    public int parryFrameTime = 30;
     
     public static gameState gameState = gameState.Game;
     
@@ -23,8 +25,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerData[] playerDataArray = new PlayerData[playerCount];
     [SerializeField] private GenericCharacter[] characterArray = new GenericCharacter[playerCount];
     [SerializeField] private PlayerDatabase playerDatabase;
+    [SerializeField] private GameObject[] playerPercentsArray = new GameObject[playerCount];
 
     public static GameManager instance { get; private set; }
+
+    private LevelData chosenLevel;
+    private GameObject[] levels;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -37,9 +44,10 @@ public class GameManager : MonoBehaviour
             Debug.Log("Creating Instance");
             instance = this;
             DontDestroyOnLoad(gameObject);
-        }
-            playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
+        } 
         
+        playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
+        chosenLevel = Resources.Load<LevelData>("Data/Levels/ChosenLevel");
     }
 
     private void Start()
@@ -55,6 +63,7 @@ public class GameManager : MonoBehaviour
     public void Init()
     {
         onGameStateChanged(gameState);
+        LoadLevel();
         if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
         {
             Application.targetFrameRate = gameFrameRate;
@@ -126,8 +135,15 @@ public class GameManager : MonoBehaviour
     {
         if (playerIndex > characterArray.Length || characterArray.Length <=0) { return; } else
         {
-            characterArray[playerIndex].assignPlayerData(p);
+            characterArray[playerIndex].assignPlayerData(p, playerIndex);
         }
             
+        //characterArray[playerIndex].assignPlayerData(p, playerIndex);
+    }
+
+    public void LoadLevel()
+    {
+        GameObject levelPrefab = levels[chosenLevel.levelID];
+        Instantiate(levelPrefab);
     }
 }

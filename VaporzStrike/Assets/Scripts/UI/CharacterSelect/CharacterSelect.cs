@@ -6,6 +6,8 @@ public class CharacterSelect : MonoBehaviour
 {
     public TextMeshProUGUI player1Name;
     public TextMeshProUGUI player2Name;
+    public LevelData chosenLevel;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Update()
     {
@@ -14,11 +16,11 @@ public class CharacterSelect : MonoBehaviour
             Back();
         }
 
-        if (GameManager.instance.GetPlayer(0) != null)
+        if (GameManager.instance.GetPlayer(0))
         {
             player1Name.text = GameManager.instance.GetPlayer(0).playerName;
         }
-        if (GameManager.instance.GetPlayer(1) != null)
+        if (GameManager.instance.GetPlayer(1))
         {
             player2Name.text = GameManager.instance.GetPlayer(1).playerName;
         }
@@ -36,6 +38,7 @@ public class CharacterSelect : MonoBehaviour
             Debug.Log("Must select characters!");
         }
 
+        //SceneManager.LoadScene("SampleScene");
     }
     public void Back()
     {
@@ -63,6 +66,19 @@ public class CharacterSelect : MonoBehaviour
             playerInput.transform.localRotation = Quaternion.identity;
 
             playerInput.gameObject.GetComponent<Cursor>().enabled = true;
+     
         }
+    }
+    public void LoadLevelOne()
+    {
+        chosenLevel.levelID = 1;
+        
+        SceneManager.LoadScene("Battlefield");
+    }
+    public void LoadLevelTwo()
+    {
+        chosenLevel.levelID = 2;
+        
+        SceneManager.LoadScene("Battlefield");
     }
 }
