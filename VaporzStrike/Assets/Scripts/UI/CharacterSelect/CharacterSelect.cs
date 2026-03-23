@@ -64,7 +64,9 @@ public class CharacterSelect : MonoBehaviour
             playerInput.transform.localRotation = Quaternion.identity;
 
             playerInput.gameObject.GetComponent<Cursor>().enabled = true;
+     
         }
+    }
     public void LoadLevelOne()
     {
         chosenLevel.levelID = 1;
