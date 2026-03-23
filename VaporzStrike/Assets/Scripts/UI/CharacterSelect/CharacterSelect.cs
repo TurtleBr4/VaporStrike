@@ -25,8 +25,10 @@ public class CharacterSelect : MonoBehaviour
     }
     public void MatchStart()
     {
+
         if(GameManager.instance.GetPlayer(0)!= null && GameManager.instance.GetPlayer(1) != null)
         {
+            Destroy(GameObject.Find("Theme"));
             SceneManager.LoadScene("SampleScene");
         }
         else
