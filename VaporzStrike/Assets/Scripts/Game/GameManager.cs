@@ -12,8 +12,9 @@ public class GameManager : MonoBehaviour
     [Header("Static/Global Variables/Constants")]
     public int gameFrameRate = 60;
     public float platformFrameTime = 24f;
-    public float ffMult = 1.25f;
+    public float fastFallMultiplier = 1.25f;
     public int parryFrameTime = 30;
+    public bool debugFlag = false;
     
     public static gameState gameState = gameState.Game;
     
@@ -52,8 +53,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //pickPlayer(0, 0);
-        //pickPlayer(1, 1);
+        if (debugFlag)
+        {
+            pickPlayer(0, 0);
+            pickPlayer(1, 1);
+        }
         onGameStateChanged(gameState);
         if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
         {

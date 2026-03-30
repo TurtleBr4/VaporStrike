@@ -71,7 +71,7 @@ public class GenericCharacter : MonoBehaviour
     public void getConstantsFromGameManager()
     {
         pFrameTime = gameManager.parryFrameTime;
-        ffMult = gameManager.ffMult;
+        ffMult = gameManager.fastFallMultiplier;
         
     }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cecc3e7b446348e793db656ccb86518, type: 3}
   m_Name: TestPlayerData
   m_EditorClassIdentifier: 
-  playerName: Micheal Jordan
+  playerName: Oz
   playerPrefab: {fileID: 5808588097857046191, guid: c07aa77d010659dd7bdaab8a9e023d2c, type: 3}
   playerId: 0
   weight: 100
