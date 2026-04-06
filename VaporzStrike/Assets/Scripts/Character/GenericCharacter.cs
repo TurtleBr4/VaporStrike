@@ -34,6 +34,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform[] hitboxAnchors;
 
     [Header("Runtime Character Variables")]
     [SerializeField] private float damagePercent = 0f;
@@ -45,6 +46,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private Vector3 velocity;
     [SerializeField] private int frameTimer;
     [SerializeField] private faceDirection faceDirection;
+    [SerializeField] private Move lastUsedMove;
     public TMP_Text perecentTxt; //auto assign in the future
     public bool dropping = false;
     public bool fastFalling = false;
@@ -134,6 +136,25 @@ public class GenericCharacter : MonoBehaviour
         if (currentState == playerState.hitstun && frameTimer != 0)
         {
             frameTimer--;
+        }
+        else
+        {
+            currentState = playerState.actionable;
+        }
+        
+        if (currentState == playerState.attacking && frameTimer != 0)
+        {
+            frameTimer--;
+
+            if (frameTimer + lastUsedMove.hitboxStartTime == lastUsedMove.moveTime)
+            {
+                //spawn hitbox
+            }
+
+            if (frameTimer + lastUsedMove.hitboxEndTime == lastUsedMove.moveTime)
+            {
+                //destroy hitbox
+            }
         }
         else
         {
@@ -379,6 +400,9 @@ public class GenericCharacter : MonoBehaviour
         if (move)
         {
             print(move.name);
+            lastUsedMove = move;
+            currentState = playerState.attacking;
+            frameTimer = move.moveTime;
             
             //debug
             Hitbox hitbox = Instantiate(Resources.Load("HitboxTemplate") as Hitbox, transform);
@@ -387,6 +411,12 @@ public class GenericCharacter : MonoBehaviour
             performMove(move.animationId);
             inputReader.ClearBuffer(); // consume the inputs
         }
+    }
+
+    public virtual void createAttackHitbox(Move move)
+    {
+        Transform location = hitboxAnchors[(int)move.hitboxLocation];
+        
     }
 
     public virtual void performMove(int animID)

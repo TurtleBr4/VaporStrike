@@ -10,6 +10,8 @@ public class Move : ScriptableObject
     public int moveTime;
     public int blockStun;
     public int animationId;
+    public int hitboxStartTime;
+    public int hitboxEndTime;
     public string animationTrigger;   // optional Animator trigger
 
     [Header("Hitbox(s) Data")] //define data here, gets used to make a hitbox later no need for yet another scriptable object
@@ -18,6 +20,7 @@ public class Move : ScriptableObject
     public int hitStun;
     public float knockback;
     public Vector2 launchDirection;
+    public HitboxLocations hitboxLocation;
 
     public HitboxDataStruct hds;
 
@@ -32,4 +35,9 @@ public class Move : ScriptableObject
         hds.hitStun = hitStun;
         hds.radius = radius;
     }
+}
+
+public enum HitboxLocations
+{
+    LeftHand, RightHand, LeftFoot, RightFoot, LeftLeg, RightLeg, Torso, Head, LeftShoulder, RightShoulder
 }
