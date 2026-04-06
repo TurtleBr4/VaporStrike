@@ -46,8 +46,12 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void OnSelect(BaseEventData eventData)
     {
-        Debug.Log(this.gameObject.name + " was selected");
-        GameManager.instance.pickPlayer(selectedCursor, charID);
+        if(CharacterSelect.instance.selectMode == CharacterSelect.SelectMode.Character)
+        {
+            Debug.Log(this.gameObject.name + " was selected");
+            GameManager.instance.pickPlayer(selectedCursor, charID);
+        }
+
     }
     public void SelectChar(int cursorID)
     {
