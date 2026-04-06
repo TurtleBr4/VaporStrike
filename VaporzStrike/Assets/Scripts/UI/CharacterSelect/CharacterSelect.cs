@@ -1,13 +1,32 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.SceneManagement;
 public class CharacterSelect : MonoBehaviour
 {
     public TextMeshProUGUI player1Name;
     public TextMeshProUGUI player2Name;
     public LevelData chosenLevel;
+    public string selectedLevel;
 
+    public static CharacterSelect instance;
+
+    public GameObject characterPanel;
+    public GameObject StagePanel;
+
+    public InputActionReference cancel;
+    public enum SelectMode
+    {
+        Character,
+        Stage,
+        Settings
+    }
+    public SelectMode selectMode = SelectMode.Character;
+    public void Start()
+    {
+        instance = this;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Update()
     {
@@ -24,24 +43,56 @@ public class CharacterSelect : MonoBehaviour
         {
             player2Name.text = GameManager.instance.GetPlayer(1).playerName;
         }
+
+        switch (selectMode) { 
+                case SelectMode.Character:
+                    StagePanel.SetActive(false);
+                    selectedLevel = "";
+
+
+                if (cancel.action.triggered)
+                {
+                    Back();
+                }
+                break;
+                case SelectMode.Stage:
+                    StagePanel.SetActive(true);
+
+                    if (cancel.action.triggered)
+                    {
+                        selectMode = SelectMode.Character;
+                    }
+                    break;
+        
+        }
     }
     public void MatchStart()
     {
 
         if(GameManager.instance.GetPlayer(0)!= null && GameManager.instance.GetPlayer(1) != null)
         {
-            Destroy(GameObject.Find("Theme"));
-            SceneManager.LoadScene("SampleScene");
+
+            if (selectedLevel != null && selectedLevel!="") {
+                Destroy(GameObject.Find("Theme"));
+                SceneManager.LoadScene(selectedLevel);
+            }
+            else
+            {
+                Debug.Log("Must select characters!");
+                selectMode = SelectMode.Stage;
+            }
         }
         else
         {
             Debug.Log("Must select characters!");
         }
 
+
         //SceneManager.LoadScene("SampleScene");
     }
     public void Back()
     {
+        GameManager.instance.Reset();
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -54,6 +105,10 @@ public class CharacterSelect : MonoBehaviour
         playerInputManager.onPlayerJoined += OnPlayerJoined;
     }
 
+    public void SelectLevel(string levelHandle)
+    {
+        selectedLevel = levelHandle;
+    }
     private void OnPlayerJoined(PlayerInput playerInput)
     {
         if (playerParent != null)
@@ -66,7 +121,7 @@ public class CharacterSelect : MonoBehaviour
             playerInput.transform.localRotation = Quaternion.identity;
 
             playerInput.gameObject.GetComponent<Cursor>().enabled = true;
-     
+            playerInput.gameObject.GetComponent<Cursor>().SetID(playerInput.playerIndex);
         }
     }
     public void LoadLevelOne()

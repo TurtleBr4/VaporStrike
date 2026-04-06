@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.InputSystem;
 public class HUD : MonoBehaviour
 {
     public bool isPaused = false;
@@ -11,11 +12,19 @@ public class HUD : MonoBehaviour
 
     public TextMeshProUGUI p1Percent;
     public TextMeshProUGUI p2Percent;
+
+    public static HUD instance;
+
+    public TextMeshProUGUI timerText;
+
+    public InputActionReference returnInput;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //player1 = GameObject.Find("TestPlayer");
         GameManager.instance.Init();
+        instance = this;
+        GameManager.instance.isMatch = true;
     }
 
     // Update is called once per frame
@@ -31,11 +40,11 @@ public class HUD : MonoBehaviour
             isPaused = !isPaused;
         }
 
-        if(isPaused && Input.GetKeyUp(KeyCode.LeftShift))
+        if(isPaused && returnInput.action.triggered) 
         {
             ToCharacterSelect();
         }
-
+        timerText.text = GameManager.instance.DisplayTime();
     }
 
     public void ToCharacterSelect()

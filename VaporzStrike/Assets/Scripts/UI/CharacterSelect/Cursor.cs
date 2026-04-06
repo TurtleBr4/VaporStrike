@@ -18,12 +18,20 @@ public class Cursor : MonoBehaviour
 
     void Awake()
     {
-        _id = cursorID++;
         //playerControls.DeactivateInput();
         _graphicRaycaster = GameObject.Find("Canvas").GetComponentInChildren<GraphicRaycaster>();
         r = GetComponent<RectTransform>();
     }
 
+    public void SetID(int id)
+    {
+        cursorID = id;
+        _id = id;
+    }
+    public void Reset()
+    {
+        _id = 0;
+    }
     // Update is called once per frame
     void Update()
     {

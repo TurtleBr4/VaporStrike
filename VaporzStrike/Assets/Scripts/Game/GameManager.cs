@@ -14,7 +14,8 @@ public class GameManager : MonoBehaviour
     public float platformFrameTime = 24f;
     public float ffMult = 1.25f;
     public int parryFrameTime = 30;
-    
+    public float matchTimer = 120;
+
     public static gameState gameState = gameState.Game;
     
     public static int playerCount = 2; //this defaults to 2
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GenericCharacter[] characterArray = new GenericCharacter[playerCount];
     [SerializeField] private PlayerDatabase playerDatabase;
     [SerializeField] private GameObject[] playerPercentsArray = new GameObject[playerCount];
+    public bool isMatch = false;
 
     public static GameManager instance { get; private set; }
 
@@ -76,8 +78,32 @@ public class GameManager : MonoBehaviour
             pickPlayer(0, 0);
             assignPlayerDataToPlayer(playerDataArray[0], 1);
         }
-    }
 
+        if (isMatch)
+        {
+            if (matchTimer > 0)
+            {
+                // Subtract the time since last frame
+                matchTimer -= Time.deltaTime;
+            }
+            else
+            {
+                Debug.Log("Game!");
+                matchTimer = 0;
+                isMatch = false;
+            }
+        }
+    }
+    public string DisplayTime()
+    {
+        float minutes = Mathf.FloorToInt(matchTimer / 60);
+        float seconds = Mathf.FloorToInt(matchTimer % 60);
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+    public void Reset()
+    {
+        playerDataArray = new PlayerData[playerCount];
+    }
     public void pickPlayer(int playerIndex, int charID) //called via the menu or something, assigns the player data to its corresponding player slot
     {
         playerDataArray[playerIndex] = playerDatabase.getPlayerById(charID);
