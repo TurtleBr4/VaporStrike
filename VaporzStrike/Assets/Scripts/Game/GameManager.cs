@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
         if (debugFlag)
         {
             pickPlayer(0, 0);
-            pickPlayer(1, 1);
+            pickPlayer(1, 0);
         }
         onGameStateChanged(gameState);
         if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z)) //just to test
         {
             pickPlayer(0, 0);
-            assignPlayerDataToPlayer(playerDataArray[0], 1);
+            //assignPlayerDataToPlayer(playerDataArray[0], 1);
         }
 
         if (isMatch)

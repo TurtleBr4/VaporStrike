@@ -34,7 +34,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform[] hitboxAnchors;
+    [SerializeField] private GameObject[] hitboxAnchors;
 
     [Header("Runtime Character Variables")]
     [SerializeField] private float damagePercent = 0f;
@@ -51,6 +51,7 @@ public class GenericCharacter : MonoBehaviour
     public bool dropping = false;
     public bool fastFalling = false;
     public bool isInAnimation = false;
+    private bool isAttackHitboxActive = false;
 
     [Header("Constants and Dependencies")] 
     public CharacterController c;
@@ -100,6 +101,11 @@ public class GenericCharacter : MonoBehaviour
             maxFallSpeed =  playerData.maxFallSpeed;
             jumpPower = playerData.jumpPower;
             recieveCharacterPrefab(playerData.playerPrefab);
+
+            hitboxAnchors = GetComponentsInChildren<Transform>()
+                .Where(t => t.CompareTag("HitboxAnchor"))
+                .Select(t => t.gameObject)
+                .ToArray();
         }
         else
         {
@@ -148,17 +154,23 @@ public class GenericCharacter : MonoBehaviour
 
             if (frameTimer + lastUsedMove.hitboxStartTime == lastUsedMove.moveTime)
             {
-                //spawn hitbox
+                isAttackHitboxActive = true;
+            }
+
+            if (isAttackHitboxActive)
+            {
+                checkAndSendAttackInfo((createAttackHitbox(lastUsedMove)));
             }
 
             if (frameTimer + lastUsedMove.hitboxEndTime == lastUsedMove.moveTime)
             {
-                //destroy hitbox
+                isAttackHitboxActive = false;
             }
         }
         else
         {
             currentState = playerState.actionable;
+            frameTimer = 0;
         }
     }
     public PlayerData GetPlayerData()
@@ -214,7 +226,7 @@ public class GenericCharacter : MonoBehaviour
             if (move.inputSequence.Contains<InputType>(InputType.attack) ||
                 move.inputSequence.Contains<InputType>(InputType.special))
             {
-               doAttack(move);
+               startAttack(move);
             }
             else if(move.inputSequence.Contains<InputType>(InputType.parry))
                 currentState = playerState.parry;
@@ -394,7 +406,7 @@ public class GenericCharacter : MonoBehaviour
         }
     }
 
-    public virtual void doAttack(Move move)
+    public virtual void startAttack(Move move)
     {
 
         if (move)
@@ -404,22 +416,42 @@ public class GenericCharacter : MonoBehaviour
             currentState = playerState.attacking;
             frameTimer = move.moveTime;
             
+            /*
             //debug
             Hitbox hitbox = Instantiate(Resources.Load("HitboxTemplate") as Hitbox, transform);
             hitbox.takeInHitboxData(move.hds);
+            */
             
-            performMove(move.animationId);
+            setMoveAnim(move.animationId);
             inputReader.ClearBuffer(); // consume the inputs
         }
     }
 
-    public virtual void createAttackHitbox(Move move)
+    public virtual void checkAndSendAttackInfo(Collider[] colliders)
     {
-        Transform location = hitboxAnchors[(int)move.hitboxLocation];
-        
+        foreach (Collider col in colliders)
+        {
+            if (col.CompareTag("Hurtbox"))
+            {
+                print("Hit an Enemy");
+                col.GetComponentInParent<GenericCharacter>().doTakeDamage(lastUsedMove.hds);
+            }
+        }
     }
 
-    public virtual void performMove(int animID)
+    public virtual Collider[] createAttackHitbox(Move move)
+    {
+        Transform location = hitboxAnchors[(int)move.hitboxLocation].transform;
+
+        if (gameManager.debugFlag)
+        {
+            print("Spawned Hitbox at: "  + location.name + ": " + location.position);
+        }
+        
+        return Physics.OverlapSphere(location.localPosition, move.radius);
+    }
+
+    public virtual void setMoveAnim(int animID)
     {
         if (anim)
         {
@@ -448,7 +480,7 @@ public class GenericCharacter : MonoBehaviour
         velocity = (direction * knockbackPower);
     }
 
-    public virtual void doTakeDamage(HitboxData hitbox)
+    public virtual void doTakeDamage(HitboxDataStruct hitbox)
     {
         currentState = playerState.hitstun;
         frameTimer = hitbox.hitStun;

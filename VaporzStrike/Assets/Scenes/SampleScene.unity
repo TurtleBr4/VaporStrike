@@ -2673,7 +2673,7 @@ PrefabInstance:
     - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: perecentTxt
       value: 
-      objectReference: {fileID: 1798474222}
+      objectReference: {fileID: 0}
     - target: {fileID: 7054095999691209244, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: dropDuration
       value: 0.5
@@ -2745,17 +2745,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1298792526}
   m_SourcePrefab: {fileID: 100100000, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
---- !u!114 &1798474222 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3512494842676082383, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-  m_PrefabInstance: {fileID: 447921529191987366}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1807998797
 GameObject:
   m_ObjectHideFlags: 0
@@ -3845,10 +3834,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 116295127115776068, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_TagString
-      value: PercentTrack
-      objectReference: {fileID: 0}
     - target: {fileID: 1307904239964137680, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 537.5
@@ -3889,81 +3874,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1749902856773853744, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8ba703fd2434fec7c884d6a6fa15d5f6, type: 2}
-    - target: {fileID: 1749902856773853744, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5786660340022020917, guid: 8ba703fd2434fec7c884d6a6fa15d5f6, type: 2}
-    - target: {fileID: 1749902856773853744, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2067862719895142858, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -175
-      objectReference: {fileID: 0}
-    - target: {fileID: 2606994264336987450, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8ba703fd2434fec7c884d6a6fa15d5f6, type: 2}
-    - target: {fileID: 2606994264336987450, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5786660340022020917, guid: 8ba703fd2434fec7c884d6a6fa15d5f6, type: 2}
-    - target: {fileID: 2606994264336987450, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3512494842676082383, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8ba703fd2434fec7c884d6a6fa15d5f6, type: 2}
-    - target: {fileID: 3512494842676082383, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5786660340022020917, guid: 8ba703fd2434fec7c884d6a6fa15d5f6, type: 2}
-    - target: {fileID: 3512494842676082383, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3689994900465961396, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8ba703fd2434fec7c884d6a6fa15d5f6, type: 2}
-    - target: {fileID: 3689994900465961396, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 5786660340022020917, guid: 8ba703fd2434fec7c884d6a6fa15d5f6, type: 2}
-    - target: {fileID: 3689994900465961396, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4048057018745279687, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: p1Percent
-      value: 
-      objectReference: {fileID: 888470011}
-    - target: {fileID: 4048057018745279687, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: p2Percent
-      value: 
-      objectReference: {fileID: 1798474222}
-    - target: {fileID: 5403978412075038899, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 175
-      objectReference: {fileID: 0}
-    - target: {fileID: 1842982639958607363, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
+    - target: {fileID: 4605518325093505375, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3563774187256488367, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
+    - target: {fileID: 6186911346642051611, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6641814822746005408, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6750442758410344656, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_TagString
-      value: PercentTrack
       objectReference: {fileID: 0}
     - target: {fileID: 7858334064059565366, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
       propertyPath: m_Name
