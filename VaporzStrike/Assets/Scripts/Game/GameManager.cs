@@ -69,18 +69,22 @@ public class GameManager : MonoBehaviour
     }
     public void Init()
     {
-        onGameStateChanged(gameState);
-        LoadLevel();
-        if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
+        if (!debugFlag) //we're in debug here so the hud never bothers spawning things, default to the old behavior
         {
-            Application.targetFrameRate = gameFrameRate;
+            onGameStateChanged(gameState);
+            LoadLevel();
+            if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
+            {
+                Application.targetFrameRate = gameFrameRate;
+            }
         }
+        
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z)) //just to test
         {
-            pickPlayer(0, 0);
+            //pickPlayer(0, 0);
             //assignPlayerDataToPlayer(playerDataArray[0], 1);
         }
 

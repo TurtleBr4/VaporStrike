@@ -51,7 +51,7 @@ public class GenericCharacter : MonoBehaviour
     public bool dropping = false;
     public bool fastFalling = false;
     public bool isInAnimation = false;
-    private bool isAttackHitboxActive = false;
+    [SerializeField] bool isAttackHitboxActive = false;
 
     [Header("Constants and Dependencies")] 
     public CharacterController c;
@@ -115,6 +115,7 @@ public class GenericCharacter : MonoBehaviour
 
     public void recieveCharacterPrefab(GameObject prefab)
     {
+        print("Spawned Character Prefab");
         GameObject guy = Instantiate(prefab, transform);
         guy.transform.position = transform.position;
         if(faceDirection == faceDirection.left) guy.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
@@ -143,33 +144,35 @@ public class GenericCharacter : MonoBehaviour
         {
             frameTimer--;
         }
-        else
+        else if (currentState == playerState.attacking && frameTimer > 0)
         {
-            currentState = playerState.actionable;
-        }
-        
-        if (currentState == playerState.attacking && frameTimer != 0)
-        {
-            frameTimer--;
-
-            if (frameTimer + lastUsedMove.hitboxStartTime == lastUsedMove.moveTime)
+            int curFrame = lastUsedMove.moveTime - frameTimer;
+            print(curFrame);
+            if (curFrame == lastUsedMove.hitboxStartTime)
             {
                 isAttackHitboxActive = true;
+                print("starting hitbox");
+            }
+            if (curFrame == lastUsedMove.hitboxEndTime)
+            {
+                isAttackHitboxActive = false;
+                print("ending hitbox");
             }
 
             if (isAttackHitboxActive)
             {
                 checkAndSendAttackInfo((createAttackHitbox(lastUsedMove)));
             }
-
-            if (frameTimer + lastUsedMove.hitboxEndTime == lastUsedMove.moveTime)
-            {
-                isAttackHitboxActive = false;
-            }
+            frameTimer--;
         }
         else
         {
             currentState = playerState.actionable;
+            frameTimer = 0;
+        }
+
+        if (frameTimer < 0)
+        {
             frameTimer = 0;
         }
     }
@@ -237,6 +240,10 @@ public class GenericCharacter : MonoBehaviour
         {
             //here just in case
         }
+        else if (currentState == playerState.attacking)
+        {
+            //do nothing 
+        }
         else
         {
             currentState = playerState.actionable;
@@ -247,7 +254,7 @@ public class GenericCharacter : MonoBehaviour
     //I renamed this so it's less confusing when talking about moves
     public virtual void doMovement()
     {
-        if (currentState != playerState.hitstun) //regular movement
+        if (currentState == playerState.actionable) //regular movement
         {
             float x = inputReader.pollMovementInput().x;
             float y = inputReader.pollMovementInput().y;
@@ -411,7 +418,7 @@ public class GenericCharacter : MonoBehaviour
 
         if (move)
         {
-            print(move.name);
+            //print(move.name);
             lastUsedMove = move;
             currentState = playerState.attacking;
             frameTimer = move.moveTime;
@@ -433,8 +440,12 @@ public class GenericCharacter : MonoBehaviour
         {
             if (col.CompareTag("Hurtbox"))
             {
-                print("Hit an Enemy");
-                col.GetComponentInParent<GenericCharacter>().doTakeDamage(lastUsedMove.hds);
+                GenericCharacter guy = GetComponentInParent<GenericCharacter>();
+                if (!guy.gameObject.Equals(gameObject))
+                {
+                    print("Hit an Enemy");
+                    guy.doTakeDamage(lastUsedMove.hds);
+                }
             }
         }
     }
