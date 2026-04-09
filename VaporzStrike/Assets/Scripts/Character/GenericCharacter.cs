@@ -520,7 +520,7 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void doTakeKnockback(Vector2 direction, float knockbackPower) //possibly redundant
     {
-        velocity = (direction * knockbackPower);
+        velocity = (direction * (knockbackPower + (damagePercent / 10) * 1.4f));
     }
 
     public virtual void doTakeDamage(HitboxDataStruct hitbox)
