@@ -21,6 +21,8 @@ public class Move : ScriptableObject
     public float knockback;
     public Vector2 launchDirection;
     public HitboxLocations hitboxLocation;
+    public bool isMultiHit = false;
+    public int hits = 1; //if its a multi hit, raise this
 
     public HitboxDataStruct hds;
 
@@ -32,6 +34,7 @@ public class Move : ScriptableObject
         hds = new HitboxDataStruct();
         hds.damage = damage;
         hds.knockback = knockback;
+        hds.launchDirection = launchDirection;
         hds.hitStun = hitStun;
         hds.radius = radius;
     }
@@ -40,4 +43,13 @@ public class Move : ScriptableObject
 public enum HitboxLocations
 {
     LeftHand, RightHand, LeftFoot, RightFoot, LeftLeg, RightLeg, Torso, Head, LeftShoulder, RightShoulder
+}
+
+public struct HitboxDataStruct
+{
+    public float radius;
+    public float damage;
+    public float knockback;
+    public int hitStun;
+    public Vector2 launchDirection;
 }

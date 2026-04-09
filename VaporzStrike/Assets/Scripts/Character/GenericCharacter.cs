@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Linq;
@@ -47,11 +48,13 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private int frameTimer;
     [SerializeField] private faceDirection faceDirection;
     [SerializeField] private Move lastUsedMove;
+    [SerializeField] bool isAttackHitboxActive = false;
     public TMP_Text perecentTxt; //auto assign in the future
     public bool dropping = false;
     public bool fastFalling = false;
     public bool isInAnimation = false;
-    [SerializeField] bool isAttackHitboxActive = false;
+    public bool hasHitAttack = false;
+
 
     [Header("Constants and Dependencies")] 
     public CharacterController c;
@@ -124,17 +127,21 @@ public class GenericCharacter : MonoBehaviour
 
     private void debugInputs()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) //simulate taking a hit
+        if (gameManager.debugFlag)
         {
-            currentState = playerState.hitstun;
-            doTakeKnockback(new Vector2(.5f,2), 20f);
-            frameTimer = 36;
-        }
+            if (Input.GetKeyDown(KeyCode.Alpha1)) //simulate taking a hit
+            {
+                currentState = playerState.hitstun;
+                doTakeKnockback(new Vector2(.5f,2), 20f);
+                frameTimer = 36;
+            }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2)) //hitbox testing
-        {
-            //doAttack();
+            if (Input.GetKeyDown(KeyCode.Alpha2)) //hitbox testing
+            {
+                //doAttack();
+            }
         }
+        
     }
 
     public virtual void stateManager()
@@ -168,6 +175,7 @@ public class GenericCharacter : MonoBehaviour
         else
         {
             currentState = playerState.actionable;
+            hasHitAttack = false;
             frameTimer = 0;
         }
 
@@ -259,6 +267,8 @@ public class GenericCharacter : MonoBehaviour
             float x = inputReader.pollMovementInput().x;
             float y = inputReader.pollMovementInput().y;
 
+            velocity.x = 0; //make sure we done have leftover velocity
+            
             //deadzone
             if (Mathf.Abs(x) < 0.1f) x = 0f;
             if (Mathf.Abs(y) < 0.1f)  y = 0f;
@@ -436,30 +446,52 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void checkAndSendAttackInfo(Collider[] colliders)
     {
-        foreach (Collider col in colliders)
+        if (colliders != null)
         {
-            if (col.CompareTag("Hurtbox"))
+            foreach (Collider col in colliders)
             {
-                GenericCharacter guy = GetComponentInParent<GenericCharacter>();
-                if (!guy.gameObject.Equals(gameObject))
+                //print(col.name);
+                if (col.CompareTag("Hurtbox"))
                 {
-                    print("Hit an Enemy");
-                    guy.doTakeDamage(lastUsedMove.hds);
+                    GenericCharacter guy = col.GetComponentInParent<GenericCharacter>();
+                    if (!guy.gameObject.Equals(gameObject) && !hasHitAttack) //implement multihits later
+                    {
+                        print("Hit an Enemy");
+                        hasHitAttack = true;
+                        guy.doTakeDamage(lastUsedMove.hds);
+                    }
                 }
+            
             }
         }
     }
 
     public virtual Collider[] createAttackHitbox(Move move)
     {
-        Transform location = hitboxAnchors[(int)move.hitboxLocation].transform;
-
-        if (gameManager.debugFlag)
+        if (!hasHitAttack)
         {
-            print("Spawned Hitbox at: "  + location.name + ": " + location.position);
+            Transform location = hitboxAnchors[(int)move.hitboxLocation].transform;
+
+            if (gameManager.debugFlag)
+            {
+                print("Spawned Hitbox at: " + location.name + ": " + location.position);
+            }
+
+            return Physics.OverlapSphere(location.position, move.radius, Physics.AllLayers,
+                QueryTriggerInteraction.Collide);
         }
-        
-        return Physics.OverlapSphere(location.localPosition, move.radius);
+
+        return null;
+    }
+
+
+    public void OnDrawGizmosSelected() //visualizes the hitboxes
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.75F);
+        if (lastUsedMove != null && currentState == playerState.attacking)
+        {
+            Gizmos.DrawSphere(hitboxAnchors[(int)lastUsedMove.hitboxLocation].transform.position, lastUsedMove.radius);
+        }
     }
 
     public virtual void setMoveAnim(int animID)

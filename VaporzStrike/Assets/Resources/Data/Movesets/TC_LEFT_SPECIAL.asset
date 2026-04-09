@@ -22,8 +22,10 @@ MonoBehaviour:
   animationTrigger: 
   radius: 10
   damage: 10
-  hitStun: 0
-  knockback: 10
-  launchDirection: {x: 0, y: 0}
+  hitStun: 36
+  knockback: -20
+  launchDirection: {x: 0.2, y: 1}
   hitboxLocation: 0
+  isMultiHit: 0
+  hits: 1
   requiresGrounded: 1

@@ -2606,6 +2606,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 398645298330172010, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_Name
+      value: tph11
+      objectReference: {fileID: 0}
     - target: {fileID: 785128587015239245, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2617,6 +2621,10 @@ PrefabInstance:
     - target: {fileID: 3636455083823897788, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3939778794881476747, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
+      propertyPath: m_Name
+      value: tph12
       objectReference: {fileID: 0}
     - target: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
       propertyPath: m_Name
@@ -3906,6 +3914,10 @@ PrefabInstance:
     - target: {fileID: 362952800190524153, guid: 6989a139e67aac5f89ce1bff5a9c52dc, type: 3}
       propertyPath: m_Name
       value: HitboxTemplate
+      objectReference: {fileID: 0}
+    - target: {fileID: 362952800190524153, guid: 6989a139e67aac5f89ce1bff5a9c52dc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1631476556239466931, guid: 6989a139e67aac5f89ce1bff5a9c52dc, type: 3}
       propertyPath: m_LocalPosition.x

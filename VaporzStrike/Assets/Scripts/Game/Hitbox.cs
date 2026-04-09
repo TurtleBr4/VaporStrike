@@ -30,12 +30,5 @@ public class Hitbox : MonoBehaviour
     }
 }
 
-public struct HitboxDataStruct
-{
-    public float radius;
-    public float damage;
-    public float knockback;
-    public int hitStun;
-    public Vector2 launchDirection;
-}
+
   
