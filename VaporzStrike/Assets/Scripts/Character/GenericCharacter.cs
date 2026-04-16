@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Linq;
@@ -34,7 +35,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform[] hitboxAnchors;
+    [SerializeField] private GameObject[] hitboxAnchors;
 
     [Header("Runtime Character Variables")]
     [SerializeField] private float damagePercent = 0f;
@@ -47,10 +48,13 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private int frameTimer;
     [SerializeField] private faceDirection faceDirection;
     [SerializeField] private Move lastUsedMove;
+    [SerializeField] bool isAttackHitboxActive = false;
     public TMP_Text perecentTxt; //auto assign in the future
     public bool dropping = false;
     public bool fastFalling = false;
     public bool isInAnimation = false;
+    public bool hasHitAttack = false;
+
 
     [Header("Constants and Dependencies")] 
     public CharacterController c;
@@ -100,6 +104,11 @@ public class GenericCharacter : MonoBehaviour
             maxFallSpeed =  playerData.maxFallSpeed;
             jumpPower = playerData.jumpPower;
             recieveCharacterPrefab(playerData.playerPrefab);
+
+            hitboxAnchors = GetComponentsInChildren<Transform>()
+                .Where(t => t.CompareTag("HitboxAnchor"))
+                .Select(t => t.gameObject)
+                .ToArray();
         }
         else
         {
@@ -109,6 +118,7 @@ public class GenericCharacter : MonoBehaviour
 
     public void recieveCharacterPrefab(GameObject prefab)
     {
+        print("Spawned Character Prefab");
         GameObject guy = Instantiate(prefab, transform);
         guy.transform.position = transform.position;
         if(faceDirection == faceDirection.left) guy.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
@@ -117,17 +127,21 @@ public class GenericCharacter : MonoBehaviour
 
     private void debugInputs()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1)) //simulate taking a hit
+        if (gameManager.debugFlag)
         {
-            currentState = playerState.hitstun;
-            doTakeKnockback(new Vector2(.5f,2), 20f);
-            frameTimer = 36;
-        }
+            if (Input.GetKeyDown(KeyCode.Alpha1)) //simulate taking a hit
+            {
+                currentState = playerState.hitstun;
+                doTakeKnockback(new Vector2(.5f,2), 20f);
+                frameTimer = 36;
+            }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2)) //hitbox testing
-        {
-            //doAttack();
+            if (Input.GetKeyDown(KeyCode.Alpha2)) //hitbox testing
+            {
+                //doAttack();
+            }
         }
+        
     }
 
     public virtual void stateManager()
@@ -137,28 +151,37 @@ public class GenericCharacter : MonoBehaviour
         {
             frameTimer--;
         }
-        else
+        else if (currentState == playerState.attacking && frameTimer > 0)
         {
-            currentState = playerState.actionable;
-        }
-        
-        if (currentState == playerState.attacking && frameTimer != 0)
-        {
+            int curFrame = lastUsedMove.moveTime - frameTimer;
+            print(curFrame);
+            if (curFrame == lastUsedMove.hitboxStartTime)
+            {
+                isAttackHitboxActive = true;
+                print("starting hitbox");
+            }
+            if (curFrame == lastUsedMove.hitboxEndTime)
+            {
+                isAttackHitboxActive = false;
+                print("ending hitbox");
+            }
+
+            if (isAttackHitboxActive)
+            {
+                checkAndSendAttackInfo((createAttackHitbox(lastUsedMove)));
+            }
             frameTimer--;
-
-            if (frameTimer + lastUsedMove.hitboxStartTime == lastUsedMove.moveTime)
-            {
-                //spawn hitbox
-            }
-
-            if (frameTimer + lastUsedMove.hitboxEndTime == lastUsedMove.moveTime)
-            {
-                //destroy hitbox
-            }
         }
         else
         {
             currentState = playerState.actionable;
+            hasHitAttack = false;
+            frameTimer = 0;
+        }
+
+        if (frameTimer < 0)
+        {
+            frameTimer = 0;
         }
     }
     public PlayerData GetPlayerData()
@@ -214,7 +237,7 @@ public class GenericCharacter : MonoBehaviour
             if (move.inputSequence.Contains<InputType>(InputType.attack) ||
                 move.inputSequence.Contains<InputType>(InputType.special))
             {
-               doAttack(move);
+               startAttack(move);
             }
             else if(move.inputSequence.Contains<InputType>(InputType.parry))
                 currentState = playerState.parry;
@@ -224,6 +247,10 @@ public class GenericCharacter : MonoBehaviour
         else if (currentState == playerState.hitstun)
         {
             //here just in case
+        }
+        else if (currentState == playerState.attacking)
+        {
+            //do nothing 
         }
         else
         {
@@ -235,11 +262,13 @@ public class GenericCharacter : MonoBehaviour
     //I renamed this so it's less confusing when talking about moves
     public virtual void doMovement()
     {
-        if (currentState != playerState.hitstun) //regular movement
+        if (currentState == playerState.actionable) //regular movement
         {
             float x = inputReader.pollMovementInput().x;
             float y = inputReader.pollMovementInput().y;
 
+            velocity.x = 0; //make sure we done have leftover velocity
+            
             //deadzone
             if (Mathf.Abs(x) < 0.1f) x = 0f;
             if (Mathf.Abs(y) < 0.1f)  y = 0f;
@@ -394,32 +423,78 @@ public class GenericCharacter : MonoBehaviour
         }
     }
 
-    public virtual void doAttack(Move move)
+    public virtual void startAttack(Move move)
     {
 
         if (move)
         {
-            print(move.name);
+            //print(move.name);
             lastUsedMove = move;
             currentState = playerState.attacking;
             frameTimer = move.moveTime;
             
+            /*
             //debug
             Hitbox hitbox = Instantiate(Resources.Load("HitboxTemplate") as Hitbox, transform);
             hitbox.takeInHitboxData(move.hds);
+            */
             
-            performMove(move.animationId);
+            setMoveAnim(move.animationId);
             inputReader.ClearBuffer(); // consume the inputs
         }
     }
 
-    public virtual void createAttackHitbox(Move move)
+    public virtual void checkAndSendAttackInfo(Collider[] colliders)
     {
-        Transform location = hitboxAnchors[(int)move.hitboxLocation];
-        
+        if (colliders != null)
+        {
+            foreach (Collider col in colliders)
+            {
+                //print(col.name);
+                if (col.CompareTag("Hurtbox"))
+                {
+                    GenericCharacter guy = col.GetComponentInParent<GenericCharacter>();
+                    if (!guy.gameObject.Equals(gameObject) && !hasHitAttack) //implement multihits later
+                    {
+                        print("Hit an Enemy");
+                        hasHitAttack = true;
+                        guy.doTakeDamage(lastUsedMove.hds);
+                    }
+                }
+            
+            }
+        }
     }
 
-    public virtual void performMove(int animID)
+    public virtual Collider[] createAttackHitbox(Move move)
+    {
+        if (!hasHitAttack)
+        {
+            Transform location = hitboxAnchors[(int)move.hitboxLocation].transform;
+
+            if (gameManager.debugFlag)
+            {
+                print("Spawned Hitbox at: " + location.name + ": " + location.position);
+            }
+
+            return Physics.OverlapSphere(location.position, move.radius, Physics.AllLayers,
+                QueryTriggerInteraction.Collide);
+        }
+
+        return null;
+    }
+
+
+    public void OnDrawGizmosSelected() //visualizes the hitboxes
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.75F);
+        if (lastUsedMove != null && currentState == playerState.attacking)
+        {
+            Gizmos.DrawSphere(hitboxAnchors[(int)lastUsedMove.hitboxLocation].transform.position, lastUsedMove.radius);
+        }
+    }
+
+    public virtual void setMoveAnim(int animID)
     {
         if (anim)
         {
@@ -445,10 +520,10 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void doTakeKnockback(Vector2 direction, float knockbackPower) //possibly redundant
     {
-        velocity = (direction * knockbackPower);
+        velocity = (direction * (knockbackPower + (damagePercent / 10) * 1.4f));
     }
 
-    public virtual void doTakeDamage(HitboxData hitbox)
+    public virtual void doTakeDamage(HitboxDataStruct hitbox)
     {
         currentState = playerState.hitstun;
         frameTimer = hitbox.hitStun;

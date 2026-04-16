@@ -14,13 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveName: Left Special Test
   inputSequence: 0100000006000000
-  moveTime: 0
-  blockStun: 0
+  moveTime: 30
+  blockStun: 4
   animationId: -1
+  hitboxStartTime: 5
+  hitboxEndTime: 25
   animationTrigger: 
   radius: 10
   damage: 10
-  hitStun: 0
-  knockback: 10
-  launchDirection: {x: 0, y: 0}
+  hitStun: 36
+  knockback: -20
+  launchDirection: {x: 0.2, y: 1}
+  hitboxLocation: 0
+  isMultiHit: 0
+  hits: 1
   requiresGrounded: 1

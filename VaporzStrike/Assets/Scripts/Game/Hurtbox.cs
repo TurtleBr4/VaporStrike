@@ -10,7 +10,7 @@ public class Hurtbox : MonoBehaviour
         player = GetComponentInParent<GenericCharacter>();
     }
 
-    public void passDamageToPlayer(HitboxData hitbox) //takes in hitbox data
+    public void passDamageToPlayer(HitboxDataStruct hitbox) //takes in hitbox data
     {
         player.doTakeDamage(hitbox);
     }

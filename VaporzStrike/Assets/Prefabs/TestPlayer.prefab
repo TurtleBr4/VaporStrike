@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3495037819794714054}
   m_Layer: 0
   m_Name: Cube (6)
-  m_TagString: Untagged
+  m_TagString: Hurtbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 7708957321069066190}
   m_Layer: 0
   m_Name: Cube (5)
-  m_TagString: Untagged
+  m_TagString: Hurtbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -376,6 +376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
+  playerID: 0
   playerName: Lebron James
   weight: 200
   moveSpeed: 15
@@ -388,16 +389,27 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  hitboxAnchors: []
   damagePercent: 0
+  stockCount: 0
   currentState: 0
   currentGroundState: 0
-  isJumping: 0
-  isGrounded: 0
-  isActionable: 0
-  c: {fileID: 1074937050472658846}
-  groundCheckDistance: 0.2
-  dropDuration: 0.5
+  storedMomentum: {x: 0, y: 0, z: 0}
+  movementInput: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  frameTimer: 0
+  faceDirection: 0
+  lastUsedMove: {fileID: 0}
+  perecentTxt: {fileID: 0}
   dropping: 0
+  fastFalling: 0
+  isInAnimation: 0
+  c: {fileID: 1074937050472658846}
+  anim: {fileID: 0}
+  gameManager: {fileID: 0}
+  hud: {fileID: 0}
+  ffMult: 0
+  pFrameTime: 0
 --- !u!143 &1074937050472658846
 CharacterController:
   m_ObjectHideFlags: 0
@@ -633,6 +645,7 @@ MonoBehaviour:
   playerID: 
   tapJumpPressed: 0
   jumpPressed: 0
+  printInputs: 0
 --- !u!1 &8523795638671783697
 GameObject:
   m_ObjectHideFlags: 0
