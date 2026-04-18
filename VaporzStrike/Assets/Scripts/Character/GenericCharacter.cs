@@ -168,9 +168,22 @@ public class GenericCharacter : MonoBehaviour
 
             if (isAttackHitboxActive)
             {
-                checkAndSendAttackInfo((createAttackHitbox(lastUsedMove)));
+                handleAttack(lastUsedMove);
             }
             frameTimer--;
+        }
+        else if (currentState ==  playerState.blocking)
+        {
+            frameTimer = 6; //replace with a constant
+            if (frameTimer != 0)
+            {
+                frameTimer--;
+            }
+            else
+            {
+                doBlock();
+            }
+
         }
         else
         {
@@ -425,22 +438,32 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void startAttack(Move move)
     {
-
         if (move)
         {
-            //print(move.name);
             lastUsedMove = move;
             currentState = playerState.attacking;
             frameTimer = move.moveTime;
-            
-            /*
-            //debug
-            Hitbox hitbox = Instantiate(Resources.Load("HitboxTemplate") as Hitbox, transform);
-            hitbox.takeInHitboxData(move.hds);
-            */
-            
             setMoveAnim(move.animationId);
             inputReader.ClearBuffer(); // consume the inputs
+        }
+    }
+
+    public void handleAttack(Move m)
+    {
+        if (!m)
+        {
+            return;
+        }
+
+        if (m.hasProjectile)
+        {
+            GameObject proj = Instantiate(m.projectile);
+            proj.GetComponent<Projectile>().initProjectile(m.hds);
+            print("Spawned Projectile");
+        }
+        else
+        {
+            checkAndSendAttackInfo((createAttackHitbox(m)));
         }
     }
 
@@ -485,7 +508,7 @@ public class GenericCharacter : MonoBehaviour
     }
 
 
-    public void OnDrawGizmosSelected() //visualizes the hitboxes
+    public void OnDrawGizmosSelected() //visualizes the hitboxes while in the editor
     {
         Gizmos.color = new Color(1, 0, 0, 0.75F);
         if (lastUsedMove != null && currentState == playerState.attacking)
@@ -510,7 +533,7 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void doBlock()
     {
-
+        
     }
 
     public virtual void doBlastZoneDeath()

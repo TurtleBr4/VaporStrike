@@ -13,6 +13,7 @@ public class Move : ScriptableObject
     public int hitboxStartTime;
     public int hitboxEndTime;
     public string animationTrigger;   // optional Animator trigger
+    
 
     [Header("Hitbox(s) Data")] //define data here, gets used to make a hitbox later no need for yet another scriptable object
     public float radius;
@@ -23,11 +24,15 @@ public class Move : ScriptableObject
     public HitboxLocations hitboxLocation;
     public bool isMultiHit = false;
     public int hits = 1; //if its a multi hit, raise this
-
     public HitboxDataStruct hds;
 
     [Header("Other Move Data")]
     public bool requiresGrounded = true; // only perform on ground
+    public bool hasProjectile;
+    
+    [Header("Projectile Data")]
+    public GameObject projectile;
+    public float  projectileSpeed;
 
     private void OnEnable()
     {
