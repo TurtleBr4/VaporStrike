@@ -33,6 +33,7 @@ public class Move : ScriptableObject
     [Header("Projectile Data")]
     public GameObject projectile;
     public float  projectileSpeed;
+    public int projectileLifetime;
 
     private void OnEnable()
     {

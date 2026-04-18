@@ -81,6 +81,11 @@ public class GenericCharacter : MonoBehaviour
         
     }
 
+    public int getPlayerID()
+    {
+        return playerID;
+    }
+
     public void assignPlayerData(PlayerData p, int pid)
     {
         playerData = p;
@@ -458,7 +463,7 @@ public class GenericCharacter : MonoBehaviour
         if (m.hasProjectile)
         {
             GameObject proj = Instantiate(m.projectile);
-            proj.GetComponent<Projectile>().initProjectile(m.hds);
+            proj.GetComponent<Projectile>().initProjectile(m.hds, playerID, m.projectileSpeed, m.projectileLifetime);
             print("Spawned Projectile");
         }
         else
