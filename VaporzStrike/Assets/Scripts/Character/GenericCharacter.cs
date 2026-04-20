@@ -30,7 +30,8 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpPower;
     [SerializeField] private float airSpeed;
-    [SerializeField] private float maxFallSpeed;
+    [SerializeField] private float maxFallSpeed; 
+    [SerializeField] private float baseShieldHP;
     [SerializeField] private Moveset moveset;
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Transform groundCheck;
@@ -54,7 +55,9 @@ public class GenericCharacter : MonoBehaviour
     public bool fastFalling = false;
     public bool isInAnimation = false;
     public bool hasHitAttack = false;
-
+    public float shieldHP;
+    public bool isShieldActive = false;
+    public GameObject shield;
 
     [Header("Constants and Dependencies")] 
     public CharacterController c;
@@ -64,7 +67,9 @@ public class GenericCharacter : MonoBehaviour
     public const float minMovementStep = .5f;
     public float ffMult; //fast fall multiplier
     public int pFrameTime;
-    
+
+    int playerStocks = 3;
+    float drag = 1f;
     private void Start()
     {
         inputReader = GetComponent<InputReader>();
@@ -72,6 +77,7 @@ public class GenericCharacter : MonoBehaviour
         faceDirection = faceDirection.right;
         hud = FindFirstObjectByType<HUD>();
         getConstantsFromGameManager();
+        shield = GetComponentInChildren<Shield>().gameObject;
     }
 
     public void getConstantsFromGameManager()
@@ -141,10 +147,7 @@ public class GenericCharacter : MonoBehaviour
                 frameTimer = 36;
             }
 
-            if (Input.GetKeyDown(KeyCode.Alpha2)) //hitbox testing
-            {
-                //doAttack();
-            }
+
         }
         
     }
@@ -190,7 +193,7 @@ public class GenericCharacter : MonoBehaviour
             }
 
         }
-        else
+        else if (currentState == playerState.attacking && frameTimer ==0)
         {
             currentState = playerState.actionable;
             hasHitAttack = false;
@@ -226,6 +229,7 @@ public class GenericCharacter : MonoBehaviour
 
         //doDownHandle();
         updatePercentText();
+        velocity *= drag;
     }
 
     public void updatePercentText()
@@ -233,14 +237,20 @@ public class GenericCharacter : MonoBehaviour
         if (playerID == 0)
         {
             hud.p1Percent.text = damagePercent.ToString();
+            hud.p1Stocks.text = "x"+playerStocks.ToString();
+            GameManager.instance.player1Obj = this;
         }
         else
         {
             hud.p2Percent.text = damagePercent.ToString();
-
+            hud.p2Stocks.text = "x" + playerStocks.ToString();
+            GameManager.instance.player2Obj = this;
         }
     }
-    
+    public int GetStocks()
+    {
+        return playerStocks;
+    }
     Move readInputBuffer()
     {
        return moveset.GetMatchingMove(inputReader.GetBuffer());
@@ -248,19 +258,32 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void takeInput(Move move)
     {
-
+        if(move == null)
+        {
+            //while no input detected
+            
+        }
         //Switches state based on move
         if (move && currentState != playerState.hitstun)
-        {
+        { 
+
             if (move.inputSequence.Contains<InputType>(InputType.attack) ||
                 move.inputSequence.Contains<InputType>(InputType.special))
             {
-               startAttack(move);
+                Debug.Log("attacking!");
+                startAttack(move);
             }
-            else if(move.inputSequence.Contains<InputType>(InputType.parry))
+            else if (move.inputSequence.Contains<InputType>(InputType.parry))
+            {
                 currentState = playerState.parry;
+                Debug.Log("parry");
+            }
             else if (move.inputSequence.Contains<InputType>(InputType.block))
+            {
                 currentState = playerState.blocking;
+                Debug.Log("blocking");
+            }
+
         }
         else if (currentState == playerState.hitstun)
         {
@@ -270,9 +293,14 @@ public class GenericCharacter : MonoBehaviour
         {
             //do nothing 
         }
+        else if (currentState == playerState.blocking)
+        {
+            //do nothing 
+        }
         else
         {
             currentState = playerState.actionable;
+            drag = 1f;
 
         }
     }
@@ -280,6 +308,20 @@ public class GenericCharacter : MonoBehaviour
     //I renamed this so it's less confusing when talking about moves
     public virtual void doMovement()
     {
+        if (currentGroundState == playerGroundState.grounded)
+        {
+            doBlock(); 
+
+            if (inputReader.blockPressed)
+                currentState = playerState.blocking;
+        }
+        //universal blocking for all chars
+
+        if (currentState == playerState.blocking && !inputReader.blockPressed)
+        {
+            currentState = playerState.actionable;
+            isShieldActive = false;
+        }
         if (currentState == playerState.actionable) //regular movement
         {
             float x = inputReader.pollMovementInput().x;
@@ -303,7 +345,7 @@ public class GenericCharacter : MonoBehaviour
                 fastFalling = false; //turned off the fast fall here because why not
             }
 
-
+            
 
             //jump triggers only once per tap/button
             if (currentGroundState == playerGroundState.grounded && (inputReader.tapJumpPressed || inputReader.jumpPressed))
@@ -312,7 +354,9 @@ public class GenericCharacter : MonoBehaviour
                 inputReader.tapJumpPressed = false;
                 inputReader.jumpPressed = false;
             }
-        
+
+            
+
             //down check, using the raw input data instead of the buffer for rn
             if (y < -0.5f)
             {
@@ -539,24 +583,48 @@ public class GenericCharacter : MonoBehaviour
     public virtual void doBlock()
     {
         
+       isShieldActive = (inputReader.blockPressed);
+        
+       shield.SetActive(isShieldActive);
+
+       shieldHP += (isShieldActive) ? -1: 1;
+
+        if(shieldHP < 0) { shieldHP = 0; }
+        if (shieldHP > baseShieldHP) { shieldHP = baseShieldHP; }
+        var shieldScale = shieldHP / 100f;
+        shield.transform.localScale = new Vector3(3*shieldScale, 3 * shieldScale, 3 * shieldScale);    
     }
 
     public virtual void doBlastZoneDeath()
     {
-
+        damagePercent = 0;
+        playerStocks--;
+        velocity = Vector3.zero;
     }
 
     public virtual void doTakeKnockback(Vector2 direction, float knockbackPower) //possibly redundant
     {
-        velocity = (direction * (knockbackPower + (damagePercent / 10) * 1.4f));
+        if (!isShieldActive)
+        {
+            velocity = Vector3.zero;
+            velocity = (direction * (knockbackPower + (damagePercent / 10) * 1.4f));
+            drag = 0.95f;
+        }
     }
 
     public virtual void doTakeDamage(HitboxDataStruct hitbox)
     {
-        currentState = playerState.hitstun;
-        frameTimer = hitbox.hitStun;
-        damagePercent += hitbox.damage;
-        doTakeKnockback(hitbox.launchDirection, hitbox.knockback); 
+        if (!isShieldActive)
+        {
+            currentState = playerState.hitstun;
+            frameTimer = hitbox.hitStun;
+            damagePercent += hitbox.damage;
+            doTakeKnockback(hitbox.launchDirection, hitbox.knockback);
+        }
+        else
+        {
+            shieldHP -= hitbox.hitStun;
+        }
     }
     
     #region Animator Flags

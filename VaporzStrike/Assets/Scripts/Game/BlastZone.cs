@@ -13,6 +13,7 @@ public class BlastZone : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             doPlayerDeath(other.gameObject);
+            other.gameObject.GetComponent<GenericCharacter>().doBlastZoneDeath();
         }
     }
 

@@ -30,7 +30,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerDatabase playerDatabase;
     [SerializeField] private GameObject[] playerPercentsArray = new GameObject[playerCount];
     public bool isMatch = false;
+    public GenericCharacter player1Obj;
+    public GenericCharacter player2Obj;
 
+    public enum ResultType
+    {
+        Start,
+        NoContest,
+        Player1,
+        Player2,
+    }
+    public ResultType matchResult = ResultType.Start;
     public static GameManager instance { get; private set; }
 
     private LevelData chosenLevel;
@@ -100,7 +110,32 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Game!");
                 matchTimer = 0;
                 isMatch = false;
+
+                if (player1Obj.GetStocks() == player2Obj.GetStocks())
+                {
+                    matchResult = ResultType.NoContest;
+                }
+                else if (player1Obj.GetStocks() <= 0)
+                {
+                    matchResult = ResultType.Player2;
+                }
+                else
+                {
+                    matchResult = ResultType.Player1;
+                }
             }
+        }
+
+        if(player1Obj.GetStocks() <= 0)
+        {
+            isMatch = false;
+            matchResult = ResultType.Player2;
+        }
+
+        if (player2Obj.GetStocks() <= 0)
+        {
+            isMatch = false;
+            matchResult = ResultType.Player1;
         }
     }
     public string DisplayTime()
@@ -122,7 +157,7 @@ public class GameManager : MonoBehaviour
     {
         return playerDataArray[playerIndex];
     }
-    void onGameStateChanged(gameState newState)
+    public void onGameStateChanged(gameState newState)
     {
         if (newState == gameState.Game)
         {
