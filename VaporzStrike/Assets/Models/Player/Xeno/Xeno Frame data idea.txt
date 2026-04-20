@@ -1,0 +1,31 @@
+Xeno had too much data to be a raw file so I had to zip it, unity might get mad at that
+
+
+active frame data
+
+Flurry/jab
+
+Attack jab 01 - active frames 6-7
+Attack jab 02 - active frames 10-11
+Attack jab 03 - active frames 9-12 (he throws a bomb upwards following his left arm)
+
+Smash attacks
+
+Up Smash - active frames 16-18	
+Forward Smash - 16-18
+Down Smash - 11-13 (causes a small explosion bellow him hitting behind him. See GGST Slayer 2H https://www.dustloop.com/w/GGST/Slayer)
+
+Specials
+
+Up Special - 11-14 (acts like a DP [gives hyper armor during startup])
+Down Special - 11-14 (shoots a blast along the ground in front of him. See GGST Sol Badguy Gun Flame  https://www.dustloop.com/w/GGST/Sol_Badguy)
+Forward Special - 21-26 (launches himself forwards with a rocket powered punch)
+Neutral Special - 7-8* (shoots a projectile forwards in a straight line)
+
+Airieals
+
+Up Air - 10-12 (shoots a blast above himself and pushes himself downwards)
+Back Air - 9-11 and 23-25 (first back hands then kicks behind himself)
+Down Air - 11-13 (shoots a blast bellow and slightly behind himself)
+Forward Air - 9-11 and 18-20 (again punches then kicks)
+Neutral Air - 4-5,6-7,8-9,10-11,12-13,14-15,16-17,18-19 (a series of consecutive blast. See Samus forwards air  https://ultimateframedata.com/samus[this one can probably have the inbetweens removed. inbetweens being 6-7, 10-11, 14-15, 18-19])
