@@ -220,14 +220,20 @@ public class GenericCharacter : MonoBehaviour
         if (playerID == 0)
         {
             hud.p1Percent.text = damagePercent.ToString();
+            hud.p1Stocks.text = "x"+playerStocks.ToString();
+            GameManager.instance.player1Obj = this;
         }
         else
         {
             hud.p2Percent.text = damagePercent.ToString();
-
+            hud.p2Stocks.text = "x" + playerStocks.ToString();
+            GameManager.instance.player2Obj = this;
         }
     }
-    
+    public int GetStocks()
+    {
+        return playerStocks;
+    }
     Move readInputBuffer()
     {
        return moveset.GetMatchingMove(inputReader.GetBuffer());

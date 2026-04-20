@@ -13,6 +13,5 @@ public class PlayerData : ScriptableObject
     public float airSpeed;
     public float maxFallSpeed;
     public Moveset moveset;
-
     
 }
