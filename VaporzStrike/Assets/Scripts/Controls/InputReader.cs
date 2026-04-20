@@ -21,7 +21,8 @@ public class InputReader : MonoBehaviour
     public string playerID;
 
     public bool tapJumpPressed;
-    public bool jumpPressed;
+    public bool jumpPressed; 
+    public bool blockPressed;
     private Vector2 previousMoveInput;
 
     //Max's debug code
@@ -47,7 +48,11 @@ public class InputReader : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.P)) printInputs = !printInputs;
-    }
+
+
+        blockPressed = playerInput.actions["Block"].IsPressed();
+
+        }
 
 
     void PushInput(InputType input)
@@ -155,8 +160,9 @@ public class InputReader : MonoBehaviour
 
     public void OnBlock(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
-            PushInput(InputType.block);
+        Debug.Log(ctx.ReadValue<float>());
+        if (ctx.ReadValue<float>() > 0) 
+            PushInput(InputType.block); 
     }
 
     public void OnJump(InputAction.CallbackContext ctx)
