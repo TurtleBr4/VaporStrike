@@ -13,5 +13,10 @@ public class PlayerData : ScriptableObject
     public float airSpeed;
     public float maxFallSpeed;
     public Moveset moveset;
+
+    public Move getMoveAtID(int id)
+    {
+        return moveset.moves[id];
+    }
     
 }

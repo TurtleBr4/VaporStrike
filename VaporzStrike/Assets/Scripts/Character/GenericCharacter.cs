@@ -23,6 +23,7 @@ public class GenericCharacter : MonoBehaviour
     private static readonly int AnimationID = Animator.StringToHash("Animation ID"); //thanks jetbrains rider for the effecient lookup or whatever
 
     [Header("Static Character Variables")]
+    [SerializeField] private GameObject[] moveHitboxHolders;
     [SerializeField] private PlayerData playerData;
     [SerializeField] private int playerID;
     [SerializeField] private string playerName;
@@ -36,7 +37,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private GameObject[] hitboxAnchors;
+    //[SerializeField] private GameObject[] hitboxAnchors;
 
     [Header("Runtime Character Variables")]
     [SerializeField] private float damagePercent = 0f;
@@ -57,13 +58,14 @@ public class GenericCharacter : MonoBehaviour
     public bool hasHitAttack = false;
     public float shieldHP;
     public bool isShieldActive = false;
-    public GameObject shield;
+    
 
     [Header("Constants and Dependencies")] 
     public CharacterController c;
     public Animator anim;
     public GameManager gameManager;
     public HUD hud;
+    public GameObject shield;
     public const float minMovementStep = .5f;
     public float ffMult; //fast fall multiplier
     public int pFrameTime;
@@ -115,11 +117,6 @@ public class GenericCharacter : MonoBehaviour
             maxFallSpeed =  playerData.maxFallSpeed;
             jumpPower = playerData.jumpPower;
             recieveCharacterPrefab(playerData.playerPrefab);
-
-            hitboxAnchors = GetComponentsInChildren<Transform>()
-                .Where(t => t.CompareTag("HitboxAnchor"))
-                .Select(t => t.gameObject)
-                .ToArray();
         }
         else
         {
@@ -171,6 +168,7 @@ public class GenericCharacter : MonoBehaviour
             if (curFrame == lastUsedMove.hitboxEndTime)
             {
                 isAttackHitboxActive = false;
+                moveHitboxHolders[lastUsedMove.moveID].SetActive(false);
                 print("ending hitbox");
             }
 
@@ -300,8 +298,7 @@ public class GenericCharacter : MonoBehaviour
         else
         {
             currentState = playerState.actionable;
-            drag = 1f;
-
+            drag = 1f; 
         }
     }
 
@@ -492,7 +489,7 @@ public class GenericCharacter : MonoBehaviour
             lastUsedMove = move;
             currentState = playerState.attacking;
             frameTimer = move.moveTime;
-            setMoveAnim(move.animationId);
+            setMoveAnim(move.moveID);
             inputReader.ClearBuffer(); // consume the inputs
         }
     }
@@ -512,10 +509,12 @@ public class GenericCharacter : MonoBehaviour
         }
         else
         {
-            checkAndSendAttackInfo((createAttackHitbox(m)));
+            moveHitboxHolders[m.moveID].SetActive(true);
+            //checkAndSendAttackInfo((createAttackHitbox(m)));
         }
     }
 
+    [Obsolete]
     public virtual void checkAndSendAttackInfo(Collider[] colliders)
     {
         if (colliders != null)
@@ -538,6 +537,7 @@ public class GenericCharacter : MonoBehaviour
         }
     }
 
+    [Obsolete]/*
     public virtual Collider[] createAttackHitbox(Move move)
     {
         if (!hasHitAttack)
@@ -549,12 +549,12 @@ public class GenericCharacter : MonoBehaviour
                 print("Spawned Hitbox at: " + location.name + ": " + location.position);
             }
 
-            return Physics.OverlapSphere(location.position, move.radius, Physics.AllLayers,
-                QueryTriggerInteraction.Collide);
+            //return Physics.OverlapSphere(location.position, move.radius, Physics.AllLayers, QueryTriggerInteraction.Collide);
         }
 
         return null;
     }
+    */
 
 
     public void OnDrawGizmosSelected() //visualizes the hitboxes while in the editor
@@ -562,7 +562,7 @@ public class GenericCharacter : MonoBehaviour
         Gizmos.color = new Color(1, 0, 0, 0.75F);
         if (lastUsedMove != null && currentState == playerState.attacking)
         {
-            Gizmos.DrawSphere(hitboxAnchors[(int)lastUsedMove.hitboxLocation].transform.position, lastUsedMove.radius);
+            //Gizmos.DrawSphere(hitboxAnchors[(int)lastUsedMove.hitboxLocation].transform.position, lastUsedMove.radius);
         }
     }
 
