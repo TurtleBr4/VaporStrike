@@ -134,6 +134,7 @@ public class GenericCharacter : MonoBehaviour
 
     private void debugInputs()
     {
+        /*
         if (gameManager.debugFlag)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) //simulate taking a hit
@@ -145,7 +146,7 @@ public class GenericCharacter : MonoBehaviour
 
 
         }
-        
+        */
     }
 
     public virtual void stateManager()

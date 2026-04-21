@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     public bool isMatch = false;
     public GenericCharacter player1Obj;
     public GenericCharacter player2Obj;
-
+    public string DebugTxt = "";
     public enum ResultType
     {
         Start,
@@ -92,50 +92,48 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z)) //just to test
-        {
-            //pickPlayer(0, 0);
-            //assignPlayerDataToPlayer(playerDataArray[0], 1);
-        }
 
-        if (isMatch)
+        if (player1Obj != null && player2Obj != null)
         {
-            if (matchTimer > 0)
+            if (isMatch)
             {
-                // Subtract the time since last frame
-                matchTimer -= Time.deltaTime;
-            }
-            else
-            {
-                Debug.Log("Game!");
-                matchTimer = 0;
-                isMatch = false;
-
-                if (player1Obj.GetStocks() == player2Obj.GetStocks())
+                if (matchTimer > 0)
                 {
-                    matchResult = ResultType.NoContest;
-                }
-                else if (player1Obj.GetStocks() <= 0)
-                {
-                    matchResult = ResultType.Player2;
+                    // Subtract the time since last frame
+                    matchTimer -= Time.deltaTime;
                 }
                 else
                 {
-                    matchResult = ResultType.Player1;
+                    Debug.Log("Game!");
+                    matchTimer = 0;
+                    isMatch = false;
+
+                    if (player1Obj.GetStocks() == player2Obj.GetStocks())
+                    {
+                        matchResult = ResultType.NoContest;
+                    }
+                    else if (player1Obj.GetStocks() <= 0)
+                    {
+                        matchResult = ResultType.Player2;
+                    }
+                    else
+                    {
+                        matchResult = ResultType.Player1;
+                    }
                 }
             }
-        }
 
-        if(player1Obj.GetStocks() <= 0)
-        {
-            isMatch = false;
-            matchResult = ResultType.Player2;
-        }
+            if (player1Obj.GetStocks() <= 0)
+            {
+                isMatch = false;
+                matchResult = ResultType.Player2;
+            }
 
-        if (player2Obj.GetStocks() <= 0)
-        {
-            isMatch = false;
-            matchResult = ResultType.Player1;
+            if (player2Obj.GetStocks() <= 0)
+            {
+                isMatch = false;
+                matchResult = ResultType.Player1;
+            }
         }
     }
     public string DisplayTime()

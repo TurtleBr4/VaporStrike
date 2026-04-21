@@ -47,7 +47,6 @@ public class InputReader : MonoBehaviour
             clearFirstInputFromBuffer();
         }
 
-        if (Input.GetKeyDown(KeyCode.P)) printInputs = !printInputs;
 
 
         blockPressed = playerInput.actions["Block"].IsPressed();

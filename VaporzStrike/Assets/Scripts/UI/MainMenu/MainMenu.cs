@@ -41,7 +41,7 @@ public class MainMenu : MonoBehaviour
             playerInput.transform.localPosition = Vector3.zero;
             playerInput.transform.localRotation = Quaternion.identity;
 
-            playerInput.gameObject.GetComponent<Cursor>().enabled = true;
+            playerInput.gameObject.GetComponent<CursorVirt>().enabled = true;
         }
     }
 }

@@ -30,10 +30,11 @@ public class CharacterSelect : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (Gamepad.current.selectButton.wasPressedThisFrame)
         {
             Back();
         }
+
 
         if (GameManager.instance.GetPlayer(0))
         {
@@ -120,8 +121,8 @@ public class CharacterSelect : MonoBehaviour
             playerInput.transform.localPosition = Vector3.zero;
             playerInput.transform.localRotation = Quaternion.identity;
 
-            playerInput.gameObject.GetComponent<Cursor>().enabled = true;
-            playerInput.gameObject.GetComponent<Cursor>().SetID(playerInput.playerIndex);
+            playerInput.gameObject.GetComponent<CursorVirt>().enabled = true;
+            playerInput.gameObject.GetComponent<CursorVirt>().SetID(playerInput.playerIndex);
         }
     }
     public void LoadLevelOne()
