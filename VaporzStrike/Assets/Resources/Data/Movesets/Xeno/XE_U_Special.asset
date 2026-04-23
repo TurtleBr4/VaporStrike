@@ -16,18 +16,15 @@ MonoBehaviour:
   inputSequence: 0600000003000000
   moveTime: 36
   blockStun: 10
-  animationId: 1
+  moveID: 1
   hitboxStartTime: 11
   hitboxEndTime: 14
-  animationTrigger: 
-  radius: 1.5
   damage: 25
   hitStun: 20
   knockback: 0
   launchDirection: {x: 0.1, y: 1}
   hitboxLocation: 1
   isMultiHit: 0
-  hits: 1
   requiresGrounded: 1
   hasProjectile: 0
   projectile: {fileID: 0}
