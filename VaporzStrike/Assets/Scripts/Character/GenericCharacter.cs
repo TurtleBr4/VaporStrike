@@ -21,6 +21,7 @@ public enum playerGroundState //all this does is track if a player is in the air
 public class GenericCharacter : MonoBehaviour
 {
     private static readonly int AnimationID = Animator.StringToHash("Animation ID"); //thanks jetbrains rider for the effecient lookup or whatever
+    private static readonly int Grounded = Animator.StringToHash("Grounded");
 
     [Header("Static Character Variables")]
     [SerializeField] private GameObject[] moveHitboxHolders;
@@ -219,10 +220,12 @@ public class GenericCharacter : MonoBehaviour
         if (doGroundCheck())
         {
             currentGroundState = playerGroundState.grounded;
+            anim.SetBool(Grounded, true);
         }
         else
         {
             currentGroundState = playerGroundState.air;
+            anim.SetBool(Grounded, false);
         }
 
         //doDownHandle();
