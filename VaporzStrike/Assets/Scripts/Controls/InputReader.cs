@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public enum InputType
 {
-    neutral, left, right, up, down, attack, special, parry, block
+    neutral, left, right, up, down, attack, special, parry, block, grab
 }
 public class InputReader : MonoBehaviour
 {
@@ -157,6 +157,11 @@ public class InputReader : MonoBehaviour
     {
         if (ctx.performed)
             PushInput(InputType.block);
+    }
+    public void OnGrab(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+            PushInput(InputType.grab);
     }
 
     public void OnJump(InputAction.CallbackContext ctx)

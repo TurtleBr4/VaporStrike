@@ -4,7 +4,7 @@ using System.Linq;
 using TMPro;
 public enum playerState
 {
-    actionable, attacking, blocking, falling, hitstun, blockstun, landlag, parry
+    actionable, attacking, blocking, falling, hitstun, blockstun, landlag, parry, grabbed
 }
 
 public enum faceDirection
@@ -203,6 +203,10 @@ public class GenericCharacter : MonoBehaviour
         else if (currentState == playerState.hitstun)
         {
             //here just in case
+        }
+        else if (currentState == playerState.grabbed)
+        {
+            doGetGrabbed();
         }
         else
         {
@@ -410,11 +414,11 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void doGrab()
     {
-
+        //help me
     }
     public virtual void doGetGrabbed()
     {
-
+        //please
     }
 
     public virtual void doBlastZoneDeath()
