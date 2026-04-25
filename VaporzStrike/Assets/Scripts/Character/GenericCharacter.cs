@@ -408,6 +408,15 @@ public class GenericCharacter : MonoBehaviour
 
     }
 
+    public virtual void doGrab()
+    {
+
+    }
+    public virtual void doGetGrabbed()
+    {
+
+    }
+
     public virtual void doBlastZoneDeath()
     {
 
