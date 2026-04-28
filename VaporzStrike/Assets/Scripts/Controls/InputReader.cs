@@ -23,6 +23,7 @@ public class InputReader : MonoBehaviour
     public bool tapJumpPressed;
     public bool jumpPressed; 
     public bool blockPressed;
+    public bool grabPressed;
     private Vector2 previousMoveInput;
 
     //Max's debug code
@@ -50,8 +51,8 @@ public class InputReader : MonoBehaviour
 
 
         blockPressed = playerInput.actions["Block"].IsPressed();
-
-        }
+        grabPressed = playerInput.actions["Grab"].IsPressed();
+    }
 
 
     void PushInput(InputType input)

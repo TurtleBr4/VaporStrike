@@ -58,8 +58,10 @@ public class GenericCharacter : MonoBehaviour
     public bool hasHitAttack = false;
     public float shieldHP;
     public bool isShieldActive = false;
+    public bool isGrabbing = false;
+    public bool isGrabbed = false;
     public GameObject shield;
-
+    public GameObject grabbox;
     [Header("Constants and Dependencies")] 
     public CharacterController c;
     public Animator anim;
@@ -151,12 +153,13 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void stateManager()
     {
-
+        if (isGrabbed) { currentState = playerState.hitstun; }
+        if (isGrabbing) { currentState = playerState.attacking; }
         if (currentState == playerState.hitstun && frameTimer != 0)
         {
             frameTimer--;
         }
-        else if (currentState == playerState.attacking && frameTimer > 0)
+        else if (currentState == playerState.attacking && frameTimer > 0 && !isGrabbing)
         {
             int curFrame = lastUsedMove.moveTime - frameTimer;
             print(curFrame);
@@ -177,7 +180,7 @@ public class GenericCharacter : MonoBehaviour
             }
             frameTimer--;
         }
-        else if (currentState == playerState.attacking && frameTimer ==0)
+        else if (currentState == playerState.attacking && frameTimer ==0 && !isGrabbing)
         {
             currentState = playerState.actionable;
             hasHitAttack = false;
@@ -339,7 +342,12 @@ public class GenericCharacter : MonoBehaviour
                 inputReader.jumpPressed = false;
             }
 
-            
+            //jump triggers only once per tap/button
+            if (currentGroundState == playerGroundState.grounded && (inputReader.grabPressed))
+            {
+                inputReader.grabPressed = false;
+                grabbox.SetActive(true);
+            }
 
             //down check, using the raw input data instead of the buffer for rn
             if (y < -0.5f)
@@ -511,7 +519,15 @@ public class GenericCharacter : MonoBehaviour
             }
         }
     }
-
+    public void GetGrabbed()
+    {
+        isGrabbed = true;
+    }
+    public void GrabRelease()
+    {
+        isGrabbed = false;
+        currentState = playerState.actionable;
+    }
     public virtual Collider[] createAttackHitbox(Move move)
     {
         if (!hasHitAttack)

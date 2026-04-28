@@ -53,3 +53,8 @@ public struct HitboxDataStruct
     public int hitStun;
     public Vector2 launchDirection;
 }
+public struct GrabboxDataStruct
+{
+    public float radius;
+
+}
