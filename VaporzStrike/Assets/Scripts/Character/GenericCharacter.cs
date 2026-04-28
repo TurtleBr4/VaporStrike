@@ -178,6 +178,10 @@ public class GenericCharacter : MonoBehaviour
             if (isAttackHitboxActive)
             {
                 handleAttack(lastUsedMove);
+                if (lastUsedMove.hasDisplacement)
+                {
+                    doDisplacmentOverride(lastUsedMove.displacementDirection, lastUsedMove.displacementMagnitude);
+                }
             }
             frameTimer--;
         }
@@ -545,6 +549,13 @@ public class GenericCharacter : MonoBehaviour
             moveHitboxHolders[m.moveID].SetActive(true);
             //checkAndSendAttackInfo((createAttackHitbox(m)));
         }
+    }
+
+    public void doDisplacmentOverride(Vector2 direction, float magnitude)
+    {
+        velocity = Vector3.zero;
+        velocity = direction * magnitude;
+        drag = 0.95f;
     }
 
     [Obsolete]

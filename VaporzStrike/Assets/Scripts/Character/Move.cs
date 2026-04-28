@@ -31,6 +31,7 @@ public class Move : ScriptableObject
     public bool hasProjectile;
     public bool hasDisplacement;
     public Vector2 displacementDirection;
+    public float displacementMagnitude;
     
     [Header("Projectile Data")]
     public GameObject projectile;
