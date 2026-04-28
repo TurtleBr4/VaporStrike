@@ -13,7 +13,9 @@ public class Move : ScriptableObject
     [FormerlySerializedAs("animationId")] public int moveID;
     public int hitboxStartTime;
     public int hitboxEndTime;
+    public HitboxDataStruct hds;
 
+    /*
     [Header("Hitbox(s) Data")] //define data here, gets used to make a hitbox later no need for yet another scriptable object
 
     public float damage;
@@ -22,25 +24,30 @@ public class Move : ScriptableObject
     public Vector2 launchDirection;
     public HitboxLocations hitboxLocation;
     public bool isMultiHit = false;
-    public HitboxDataStruct hds;
+    */
 
     [Header("Move Data")]
     public bool requiresGrounded = true; // only perform on ground
     public bool hasProjectile;
+    public bool hasDisplacement;
+    public Vector2 displacementDirection;
     
     [Header("Projectile Data")]
     public GameObject projectile;
     public float  projectileSpeed;
     public int projectileLifetime;
+    
 
     private void OnEnable()
     {
         hds = new HitboxDataStruct();
+        /*
         hds.damage = damage;
         hds.knockback = knockback;
         hds.launchDirection = launchDirection;
         hds.hitStun = hitStun;
         //hds.radius = radius;
+        */
     }
 }
 

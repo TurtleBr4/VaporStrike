@@ -29,7 +29,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 6
+    m_ConditionEvent: Animation ID
+    m_EventTreshold: -1
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3742732956684622244}
   m_Solo: 0
@@ -295,7 +298,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 6
+    m_ConditionEvent: Animation ID
+    m_EventTreshold: -2
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -2079906483876347670}
   m_Solo: 0
@@ -609,7 +615,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 6
     m_ConditionEvent: Animation ID
-    m_EventTreshold: 0
+    m_EventTreshold: 1
   - m_ConditionMode: 1
     m_ConditionEvent: Grounded
     m_EventTreshold: 0

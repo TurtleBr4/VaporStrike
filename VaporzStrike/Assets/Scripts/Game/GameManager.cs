@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public int gameFrameRate = 60;
     public float platformFrameTime = 24f;
     public float fastFallMultiplier = 1.25f;
-    public int parryFrameTime = 30;
+    public int parryFrameTime = 4;
     public bool debugFlag = false;
     
     public float matchTimer = 120;

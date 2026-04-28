@@ -59,6 +59,7 @@ public class GenericCharacter : MonoBehaviour
     public bool hasHitAttack = false;
     public float shieldHP;
     public bool isShieldActive = false;
+    private playerGroundState lastGroundState;
     
 
     [Header("Constants and Dependencies")] 
@@ -73,6 +74,7 @@ public class GenericCharacter : MonoBehaviour
 
     int playerStocks = 3;
     float drag = 1f;
+    
     private void Start()
     {
         inputReader = GetComponent<InputReader>();
@@ -160,7 +162,7 @@ public class GenericCharacter : MonoBehaviour
         else if (currentState == playerState.attacking && frameTimer > 0)
         {
             int curFrame = lastUsedMove.moveTime - frameTimer;
-            print(curFrame);
+            //print(curFrame);
             if (curFrame == lastUsedMove.hitboxStartTime)
             {
                 isAttackHitboxActive = true;
@@ -192,10 +194,23 @@ public class GenericCharacter : MonoBehaviour
             }
 
         }
-        else if (currentState == playerState.attacking && frameTimer ==0)
+        else if (currentState ==  playerState.parry)
+        {
+            frameTimer = gameManager.parryFrameTime; //replace with a constant
+            if (frameTimer != 0)
+            {
+                frameTimer--;
+            }
+        }
+        else if (currentState == playerState.attacking && frameTimer == 0)
         {
             currentState = playerState.actionable;
             hasHitAttack = false;
+            frameTimer = 0;
+        }
+        else if (currentState == playerState.parry && frameTimer == 0)
+        {
+            currentState = playerState.actionable;
             frameTimer = 0;
         }
 
@@ -226,6 +241,20 @@ public class GenericCharacter : MonoBehaviour
         {
             currentGroundState = playerGroundState.air;
             anim.SetBool(Grounded, false);
+        }
+
+        if (currentGroundState != lastGroundState)
+        {
+            if (lastGroundState == playerGroundState.air) //Landing animation
+            {
+                StartAnimation(-2); //w magic numbers
+                lastGroundState = currentGroundState;
+            }
+            else //Jumping animation
+            {
+                StartAnimation(-1); //w magic numbers
+                lastGroundState = currentGroundState;
+            }
         }
 
         //doDownHandle();
@@ -350,6 +379,7 @@ public class GenericCharacter : MonoBehaviour
             //jump triggers only once per tap/button
             if (currentGroundState == playerGroundState.grounded && (inputReader.tapJumpPressed || inputReader.jumpPressed))
             {
+                setMoveAnim(-1); //w magic number 
                 velocity.y = Mathf.Sqrt(jumpPower * 2f * weight);
                 inputReader.tapJumpPressed = false;
                 inputReader.jumpPressed = false;
@@ -617,7 +647,7 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void doTakeDamage(HitboxDataStruct hitbox)
     {
-        if (!isShieldActive)
+        if (!isShieldActive || currentState != playerState.parry)
         {
             currentState = playerState.hitstun;
             frameTimer = hitbox.hitStun;
