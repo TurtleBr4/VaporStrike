@@ -13,7 +13,6 @@ Library: C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\BurstOutput\Data\P
 --linker-options=PdbAltPath="VaporzStrike_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\Burst
---debug=Full
 --key-folder=G:/Unity/6000.0.63f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Library\Burst
 --output=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
@@ -35,7 +34,6 @@ Library: C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\BurstOutput\Data\P
 --linker-options=PdbAltPath="VaporzStrike_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\Burst
---debug=Full
 --key-folder=G:/Unity/6000.0.63f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Library\Burst
 --output=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
@@ -55,7 +53,6 @@ Library: C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\BurstOutput\Data\P
 --linker-options=PdbAltPath="VaporzStrike_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\Burst
---debug=Full
 --key-folder=G:/Unity/6000.0.63f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Library\Burst
 --output=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated
@@ -167,7 +164,6 @@ Library: C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\BurstOutput\Data\P
 --linker-options=PdbAltPath="VaporzStrike_Data/Plugins/x86_64/lib_burst_generated.pdb"
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\Burst
---debug=Full
 --key-folder=G:/Unity/6000.0.63f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport
 --decode-folder=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Library\Burst
 --output=C:\Users\twils\Desktop\Studio1Game\VaporzStrike\Temp\BurstOutput\Data\Plugins\x86_64\lib_burst_generated

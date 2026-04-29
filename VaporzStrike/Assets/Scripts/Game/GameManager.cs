@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
             pickPlayer(1, 3);
             pickPlayer(0, 3);
         }
-        onGameStateChanged(gameState);
+        //onGameStateChanged(gameState);
         if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
         {
             Application.targetFrameRate = gameFrameRate;
