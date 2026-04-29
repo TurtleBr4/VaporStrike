@@ -16,7 +16,7 @@ MonoBehaviour:
   inputSequence: 0500000004000000
   moveTime: 10
   blockStun: 5
-  moveID: 0
+  moveID: 4
   hitboxStartTime: 5
   hitboxEndTime: 7
   requiresGrounded: 1

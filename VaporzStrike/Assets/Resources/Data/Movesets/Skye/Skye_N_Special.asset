@@ -13,16 +13,17 @@ MonoBehaviour:
   m_Name: Skye_N_Special
   m_EditorClassIdentifier: 
   moveName: 
-  inputSequence: 
-  moveTime: 0
-  blockStun: 0
-  moveID: 0
-  hitboxStartTime: 0
-  hitboxEndTime: 0
-  requiresGrounded: 1
+  inputSequence: 06000000
+  moveTime: 30
+  blockStun: 4
+  moveID: 5
+  hitboxStartTime: 4
+  hitboxEndTime: 20
+  requiresGrounded: 0
   hasProjectile: 0
   hasDisplacement: 0
   displacementDirection: {x: 0, y: 0}
+  displacementMagnitude: 0
   projectile: {fileID: 0}
   projectileSpeed: 0
   projectileLifetime: 0
