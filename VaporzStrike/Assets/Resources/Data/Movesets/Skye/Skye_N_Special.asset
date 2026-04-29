@@ -10,22 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab5cd4e23974e76eabed3aa3ad330b48, type: 3}
-  m_Name: TC_LEFT_SPECIAL
+  m_Name: Skye_N_Special
   m_EditorClassIdentifier: 
-  moveName: Left Special Test
-  inputSequence: 0100000006000000
-  moveTime: 30
-  blockStun: 4
-  animationId: -1
-  hitboxStartTime: 5
-  hitboxEndTime: 25
-  animationTrigger: 
-  radius: 10
-  damage: 10
-  hitStun: 36
-  knockback: -20
-  launchDirection: {x: 0.2, y: 1}
-  hitboxLocation: 0
-  isMultiHit: 0
-  hits: 1
+  moveName: 
+  inputSequence: 
+  moveTime: 0
+  blockStun: 0
+  moveID: 0
+  hitboxStartTime: 0
+  hitboxEndTime: 0
   requiresGrounded: 1
+  hasProjectile: 0
+  hasDisplacement: 0
+  displacementDirection: {x: 0, y: 0}
+  projectile: {fileID: 0}
+  projectileSpeed: 0
+  projectileLifetime: 0
