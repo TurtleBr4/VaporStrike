@@ -35,7 +35,7 @@ public class HUD : MonoBehaviour
     {
         //player1 = GameObject.Find("TestPlayer");
         GameManager.instance.Init();
-        //GameManager.instance.onGameStateChanged(gameState.Game);
+        GameManager.instance.onGameStateChanged(gameState.Game);
         GameManager.instance.matchTimer = 200;
         instance = this;
         GameManager.instance.isMatch = true;

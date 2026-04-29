@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Linq;
 using TMPro;
+
 public enum playerState
 {
     actionable, attacking, blocking, falling, hitstun, blockstun, landlag, parry
@@ -21,10 +22,8 @@ public enum playerGroundState //all this does is track if a player is in the air
 public class GenericCharacter : MonoBehaviour
 {
     private static readonly int AnimationID = Animator.StringToHash("Animation ID"); //thanks jetbrains rider for the effecient lookup or whatever
-    private static readonly int Grounded = Animator.StringToHash("Grounded");
 
     [Header("Static Character Variables")]
-    [SerializeField] private GameObject[] moveHitboxHolders;
     [SerializeField] private PlayerData playerData;
     [SerializeField] private int playerID;
     [SerializeField] private string playerName;
@@ -38,7 +37,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
-    //[SerializeField] private GameObject[] hitboxAnchors;
+    [SerializeField] private GameObject[] hitboxAnchors;
 
     [Header("Runtime Character Variables")]
     [SerializeField] private float damagePercent = 0f;
@@ -61,27 +60,24 @@ public class GenericCharacter : MonoBehaviour
     public bool isShieldActive = false;
     public bool isGrabbing = false;
     public bool isGrabbed = false;
-    private playerGroundState lastGroundState;
-    
+    public GameObject shield;
     public GameObject grabbox;
     [Header("Constants and Dependencies")] 
     public CharacterController c;
     public Animator anim;
     public GameManager gameManager;
     public HUD hud;
-    public GameObject shield;
     public const float minMovementStep = .5f;
     public float ffMult; //fast fall multiplier
     public int pFrameTime;
 
     int playerStocks = 3;
     float drag = 1f;
-    
     private void Start()
     {
         inputReader = GetComponent<InputReader>();
         gameManager = FindFirstObjectByType<GameManager>();
-        //faceDirection = faceDirection.right;
+        faceDirection = faceDirection.right;
         hud = FindFirstObjectByType<HUD>();
         getConstantsFromGameManager();
         shield = GetComponentInChildren<Shield>().gameObject;
@@ -94,27 +90,13 @@ public class GenericCharacter : MonoBehaviour
         
     }
 
-    public int getPlayerID()
-    {
-        return playerID;
-    }
-
-    public faceDirection getFaceDir()
-    {
-        return faceDirection;
-    }
-
     public void assignPlayerData(PlayerData p, int pid)
     {
         playerData = p;
         playerID = pid;
-        if (pid % 2 != 0)
+        if (pid % 2 == 0)
         {
             faceDirection = faceDirection.left;
-        }
-        else
-        {
-            faceDirection = faceDirection.right;
         }
         populateFromPlayerData();
     }
@@ -131,9 +113,12 @@ public class GenericCharacter : MonoBehaviour
             playerName = playerData.playerName;
             maxFallSpeed =  playerData.maxFallSpeed;
             jumpPower = playerData.jumpPower;
-            if (faceDirection == faceDirection.left) transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-            //recieveCharacterPrefab(playerData.playerPrefab);
+            recieveCharacterPrefab(playerData.playerPrefab);
 
+            hitboxAnchors = GetComponentsInChildren<Transform>()
+                .Where(t => t.CompareTag("HitboxAnchor"))
+                .Select(t => t.gameObject)
+                .ToArray();
         }
         else
         {
@@ -172,120 +157,45 @@ public class GenericCharacter : MonoBehaviour
         if (isGrabbed) { currentState = playerState.hitstun; }
         if (isGrabbing) { 
             currentState = playerState.attacking;
+            
+
         }
-        
-        //clamp
-        if (frameTimer < 0)
-            frameTimer = 0;
-
-
-        //hitstun
-        if (currentState == playerState.hitstun)
-        {
-            if (frameTimer > 0)
-                frameTimer--;
-
-            if (frameTimer == 0)
-                currentState = playerState.actionable;
-        
         if (currentState == playerState.hitstun && frameTimer != 0)
         {
             frameTimer--;
         }
-        //attack
-        else if (currentState == playerState.attacking && !isGrabbing)
+        else if (currentState == playerState.attacking && frameTimer > 0 && !isGrabbing)
         {
-            if (frameTimer > 0)
+            int curFrame = lastUsedMove.moveTime - frameTimer;
+            print(curFrame);
+            if (curFrame == lastUsedMove.hitboxStartTime)
             {
-                int curFrame = lastUsedMove.moveTime - frameTimer;
-
-                if (curFrame == lastUsedMove.hitboxStartTime)
-                {
-                    isAttackHitboxActive = true;
-                    print("starting hitbox");
-                }
-
-                if (curFrame >= lastUsedMove.hitboxEndTime)
-                {
-                    isAttackHitboxActive = false;
-                    moveHitboxHolders[lastUsedMove.moveID].SetActive(false);
-                    print("ending hitbox");
-                }
-
-                if (isAttackHitboxActive)
-                {
-                    handleAttack(lastUsedMove);
-
-                    if (lastUsedMove.hasDisplacement)
-                    {
-                        doDisplacmentOverride(
-                            lastUsedMove.displacementDirection,
-                            lastUsedMove.displacementMagnitude
-                        );
-                    }
-                }
-
-                frameTimer--;
+                isAttackHitboxActive = true;
+                print("starting hitbox");
             }
-
-            if (frameTimer == 0)
+            if (curFrame == lastUsedMove.hitboxEndTime)
             {
-                currentState = playerState.actionable;
-                hasHitAttack = false;
                 isAttackHitboxActive = false;
+                print("ending hitbox");
             }
-        }
-        //block
-        else if (currentState == playerState.blocking)
-        {
-            if (frameTimer == 0)
-                frameTimer = 6;
 
+            if (isAttackHitboxActive)
+            {
+                checkAndSendAttackInfo((createAttackHitbox(lastUsedMove)));
+            }
             frameTimer--;
-
-            if (frameTimer <= 0)
-            {
-                doBlock();
-                frameTimer = 0;
-                currentState = playerState.actionable;
-            }
         }
-        //parry
-        else if (currentState == playerState.parry)
+        else if (currentState == playerState.attacking && frameTimer ==0 && !isGrabbing)
         {
-            if (frameTimer == 0)
-                frameTimer = gameManager.parryFrameTime;
-
-            frameTimer--;
-
-            if (frameTimer <= 0)
-            {
-                frameTimer = 0;
-                currentState = playerState.actionable;
-            }
+            currentState = playerState.actionable;
+            hasHitAttack = false;
+            frameTimer = 0;
         }
 
-        //action
-        if (currentState == playerState.actionable)
-        {
-            setMoveAnim(0);
-            foreach(GameObject g in moveHitboxHolders)
-            {
-                if(g != null)
-                {
-                    g.SetActive(false);
-                }
-
-            }
-        }
-
-
-        //another clamp bc lol
         if (frameTimer < 0)
         {
             frameTimer = 0;
         }
-            
     }
     public PlayerData GetPlayerData()
     {
@@ -303,31 +213,15 @@ public class GenericCharacter : MonoBehaviour
         if (doGroundCheck())
         {
             currentGroundState = playerGroundState.grounded;
-            anim.SetBool(Grounded, true);
         }
         else
         {
             currentGroundState = playerGroundState.air;
-            anim.SetBool(Grounded, false);
-        }
-
-        if (currentGroundState != lastGroundState)
-        {
-            if (lastGroundState == playerGroundState.air) //Landing animation
-            {
-                StartAnimation(-2); //w magic numbers
-                lastGroundState = currentGroundState;
-            }
-            else //Jumping animation
-            {
-                StartAnimation(-1); //w magic numbers
-                lastGroundState = currentGroundState;
-            }
         }
 
         //doDownHandle();
         updatePercentText();
-        //velocity *= drag;
+        velocity *= drag;
     }
 
     public void updatePercentText()
@@ -368,12 +262,8 @@ public class GenericCharacter : MonoBehaviour
             if (move.inputSequence.Contains<InputType>(InputType.attack) ||
                 move.inputSequence.Contains<InputType>(InputType.special))
             {
-                if(currentState == playerState.actionable)
-                {
-                    Debug.Log("attacking!");
-                    startAttack(move);
-                }
-                
+                Debug.Log("attacking!");
+                startAttack(move);
             }
             else if (move.inputSequence.Contains<InputType>(InputType.parry))
             {
@@ -402,7 +292,8 @@ public class GenericCharacter : MonoBehaviour
         else
         {
             currentState = playerState.actionable;
-            drag = 1f; 
+            drag = 1f;
+
         }
     }
 
@@ -457,7 +348,6 @@ public class GenericCharacter : MonoBehaviour
             //jump triggers only once per tap/button
             if (currentGroundState == playerGroundState.grounded && (inputReader.tapJumpPressed || inputReader.jumpPressed))
             {
-                setMoveAnim(-1); //w magic number 
                 velocity.y = Mathf.Sqrt(jumpPower * 2f * weight);
                 inputReader.tapJumpPressed = false;
                 inputReader.jumpPressed = false;
@@ -545,18 +435,18 @@ public class GenericCharacter : MonoBehaviour
         float rot = transform.eulerAngles.y;
         if (playerID % 2 == 0) //even players
         {
-            if (moveDirection.x < 0)
+            if (moveDirection.x > 0)
             {
                 rot += 180f;
                 if(rot > 180f)  rot = 180f;
-                faceDirection = faceDirection.left;
+                faceDirection = faceDirection.right;
                 transform.localEulerAngles = new Vector3(0f, rot, 0f);
             }
-            else if (moveDirection.x > 0)
+            else if (moveDirection.x < 0)
             {
                 rot -= 180f;
                 if(rot < 0f)  rot = 0f;
-                faceDirection = faceDirection.right;
+                faceDirection = faceDirection.left;
                 transform.localEulerAngles = new Vector3(0f, rot, 0f);
             }
         }
@@ -600,44 +490,25 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void startAttack(Move move)
     {
+
         if (move)
         {
+            //print(move.name);
             lastUsedMove = move;
             currentState = playerState.attacking;
             frameTimer = move.moveTime;
-            setMoveAnim(move.moveID);
+            
+            /*
+            //debug
+            Hitbox hitbox = Instantiate(Resources.Load("HitboxTemplate") as Hitbox, transform);
+            hitbox.takeInHitboxData(move.hds);
+            */
+            
+            setMoveAnim(move.animationId);
             inputReader.ClearBuffer(); // consume the inputs
         }
     }
 
-    public void handleAttack(Move m)
-    {
-        if (!m)
-        {
-            return;
-        }
-
-        if (m.hasProjectile)
-        {
-            GameObject proj = Instantiate(m.projectile);
-            proj.GetComponent<Projectile>().initProjectile(m.hds, playerID, m.projectileSpeed, m.projectileLifetime);
-            print("Spawned Projectile");
-        }
-        else
-        {
-            moveHitboxHolders[m.moveID].SetActive(true);
-            //checkAndSendAttackInfo((createAttackHitbox(m)));
-        }
-    }
-
-    public void doDisplacmentOverride(Vector2 direction, float magnitude)
-    {
-        velocity = Vector3.zero;
-        velocity = direction * magnitude;
-        drag = 0.95f;
-    }
-
-    [Obsolete]
     public virtual void checkAndSendAttackInfo(Collider[] colliders)
     {
         if (colliders != null)
@@ -668,7 +539,6 @@ public class GenericCharacter : MonoBehaviour
         isGrabbed = false;
         currentState = playerState.actionable;
     }
-    [Obsolete]/*
     public virtual Collider[] createAttackHitbox(Move move)
     {
         if (!hasHitAttack)
@@ -680,20 +550,20 @@ public class GenericCharacter : MonoBehaviour
                 print("Spawned Hitbox at: " + location.name + ": " + location.position);
             }
 
-            //return Physics.OverlapSphere(location.position, move.radius, Physics.AllLayers, QueryTriggerInteraction.Collide);
+            return Physics.OverlapSphere(location.position, move.radius, Physics.AllLayers,
+                QueryTriggerInteraction.Collide);
         }
 
         return null;
     }
-    */
 
 
-    public void OnDrawGizmosSelected() //visualizes the hitboxes while in the editor
+    public void OnDrawGizmosSelected() //visualizes the hitboxes
     {
         Gizmos.color = new Color(1, 0, 0, 0.75F);
         if (lastUsedMove != null && currentState == playerState.attacking)
         {
-            //Gizmos.DrawSphere(hitboxAnchors[(int)lastUsedMove.hitboxLocation].transform.position, lastUsedMove.radius);
+            Gizmos.DrawSphere(hitboxAnchors[(int)lastUsedMove.hitboxLocation].transform.position, lastUsedMove.radius);
         }
     }
 
@@ -745,7 +615,7 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void doTakeDamage(HitboxDataStruct hitbox)
     {
-        if (!isShieldActive || currentState != playerState.parry)
+        if (!isShieldActive)
         {
             currentState = playerState.hitstun;
             frameTimer = hitbox.hitStun;

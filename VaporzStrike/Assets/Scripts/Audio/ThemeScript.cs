@@ -2,22 +2,10 @@ using UnityEngine;
 
 public class ThemeScript : MonoBehaviour
 {
-    public static ThemeScript instance { get; private set; }
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            Debug.Log("Destroying");
-        }
-        else
-        {
-            Debug.Log("Creating Instance");
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-  
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame

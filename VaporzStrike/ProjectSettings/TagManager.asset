@@ -7,7 +7,6 @@ TagManager:
   - PercentTrack
   - HitboxAnchor
   - Hurtbox
-  - SpawnLocation
   layers:
   - Default
   - TransparentFX
@@ -17,7 +16,7 @@ TagManager:
   - UI
   - OneWayPlatform
   - Ground
-  - Hurtbox
+  - 
   - 
   - 
   - 

@@ -7156,10 +7156,6 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4420316408485398648, guid: 3ab1b93194b2b78498a871eb363f8498, type: 3}
-      propertyPath: charID
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 4426717164348151084, guid: 3ab1b93194b2b78498a871eb363f8498, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7464,10 +7460,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterSelect
       objectReference: {fileID: 0}
-    - target: {fileID: 6850405403128393732, guid: 3ab1b93194b2b78498a871eb363f8498, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7070912161136938687, guid: 3ab1b93194b2b78498a871eb363f8498, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -0.00012207031
@@ -7630,10 +7622,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8815935626396190373, guid: 3ab1b93194b2b78498a871eb363f8498, type: 3}
       propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8965147047451245082, guid: 3ab1b93194b2b78498a871eb363f8498, type: 3}
-      propertyPath: charID
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9006477108863391469, guid: 3ab1b93194b2b78498a871eb363f8498, type: 3}
