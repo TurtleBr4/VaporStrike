@@ -14,4 +14,10 @@ public class PlayerData : ScriptableObject
     public float maxFallSpeed;
     public Moveset moveset;
     public Sprite mugshot;
+
+    public Move getMoveAtID(int id)
+    {
+        return moveset.moves[id];
+    }
+    
 }
