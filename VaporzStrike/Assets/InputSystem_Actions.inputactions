@@ -113,6 +113,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Grab",
+                    "type": "Button",
+                    "id": "0a65ade8-b8d3-4831-a993-33e67ea9c3db",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -547,23 +556,34 @@
                 },
                 {
                     "name": "",
-                    "id": "a78ea2df-7c7a-4518-9548-ee6c8a2dab2f",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Gamepad",
-                    "action": "Block",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "86884b25-a498-47f0-ba8b-18190d442f0d",
                     "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7c685f89-d7fa-48e3-8bec-697e9630b6a0",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a52ba21b-9cca-4d6e-a56e-726af8e68914",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Grab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -953,11 +973,11 @@
                 },
                 {
                     "name": "",
-                    "id": "c52c8e0b-8179-41d3-b8a1-d149033bbe86",
+                    "id": "59afbb85-a910-4063-bba9-5780bc258684",
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false

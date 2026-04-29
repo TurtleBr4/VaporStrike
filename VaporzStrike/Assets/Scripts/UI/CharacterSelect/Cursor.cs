@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-public class Cursor : MonoBehaviour
+public class CursorVirt : MonoBehaviour
 {
     PlayerInput playerControls;
     public Vector2 dir;
@@ -18,9 +18,18 @@ public class Cursor : MonoBehaviour
 
     void Awake()
     {
+        playerControls = GetComponent<PlayerInput>();
         //playerControls.DeactivateInput();
-        _graphicRaycaster = GameObject.Find("Canvas").GetComponentInChildren<GraphicRaycaster>();
-        r = GetComponent<RectTransform>();
+        if (GameObject.Find("CharacterSelectCanvas"))
+        {
+            _graphicRaycaster = GameObject.Find("CharacterSelectCanvas").GetComponentInChildren<GraphicRaycaster>();
+        }
+        else
+        {
+            _graphicRaycaster = GameObject.Find("Canvas").GetComponentInChildren<GraphicRaycaster>();
+        }
+
+            r = GetComponent<RectTransform>();
     }
 
     public void SetID(int id)
@@ -35,12 +44,20 @@ public class Cursor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerControls.camera = Camera.main;
         r.anchoredPosition += dir * speed;
         var pointer = new PointerEventData(EventSystem.current) { position = r.anchoredPosition };
-       
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.DebugTxt = pointer.position.ToString();
+        }
         List<RaycastResult> raycastResults = new List<RaycastResult>();
         _graphicRaycaster.Raycast(pointer, raycastResults);
-        //Debug.Log(raycastResults.Count);
+        Debug.Log(raycastResults.Count);
+        if (GameManager.instance != null)
+        {
+            //GameManager.instance.DebugTxt = raycastResults.Count.ToString();
+        }
         foreach (RaycastResult raycastResult in raycastResults)
         {
             
@@ -60,6 +77,13 @@ public class Cursor : MonoBehaviour
                     ExecuteEvents.Execute(raycastResult.gameObject, pointer, ExecuteEvents.pointerClickHandler);
                     
                     
+                }
+            }
+            else
+            {
+                if (GameManager.instance != null)
+                {
+                    GameManager.instance.DebugTxt = $"no ui";
                 }
             }
         }

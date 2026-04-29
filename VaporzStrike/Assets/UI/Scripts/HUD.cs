@@ -24,16 +24,23 @@ public class HUD : MonoBehaviour
 
     public GameObject matchResultCanvas;
     public TextMeshProUGUI matchResultTxt;
+
+    public GameObject countdown;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //player1 = GameObject.Find("TestPlayer");
         GameManager.instance.Init();
         GameManager.instance.onGameStateChanged(gameState.Game);
+        GameManager.instance.matchTimer = 200;
         instance = this;
         GameManager.instance.isMatch = true;
+        
     }
-
+    private void Awake()
+    {
+        countdown.gameObject.SetActive(true);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -43,7 +50,7 @@ public class HUD : MonoBehaviour
         pauseCanvas.SetActive(isPaused);
         Time.timeScale = (isPaused ? 0.0f : 1.0f);
 
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (Gamepad.current.startButton.wasPressedThisFrame)
         {
             isPaused = !isPaused;
         }
