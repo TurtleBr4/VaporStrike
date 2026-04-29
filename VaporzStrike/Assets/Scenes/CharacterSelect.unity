@@ -2808,6 +2808,10 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 3161504507945357589, guid: 8ba58d7e35474484a8323c12ee699396, type: 3}
+      propertyPath: debugFlag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161504507945357589, guid: 8ba58d7e35474484a8323c12ee699396, type: 3}
       propertyPath: playerDatabase
       value: 
       objectReference: {fileID: 11400000, guid: 115a3e18ce27187df917b2bbb3832f11, type: 2}
@@ -7158,7 +7162,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4420316408485398648, guid: 3ab1b93194b2b78498a871eb363f8498, type: 3}
       propertyPath: charID
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4426717164348151084, guid: 3ab1b93194b2b78498a871eb363f8498, type: 3}
       propertyPath: m_AnchorMax.y

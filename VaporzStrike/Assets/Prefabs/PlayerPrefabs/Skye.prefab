@@ -556,7 +556,7 @@ MonoBehaviour:
   jumpPower: 0
   airSpeed: 0
   maxFallSpeed: 0
-  baseShieldHP: 0
+  baseShieldHP: 100
   moveset: {fileID: 0}
   inputReader: {fileID: 1783990733447391090}
   groundCheck: {fileID: 8265069991571521907}
@@ -1527,6 +1527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c: {fileID: 0}
   lifetime: 100
+  pummelDMG: 0
 --- !u!1 &8923824003309603273
 GameObject:
   m_ObjectHideFlags: 0

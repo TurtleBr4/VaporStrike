@@ -21,3 +21,4 @@ MonoBehaviour:
   airSpeed: 25
   maxFallSpeed: 35
   moveset: {fileID: 11400000, guid: 5a477d0d7455503cdbf2a859b7020d47, type: 2}
+  mugshot: {fileID: 21300000, guid: 13686e315bd84444fa1ef9d654d074ae, type: 3}
