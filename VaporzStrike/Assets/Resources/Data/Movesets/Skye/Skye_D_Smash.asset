@@ -12,17 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5cd4e23974e76eabed3aa3ad330b48, type: 3}
   m_Name: Skye_D_Smash
   m_EditorClassIdentifier: 
-  moveName: 
-  inputSequence: 
-  moveTime: 0
-  blockStun: 0
+  moveName: Down Smash
+  inputSequence: 0500000004000000
+  moveTime: 10
+  blockStun: 5
   moveID: 0
-  hitboxStartTime: 0
-  hitboxEndTime: 0
+  hitboxStartTime: 5
+  hitboxEndTime: 7
   requiresGrounded: 1
   hasProjectile: 0
   hasDisplacement: 0
   displacementDirection: {x: 0, y: 0}
+  displacementMagnitude: 0
   projectile: {fileID: 0}
   projectileSpeed: 0
   projectileLifetime: 0

@@ -56,7 +56,7 @@ Material:
     - Color_82FFD219: {r: 0.9811321, g: 0.7428829, b: 0.0786757, a: 0}
     - Color_A437791F: {r: 0.48584908, g: 1, b: 0.98960924, a: 0}
     - Vector3_EF091AC6: {r: 46.6, g: -26.3, b: -88, a: 0}
-    - _CloudColor: {r: 1, g: 0.9165359, b: 0.7216981, a: 0}
+    - _CloudColor: {r: 1, g: 0.7791245, b: 0, a: 1}
     - _FogColor: {r: 0, g: 0.45067596, b: 1, a: 0}
     - _SunColor: {r: 1024, g: 963.92163, b: 0, a: 0}
   m_BuildTextureStacks: []
