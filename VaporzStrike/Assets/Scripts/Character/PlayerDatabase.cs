@@ -8,7 +8,10 @@ public class PlayerDatabase : ScriptableObject
     [FormerlySerializedAs("items")] public List<PlayerData> players = new List<PlayerData>(); //list of every item in the game
 
     private Dictionary<int, PlayerData> itemLookup;
-
+    public PlayerDatabase(List<PlayerData> players)
+    {
+        this.players = players;
+    }
     void OnEnable() //go through every item on our list and put in in our dictionary for effecient lookups
     {
         itemLookup = new Dictionary<int, PlayerData>();

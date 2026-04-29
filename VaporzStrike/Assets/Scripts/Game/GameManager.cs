@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Linq;
 
 public enum gameState
 {
@@ -61,6 +62,7 @@ public class GameManager : MonoBehaviour
         } 
         
         playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
+        //playerDatabase.players = Resources.LoadAll<PlayerData>("Data/Character").ToList<PlayerData>();
         chosenLevel = Resources.Load<LevelData>("Data/Levels/ChosenLevel");
     }
 
@@ -79,7 +81,7 @@ public class GameManager : MonoBehaviour
     }
     public void Init()
     {
-        if (!debugFlag) //we're in debug here so the hud never bothers spawning things, default to the old behavior
+        if (debugFlag) //we're in debug here so the hud never bothers spawning things, default to the old behavior
         {
             onGameStateChanged(gameState);
             LoadLevel();
@@ -150,7 +152,10 @@ public class GameManager : MonoBehaviour
     {
         playerDataArray[playerIndex] = playerDatabase.getPlayerById(charID);
     }
-
+    public PlayerData GetPlayerByID(int id)
+    {
+        return playerDatabase.getPlayerById(id);
+    }
     public PlayerData GetPlayer(int playerIndex)
     {
         return playerDataArray[playerIndex];
@@ -171,6 +176,7 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < playerCount; i++)
             {
                 assignPlayerDataToPlayer(playerDataArray[i], i);
+                Debug.Log("Player count: " + playerCount);
             }
         }
         else //this is where we handle the cursor spawning fuck shit >:)
@@ -204,6 +210,7 @@ public class GameManager : MonoBehaviour
         if (playerIndex > characterArray.Length || characterArray.Length <=0) { return; } else
         {
             characterArray[playerIndex].assignPlayerData(p, playerIndex);
+            Debug.Log("Index");
         }
             
         //characterArray[playerIndex].assignPlayerData(p, playerIndex);

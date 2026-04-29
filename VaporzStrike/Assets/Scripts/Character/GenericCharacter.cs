@@ -105,6 +105,7 @@ public class GenericCharacter : MonoBehaviour
     {
         if (playerData)
         {
+            Debug.Log("PlayerData found");
             moveset = playerData.moveset;
             moveSpeed  = playerData.moveSpeed;
             weight = playerData.weight;
@@ -154,7 +155,11 @@ public class GenericCharacter : MonoBehaviour
     public virtual void stateManager()
     {
         if (isGrabbed) { currentState = playerState.hitstun; }
-        if (isGrabbing) { currentState = playerState.attacking; }
+        if (isGrabbing) { 
+            currentState = playerState.attacking;
+            
+
+        }
         if (currentState == playerState.hitstun && frameTimer != 0)
         {
             frameTimer--;
@@ -308,6 +313,12 @@ public class GenericCharacter : MonoBehaviour
         {
             currentState = playerState.actionable;
             isShieldActive = false;
+        }
+        if (!isGrabbing && !inputReader.grabPressed && grabbox.activeInHierarchy)
+        {
+            currentState = playerState.actionable;
+            isGrabbing = false;
+            grabbox.SetActive(false);
         }
         if (currentState == playerState.actionable) //regular movement
         {
@@ -616,7 +627,15 @@ public class GenericCharacter : MonoBehaviour
             shieldHP -= hitbox.hitStun;
         }
     }
-    
+
+    public virtual void doTakePercent(int amount)
+    {
+        if (!isShieldActive)
+        {
+            currentState = playerState.hitstun;
+            damagePercent += amount;
+        }
+    }
     #region Animator Flags
 
     public void StartAnimation(int animID)

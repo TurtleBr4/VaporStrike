@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements.Experimental;
+using TMPro;
 
 public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
@@ -8,20 +10,31 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
     private Selectable selectable;
     public int charID = 0;
     public int selectedCursor = 0;
+    public Image mugshot;
+    public PlayerData playerData;
+
+    public bool isStage = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //element = GameObject.Find("CursorP1").GetComponent<RectTransform>();
         selectable = GetComponent<Selectable>();
-
+        playerData = GameManager.instance.GetPlayerByID(charID);
     }
 
     // Update is called once per frame
     void Update()
     {
         //if (AreRectsOverlapping(GetComponent<RectTransform>(), element)) { EventSystem.current.SetSelectedGameObject(this.gameObject); }
+        if (!playerData.mugshot.Equals(null) && !isStage)
+        {
 
-        
+            mugshot.sprite = playerData.mugshot;
+            GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(false);
+        }
+        else if (isStage) { }
+        else { mugshot.sprite = null; GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(true); }
+
 
     }
     public static bool AreRectsOverlapping(RectTransform rect1, RectTransform rect2)

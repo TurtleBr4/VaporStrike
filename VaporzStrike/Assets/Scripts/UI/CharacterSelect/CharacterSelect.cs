@@ -3,10 +3,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class CharacterSelect : MonoBehaviour
 {
     public TextMeshProUGUI player1Name;
     public TextMeshProUGUI player2Name;
+    public Image player1Img;
+    public Image player2Img;
+
     public LevelData chosenLevel;
     public string selectedLevel;
 
@@ -30,7 +34,7 @@ public class CharacterSelect : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Update()
     {
-        if (Gamepad.current.selectButton.wasPressedThisFrame)
+        if (Gamepad.current != null && Gamepad.current.selectButton.wasPressedThisFrame)
         {
             Back();
         }
@@ -39,10 +43,13 @@ public class CharacterSelect : MonoBehaviour
         if (GameManager.instance.GetPlayer(0))
         {
             player1Name.text = GameManager.instance.GetPlayer(0).playerName;
+
+            player1Img.sprite = GameManager.instance.GetPlayer(0).mugshot;
         }
         if (GameManager.instance.GetPlayer(1))
         {
             player2Name.text = GameManager.instance.GetPlayer(1).playerName;
+            player2Img.sprite = GameManager.instance.GetPlayer(1).mugshot;
         }
 
         switch (selectMode) { 

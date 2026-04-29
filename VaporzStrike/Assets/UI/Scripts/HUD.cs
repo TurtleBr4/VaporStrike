@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 public class HUD : MonoBehaviour
 {
     public bool isPaused = false;
@@ -9,6 +10,9 @@ public class HUD : MonoBehaviour
 
     public TextMeshProUGUI player1Name;
     public TextMeshProUGUI player2Name;
+
+    public Image player1Img;
+    public Image player2Img;
 
     public TextMeshProUGUI p1Percent;
     public TextMeshProUGUI p2Percent;
@@ -47,6 +51,9 @@ public class HUD : MonoBehaviour
         player1Name.text = GameManager.instance.GetPlayer(0).playerName;
         player2Name.text = GameManager.instance.GetPlayer(1).playerName;
 
+        player1Img.sprite = GameManager.instance.GetPlayer(0).mugshot;
+        player2Img.sprite = GameManager.instance.GetPlayer(1).mugshot;
+
         pauseCanvas.SetActive(isPaused);
         Time.timeScale = (isPaused ? 0.0f : 1.0f);
 
@@ -55,7 +62,7 @@ public class HUD : MonoBehaviour
             isPaused = !isPaused;
         }
 
-        if(isPaused && returnInput.action.triggered) 
+        if(isPaused && Gamepad.current.selectButton.wasPressedThisFrame) 
         {
             ToCharacterSelect();
         }

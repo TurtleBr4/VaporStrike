@@ -2304,6 +2304,7 @@ MonoBehaviour:
   tapJumpPressed: 0
   jumpPressed: 0
   blockPressed: 0
+  grabPressed: 0
   printInputs: 0
 --- !u!114 &1298792527
 MonoBehaviour:
@@ -2604,131 +2605,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c207dcb2b20ae8948bbb4ad87e01d892, type: 3}
   m_PrefabInstance: {fileID: 2076472656}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1536826516
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1536826518}
-  - component: {fileID: 1536826517}
-  - component: {fileID: 1536826519}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: GameController
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1536826517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536826516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee1b847d699ccba4a8d56fcb315eaac0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameFrameRate: 60
-  platformFrameTime: 24
-  fastFallMultiplier: 1.25
-  parryFrameTime: 30
-  debugFlag: 0
-  matchTimer: 120
-  pInputManager: {fileID: 1536826519}
-  index: 0
-  playerDataArray:
-  - {fileID: 0}
-  - {fileID: 0}
-  characterArray:
-  - {fileID: 0}
-  - {fileID: 0}
-  playerDatabase: {fileID: 0}
-  playerPercentsArray:
-  - {fileID: 0}
-  - {fileID: 0}
-  isMatch: 0
-  player1Obj: {fileID: 0}
-  player2Obj: {fileID: 0}
-  DebugTxt: 
-  matchResult: 0
---- !u!4 &1536826518
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536826516}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1536826519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536826516}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_NotificationBehavior: 2
-  m_MaxPlayerCount: -1
-  m_AllowJoining: 1
-  m_JoinBehavior: 0
-  m_PlayerJoinedEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1536826517}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: switchAndSpawnNext
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.InputSystem.PlayerInput,
-            Unity.InputSystem
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  m_PlayerLeftEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_JoinAction:
-    m_UseReference: 0
-    m_Action:
-      m_Name: 
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: bbcaf5f3-06f6-4231-a8ba-5e3c697e8ffe
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 5042147053186261879, guid: 819567b89ecedfb40834b76ef1682c0f, type: 3}
-  m_SplitScreen: 0
-  m_MaintainAspectRatioInSplitScreen: 0
-  m_FixedNumberOfSplitScreens: -1
-  m_SplitScreenRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
 --- !u!1 &1542756677
 GameObject:
   m_ObjectHideFlags: 0
@@ -4560,7 +4436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3161504507945357589, guid: 8ba58d7e35474484a8323c12ee699396, type: 3}
       propertyPath: debugFlag
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4584,7 +4460,6 @@ SceneRoots:
   - {fileID: 7904093552878381539}
   - {fileID: 447921529191987366}
   - {fileID: 411296800}
-  - {fileID: 1536826518}
   - {fileID: 1469011795052875616}
   - {fileID: 1415610790}
   - {fileID: 448919323}

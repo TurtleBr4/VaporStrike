@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.UI;
 [CreateAssetMenu(fileName = "PlayerData", menuName = "Scriptable Objects/PlayerData")]
 public class PlayerData : ScriptableObject
 {
@@ -13,5 +13,5 @@ public class PlayerData : ScriptableObject
     public float airSpeed;
     public float maxFallSpeed;
     public Moveset moveset;
-    
+    public Sprite mugshot;
 }

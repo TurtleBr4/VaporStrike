@@ -339,7 +339,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Shift - Main Menu
+  m_text: Select - Main Menu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -366,10 +366,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 34.4
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -2968,6 +2968,8 @@ MonoBehaviour:
   pauseCanvas: {fileID: 8639764110986013040}
   player1Name: {fileID: 2606994264336987450}
   player2Name: {fileID: 6118504744191754537}
+  player1Img: {fileID: 5027219919786609986}
+  player2Img: {fileID: 3141211526867663645}
   p1Percent: {fileID: 3689994900465961396}
   p2Percent: {fileID: 5148156198591583289}
   p1Stocks: {fileID: 1033291128523070526}

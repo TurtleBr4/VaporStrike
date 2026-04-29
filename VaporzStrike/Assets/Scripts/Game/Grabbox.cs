@@ -5,6 +5,7 @@ public class Grabbox : MonoBehaviour
     public GrabboxDataStruct data;
     public SphereCollider c;
     public int lifetime = 100;
+    public int pummelDMG = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,9 +17,14 @@ public class Grabbox : MonoBehaviour
         data = d;
         c.radius = data.radius;
     }
+
+    public void Pummel(int amount)
+    {
+        pummelDMG = amount;
+    }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.tag == "Player" && other.gameObject != transform.parent.gameObject)
         {
             transform.parent.GetComponent<GenericCharacter>().isGrabbing = true;
             other.SendMessage("GetGrabbed", SendMessageOptions.RequireReceiver);
@@ -28,7 +34,7 @@ public class Grabbox : MonoBehaviour
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" && other.gameObject != transform.parent.gameObject)
         {
             if (lifetime <= 0)
             {
@@ -40,6 +46,12 @@ public class Grabbox : MonoBehaviour
             else
             {
                 lifetime--;
+
+                if(pummelDMG > 0)
+                {
+                    pummelDMG = 0;
+                    other.SendMessage("DoTakePercent", pummelDMG);
+                }
             }
                 
         }
