@@ -625,7 +625,11 @@ public class GenericCharacter : MonoBehaviour
         }
         else
         {
-            moveHitboxHolders[m.moveID].SetActive(true);
+            if (moveHitboxHolders[m.moveID] != null)
+            {
+                moveHitboxHolders[m.moveID].SetActive(true);
+
+            }
             //checkAndSendAttackInfo((createAttackHitbox(m)));
         }
     }

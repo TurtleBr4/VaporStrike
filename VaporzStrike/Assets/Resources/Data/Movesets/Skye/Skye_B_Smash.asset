@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skye_B_Smash
   m_EditorClassIdentifier: 
   moveName: Side Smash
-  inputSequence: 0500000002000000
+  inputSequence: 0500000001000000
   moveTime: 14
   blockStun: 7
   moveID: 2
@@ -23,6 +23,7 @@ MonoBehaviour:
   hasProjectile: 0
   hasDisplacement: 0
   displacementDirection: {x: 0, y: 0}
+  displacementMagnitude: 0
   projectile: {fileID: 0}
   projectileSpeed: 0
   projectileLifetime: 0

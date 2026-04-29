@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Skye_F_Special
   m_EditorClassIdentifier: 
   moveName: 
-  inputSequence: 
+  inputSequence: 0600000002000000
   moveTime: 0
   blockStun: 0
-  moveID: 0
+  moveID: 6
   hitboxStartTime: 0
   hitboxEndTime: 0
-  requiresGrounded: 1
+  requiresGrounded: 0
   hasProjectile: 0
   hasDisplacement: 0
   displacementDirection: {x: 0, y: 0}

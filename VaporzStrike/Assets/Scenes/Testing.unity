@@ -526,6 +526,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7299bbbdfdf270d5e99d1bb2ffbea361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  self: {fileID: 0}
   damage: 0
   knockback: 0
   hitStun: 0
@@ -4750,10 +4751,6 @@ PrefabInstance:
     - target: {fileID: 4258082508430758349, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7112972008872774343, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
-      propertyPath: c
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
