@@ -51,12 +51,7 @@ public class Move : ScriptableObject
         */
     }
 }
-
 public enum HitboxLocations
 {
     LeftHand, RightHand, LeftFoot, RightFoot, LeftLeg, RightLeg, Torso, Head, LeftShoulder, RightShoulder
-}
-
-
-
 }

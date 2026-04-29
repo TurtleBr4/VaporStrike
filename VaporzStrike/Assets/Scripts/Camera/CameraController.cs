@@ -19,23 +19,47 @@ public class CameraController : MonoBehaviour
     void Awake()
     {
         cam = GetComponent<Camera>();
+        players = new Transform[GameManager.playerCount];
     }
 
     private void Start()
     {
-        players = new Transform[GameManager.playerCount]; 
+ 
 
+        /*
         int count = 0;
         foreach(GameObject p in GameObject.FindGameObjectsWithTag("Player"))
         {
             players[count] = p.transform;
             count++;
         }
+        */
     }
 
+    public void init()
+    {
+        int count = 0;
+        foreach (GameObject p in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            print(p.name + count);
+            players[count] = p.transform;
+            count++;
+        }
+    }
+
+    private void Update()
+    {
+        if (players == null || players.Length == 0)
+        {
+            init();
+        }
+    }
     void LateUpdate()
     {
-        if (players == null || players.Length == 0) return;
+        if (players == null || players.Length == 0)
+        {
+            return;
+        }
 
         Vector3 center = getCenterPoint();
         Vector3 targetPos = center + offset;

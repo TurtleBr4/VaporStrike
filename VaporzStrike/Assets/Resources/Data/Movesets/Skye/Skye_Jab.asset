@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveName: Jab
   inputSequence: 05000000
-  moveTime: 10
+  moveTime: 13
   blockStun: 4
   moveID: 1
   hitboxStartTime: 3
@@ -23,6 +23,7 @@ MonoBehaviour:
   hasProjectile: 0
   hasDisplacement: 0
   displacementDirection: {x: 0, y: 0}
+  displacementMagnitude: 0
   projectile: {fileID: 0}
   projectileSpeed: 0
   projectileLifetime: 0

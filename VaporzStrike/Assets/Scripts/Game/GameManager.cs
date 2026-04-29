@@ -68,8 +68,8 @@ public class GameManager : MonoBehaviour
     {
         if (debugFlag)
         {
-            pickPlayer(0, 0);
-            pickPlayer(1, 0);
+            pickPlayer(1, 3);
+            pickPlayer(0, 3);
         }
         onGameStateChanged(gameState);
         if (gameState == gameState.Game) //cap the framerate at 60 for gameplay for simplicity
@@ -166,12 +166,34 @@ public class GameManager : MonoBehaviour
             pInputManager.enabled = false; //just in case
 
             Application.targetFrameRate = gameFrameRate;
-            
+            GameObject guy;
+            Level level = GameObject.Find("LevelData").GetComponent<Level>();
+            for(int i = 0; i < level.levelSpawns.Length; i++)
+            {
+                guy = Instantiate(playerDataArray[i].playerPrefab);
+                if (guy)
+                {
+                    print("Spawned Character Prefab");
+                }
+                else
+                {
+                    Debug.LogError("What the Hell!");
+                }
+                
+            }
+
             characterArray = FindObjectsByType<GenericCharacter>(FindObjectsSortMode.InstanceID);
+            characterArray[0].transform.position = level.levelSpawns[0].position;
+            characterArray[1].transform.position = level.levelSpawns[1].position;
+
+
+
             for (int i = 0; i < playerCount; i++)
             {
                 assignPlayerDataToPlayer(playerDataArray[i], i);
             }
+
+            level.cam.init();
         }
         else //this is where we handle the cursor spawning fuck shit >:)
         {

@@ -17,7 +17,7 @@ MonoBehaviour:
   playerId: 3
   weight: 45
   moveSpeed: 15
-  jumpPower: 10
-  airSpeed: 35
-  maxFallSpeed: 15
+  jumpPower: 6
+  airSpeed: 25
+  maxFallSpeed: 35
   moveset: {fileID: 11400000, guid: 5a477d0d7455503cdbf2a859b7020d47, type: 2}

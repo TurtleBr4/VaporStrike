@@ -81,7 +81,7 @@ public class GenericCharacter : MonoBehaviour
     {
         inputReader = GetComponent<InputReader>();
         gameManager = FindFirstObjectByType<GameManager>();
-        faceDirection = faceDirection.right;
+        //faceDirection = faceDirection.right;
         hud = FindFirstObjectByType<HUD>();
         getConstantsFromGameManager();
         shield = GetComponentInChildren<Shield>().gameObject;
@@ -99,13 +99,22 @@ public class GenericCharacter : MonoBehaviour
         return playerID;
     }
 
+    public faceDirection getFaceDir()
+    {
+        return faceDirection;
+    }
+
     public void assignPlayerData(PlayerData p, int pid)
     {
         playerData = p;
         playerID = pid;
-        if (pid % 2 == 0)
+        if (pid % 2 != 0)
         {
             faceDirection = faceDirection.left;
+        }
+        else
+        {
+            faceDirection = faceDirection.right;
         }
         populateFromPlayerData();
     }
@@ -121,7 +130,9 @@ public class GenericCharacter : MonoBehaviour
             playerName = playerData.playerName;
             maxFallSpeed =  playerData.maxFallSpeed;
             jumpPower = playerData.jumpPower;
-            recieveCharacterPrefab(playerData.playerPrefab);
+            if (faceDirection == faceDirection.left) transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            //recieveCharacterPrefab(playerData.playerPrefab);
+
         }
         else
         {
@@ -157,75 +168,116 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void stateManager()
     {
-        if (isGrabbed) { currentState = playerState.hitstun; }
-        if (isGrabbing) { currentState = playerState.attacking; }
-        if (currentState == playerState.hitstun && frameTimer != 0)
-        {
-            frameTimer--;
-        }
-        else if (currentState == playerState.attacking && frameTimer > 0 && !isGrabbing)
-        {
-            int curFrame = lastUsedMove.moveTime - frameTimer;
-            //print(curFrame);
-            if (curFrame == lastUsedMove.hitboxStartTime)
-            {
-                isAttackHitboxActive = true;
-                print("starting hitbox");
-            }
-            if (curFrame == lastUsedMove.hitboxEndTime)
-            {
-                isAttackHitboxActive = false;
-                moveHitboxHolders[lastUsedMove.moveID].SetActive(false);
-                print("ending hitbox");
-            }
+        //if (isGrabbed) { currentState = playerState.hitstun; }
+        //if (isGrabbing) { currentState = playerState.attacking; }
+        //clamp
+        if (frameTimer < 0)
+            frameTimer = 0;
 
-            if (isAttackHitboxActive)
-            {
-                handleAttack(lastUsedMove);
-                if (lastUsedMove.hasDisplacement)
-                {
-                    doDisplacmentOverride(lastUsedMove.displacementDirection, lastUsedMove.displacementMagnitude);
-                }
-            }
-            frameTimer--;
-        }
-        else if (currentState ==  playerState.blocking)
+
+        //hitstun
+        if (currentState == playerState.hitstun)
         {
-            frameTimer = 6; //replace with a constant
-            if (frameTimer != 0)
+            if (frameTimer > 0)
+                frameTimer--;
+
+            if (frameTimer == 0)
+                currentState = playerState.actionable;
+        }
+        //attack
+        else if (currentState == playerState.attacking && !isGrabbing)
+        {
+            if (frameTimer > 0)
             {
+                int curFrame = lastUsedMove.moveTime - frameTimer;
+
+                if (curFrame == lastUsedMove.hitboxStartTime)
+                {
+                    isAttackHitboxActive = true;
+                    print("starting hitbox");
+                }
+
+                if (curFrame >= lastUsedMove.hitboxEndTime)
+                {
+                    isAttackHitboxActive = false;
+                    moveHitboxHolders[lastUsedMove.moveID].SetActive(false);
+                    print("ending hitbox");
+                }
+
+                if (isAttackHitboxActive)
+                {
+                    handleAttack(lastUsedMove);
+
+                    if (lastUsedMove.hasDisplacement)
+                    {
+                        doDisplacmentOverride(
+                            lastUsedMove.displacementDirection,
+                            lastUsedMove.displacementMagnitude
+                        );
+                    }
+                }
+
                 frameTimer--;
             }
-            else
+
+            if (frameTimer == 0)
+            {
+                currentState = playerState.actionable;
+                hasHitAttack = false;
+                isAttackHitboxActive = false;
+            }
+        }
+        //block
+        else if (currentState == playerState.blocking)
+        {
+            if (frameTimer == 0)
+                frameTimer = 6;
+
+            frameTimer--;
+
+            if (frameTimer <= 0)
             {
                 doBlock();
+                frameTimer = 0;
+                currentState = playerState.actionable;
             }
-
         }
-        else if (currentState ==  playerState.parry)
+        //parry
+        else if (currentState == playerState.parry)
         {
-            frameTimer = gameManager.parryFrameTime; //replace with a constant
-            if (frameTimer != 0)
+            if (frameTimer == 0)
+                frameTimer = gameManager.parryFrameTime;
+
+            frameTimer--;
+
+            if (frameTimer <= 0)
             {
-                frameTimer--;
+                frameTimer = 0;
+                currentState = playerState.actionable;
             }
         }
-        else if (currentState == playerState.attacking && frameTimer == 0 && !isGrabbing)
+
+        //action
+        if (currentState == playerState.actionable)
         {
-            currentState = playerState.actionable;
-            hasHitAttack = false;
-            frameTimer = 0;
-        }
-        else if (currentState == playerState.parry && frameTimer == 0)
-        {
-            currentState = playerState.actionable;
-            frameTimer = 0;
+            setMoveAnim(0);
+            foreach(GameObject g in moveHitboxHolders)
+            {
+                if(g != null)
+                {
+                    g.SetActive(false);
+                }
+
+            }
         }
 
+
+        //another clamp bc lol
         if (frameTimer < 0)
         {
             frameTimer = 0;
         }
+            
     }
     public PlayerData GetPlayerData()
     {
@@ -267,7 +319,7 @@ public class GenericCharacter : MonoBehaviour
 
         //doDownHandle();
         updatePercentText();
-        velocity *= drag;
+        //velocity *= drag;
     }
 
     public void updatePercentText()
@@ -308,8 +360,12 @@ public class GenericCharacter : MonoBehaviour
             if (move.inputSequence.Contains<InputType>(InputType.attack) ||
                 move.inputSequence.Contains<InputType>(InputType.special))
             {
-                Debug.Log("attacking!");
-                startAttack(move);
+                if(currentState == playerState.actionable)
+                {
+                    Debug.Log("attacking!");
+                    startAttack(move);
+                }
+                
             }
             else if (move.inputSequence.Contains<InputType>(InputType.parry))
             {
@@ -475,18 +531,18 @@ public class GenericCharacter : MonoBehaviour
         float rot = transform.eulerAngles.y;
         if (playerID % 2 == 0) //even players
         {
-            if (moveDirection.x > 0)
+            if (moveDirection.x < 0)
             {
                 rot += 180f;
                 if(rot > 180f)  rot = 180f;
-                faceDirection = faceDirection.right;
+                faceDirection = faceDirection.left;
                 transform.localEulerAngles = new Vector3(0f, rot, 0f);
             }
-            else if (moveDirection.x < 0)
+            else if (moveDirection.x > 0)
             {
                 rot -= 180f;
                 if(rot < 0f)  rot = 0f;
-                faceDirection = faceDirection.left;
+                faceDirection = faceDirection.right;
                 transform.localEulerAngles = new Vector3(0f, rot, 0f);
             }
         }

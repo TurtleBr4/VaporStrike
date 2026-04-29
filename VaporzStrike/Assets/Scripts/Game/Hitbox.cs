@@ -4,6 +4,7 @@ using UnityEngine;
 public class Hitbox : MonoBehaviour
 {
     public HitboxDataStruct data;
+    public GenericCharacter self;
     public float damage;
     public float knockback;
     public int hitStun;
@@ -23,13 +24,25 @@ public class Hitbox : MonoBehaviour
             blockStun = blockStun
         };
     }
-    
+
+    private void Update()
+    {
+        if (self.getFaceDir() != faceDirection.right)
+        {
+            data.launchDirection = -launchDirection;
+        }
+        else
+        {
+            data.launchDirection = launchDirection;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Hurtbox"))
         {
             GenericCharacter guy = other.GetComponentInParent<GenericCharacter>();
-            if (!guy.gameObject.Equals(gameObject))
+            if (!guy.gameObject.Equals(self.gameObject))
             {
                 print("Hit an Enemy");
                 guy.doTakeDamage(data);
