@@ -22,6 +22,10 @@ public class GenericCharacter : MonoBehaviour
 {
     private static readonly int AnimationID = Animator.StringToHash("Animation ID"); //thanks jetbrains rider for the effecient lookup or whatever
     private static readonly int Grounded = Animator.StringToHash("Grounded");
+    private static readonly int Idle = Animator.StringToHash("Idle");
+    private static readonly int Running = Animator.StringToHash("Running");
+
+    private int lastAnimId = 0;
 
     [Header("Static Character Variables")]
     [SerializeField] private GameObject[] moveHitboxHolders;
@@ -421,6 +425,15 @@ public class GenericCharacter : MonoBehaviour
             float y = inputReader.pollMovementInput().y;
 
             velocity.x = 0; //make sure we done have leftover velocity
+
+            if(currentGroundState == playerGroundState.grounded && x != 0) //Handle the running animation
+            {
+                setMoveAnim(-3);
+            }
+            else
+            {
+                setMoveAnim(0);
+            }
             
             //deadzone
             if (Mathf.Abs(x) < 0.1f) x = 0f;
@@ -438,10 +451,10 @@ public class GenericCharacter : MonoBehaviour
                 fastFalling = false; //turned off the fast fall here because why not
             }
 
-            
 
-            //jump triggers only once per tap/button
-            if (currentGroundState == playerGroundState.grounded && (inputReader.tapJumpPressed || inputReader.jumpPressed))
+
+            //jump triggers only once per tap/button TAP JUMP IS OFF FOR THIS BUID, FIX LATER inputReader.tapJumpPressed
+            if (currentGroundState == playerGroundState.grounded &&  inputReader.jumpPressed)
             {
                 setMoveAnim(-1); //w magic number 
                 velocity.y = Mathf.Sqrt(jumpPower * 2f * weight);
@@ -693,6 +706,25 @@ public class GenericCharacter : MonoBehaviour
         {
             isInAnimation = true;
             anim.SetInteger(AnimationID, animID);
+            if (animID == 0)
+            {
+                anim.SetBool(Idle, true);
+                anim.SetBool(Running, false);
+            }
+            else
+            {
+                anim.SetBool(Idle, false);
+            }
+
+            if (animID == -3)
+            {
+                anim.SetBool(Running, true);
+                anim.SetBool(Idle, false);
+            }
+            else
+            {
+                anim.SetBool(Running, false);
+            }
         }
     }
 
@@ -753,7 +785,27 @@ public class GenericCharacter : MonoBehaviour
     public void StartAnimation(int animID)
     {
         isInAnimation = true;
+        lastAnimId = anim.GetInteger(AnimationID);
         anim.SetInteger(AnimationID, animID);
+        if (animID == 0)
+        {
+            anim.SetBool(Idle, true);
+            anim.SetBool(Running, false);
+        }
+        else
+        {
+            anim.SetBool(Idle, false);
+        }
+
+        if(animID == -3)
+        {
+            anim.SetBool(Running, true);
+            anim.SetBool(Idle, false);
+        }
+        else
+        {
+            anim.SetBool(Running, false);
+        }
     }
 
     public void StopAnimation()
