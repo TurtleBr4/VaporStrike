@@ -2770,7 +2770,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &36617555549445618
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2927,6 +2927,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1307904239964137680}
   - component: {fileID: 4048057018745279687}
+  - component: {fileID: 5492412644616713279}
   m_Layer: 0
   m_Name: HUD
   m_TagString: Untagged
@@ -2977,6 +2978,23 @@ MonoBehaviour:
   matchResultCanvas: {fileID: 7673675014689641320}
   matchResultTxt: {fileID: 6741835570558725500}
   countdown: {fileID: 3563774187256488367}
+--- !u!114 &5492412644616713279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7858334064059565366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: d9fae4f594c10664e842510b4079974a, type: 2}
 --- !u!1 &7871824159382089028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3113,7 +3131,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -37.684, y: -20.474598}
+  m_AnchoredPosition: {x: -37.684, y: -20.474594}
   m_SizeDelta: {x: 284.934, y: 25.936}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2452869738639079585
@@ -3393,9 +3411,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1307904239964137680}
     m_Modifications:
+    - target: {fileID: 6325384921134729791, guid: 14d717ba7e9b5df40b8ff4b38185a3b2, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6515352864162553566, guid: 14d717ba7e9b5df40b8ff4b38185a3b2, type: 3}
       propertyPath: m_Name
       value: Countdown
+      objectReference: {fileID: 0}
+    - target: {fileID: 6515352864162553566, guid: 14d717ba7e9b5df40b8ff4b38185a3b2, type: 3}
+      propertyPath: m_Layer
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6515352864162553566, guid: 14d717ba7e9b5df40b8ff4b38185a3b2, type: 3}
       propertyPath: m_IsActive

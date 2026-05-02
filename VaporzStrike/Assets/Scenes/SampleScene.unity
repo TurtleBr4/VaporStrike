@@ -119,28 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &7665480 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7858334064059565366, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-  m_PrefabInstance: {fileID: 447921529191987366}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7665483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7665480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: d9fae4f594c10664e842510b4079974a, type: 2}
 --- !u!1 &8787639
 GameObject:
   m_ObjectHideFlags: 0
@@ -3668,37 +3646,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2647843266971833033, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -20.474594
-      objectReference: {fileID: 0}
-    - target: {fileID: 3563774187256488367, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_Layer
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 4059415947786054044, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 438922477}
-    - target: {fileID: 4383822437041812814, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_Layer
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 7858334064059565366, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
       propertyPath: m_Name
       value: HUD
       objectReference: {fileID: 0}
-    - target: {fileID: 7858334064059565366, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7858334064059565366, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7665483}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0e2360cd08e33d488c904cc6b325e0c, type: 3}
 --- !u!1001 &1469011795052875616
 PrefabInstance:
