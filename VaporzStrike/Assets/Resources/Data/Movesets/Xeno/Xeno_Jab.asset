@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Xeno_Jab
   m_EditorClassIdentifier: 
   moveName: Jab
-  inputSequence: 
+  inputSequence: 00000000
   moveTime: 14
   blockStun: 5
   moveID: 1

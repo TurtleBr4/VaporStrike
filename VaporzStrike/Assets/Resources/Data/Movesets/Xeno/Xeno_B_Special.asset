@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab5cd4e23974e76eabed3aa3ad330b48, type: 3}
   m_Name: Xeno_B_Special
   m_EditorClassIdentifier: 
-  moveName: Side Special
-  inputSequence: 0600000001000000
+  moveName: Back Special
+  inputSequence: 0100000006000000
   moveTime: 29
   blockStun: 15
   moveID: 3

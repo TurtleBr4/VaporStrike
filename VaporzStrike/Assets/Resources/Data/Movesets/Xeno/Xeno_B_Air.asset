@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Xeno_B_Air
   m_EditorClassIdentifier: 
   moveName: Back Air
-  inputSequence: 0600000003000000
+  inputSequence: 0100000005000000
   moveTime: 35
   blockStun: 5
   moveID: 11

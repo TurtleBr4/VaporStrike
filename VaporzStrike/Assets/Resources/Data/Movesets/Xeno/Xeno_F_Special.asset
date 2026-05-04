@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Xeno_F_Special
   m_EditorClassIdentifier: 
   moveName: Side Special
-  inputSequence: 0600000002000000
+  inputSequence: 0200000006000000
   moveTime: 41
   blockStun: 10
   moveID: 6

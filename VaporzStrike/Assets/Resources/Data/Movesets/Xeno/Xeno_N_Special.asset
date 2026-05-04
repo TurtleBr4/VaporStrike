@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Xeno_N_Special
   m_EditorClassIdentifier: 
   moveName: Neutral Special
-  inputSequence: 06000000
+  inputSequence: 0000000006000000
   moveTime: 18
   blockStun: 10
   moveID: 5
@@ -24,6 +24,6 @@ MonoBehaviour:
   hasDisplacement: 0
   displacementDirection: {x: 0, y: 0}
   displacementMagnitude: 0
-  projectile: {fileID: 0}
+  projectile: {fileID: 676051976039533982, guid: e2a3dcefbd2c81f4e8b357cace45c870, type: 3}
   projectileSpeed: 25
   projectileLifetime: 240

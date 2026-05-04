@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
     {
         if (debugFlag)
         {
-            pickPlayer(1, 3);
+            pickPlayer(1, 2);
             pickPlayer(0, 3);
         }
         onGameStateChanged(gameState);

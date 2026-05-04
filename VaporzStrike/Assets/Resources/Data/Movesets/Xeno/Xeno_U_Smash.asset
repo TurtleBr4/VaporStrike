@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Xeno_U_Smash
   m_EditorClassIdentifier: 
   moveName: Up Smash
-  inputSequence: 0600000002000000
+  inputSequence: 0300000005000000
   moveTime: 29
   blockStun: 15
   moveID: 3
