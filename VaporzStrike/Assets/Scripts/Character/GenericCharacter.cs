@@ -22,6 +22,17 @@ public class GenericCharacter : MonoBehaviour
 {
     private static readonly int AnimationID = Animator.StringToHash("Animation ID"); //thanks jetbrains rider for the effecient lookup or whatever
     private static readonly int Grounded = Animator.StringToHash("Grounded");
+    private static readonly int LastAnimIdle = Animator.StringToHash("LastAnimIdle");
+    private static readonly int Running = Animator.StringToHash("Running");
+    private static readonly int LastAnimID = Animator.StringToHash("Last Animation ID");
+    private static readonly int StartRun = Animator.StringToHash("Start Run");
+
+
+    public int lastAnimId = 0;
+    private int currentAnim = 0;
+    public bool runStartTracker = false;
+    private bool isMoving = false;
+    private bool wasMoving;
 
     [Header("Static Character Variables")]
     [SerializeField] private GameObject[] moveHitboxHolders;
@@ -61,6 +72,7 @@ public class GenericCharacter : MonoBehaviour
     public bool isShieldActive = false;
     public bool isGrabbing = false;
     public bool isGrabbed = false;
+    public bool isGrounded = true;
     private playerGroundState lastGroundState;
     
     public GameObject grabbox;
@@ -76,7 +88,8 @@ public class GenericCharacter : MonoBehaviour
 
     int playerStocks = 3;
     float drag = 1f;
-    
+
+
     private void Start()
     {
         inputReader = GetComponent<InputReader>();
@@ -304,11 +317,13 @@ public class GenericCharacter : MonoBehaviour
         {
             currentGroundState = playerGroundState.grounded;
             anim.SetBool(Grounded, true);
+            isGrounded = true;
         }
         else
         {
             currentGroundState = playerGroundState.air;
             anim.SetBool(Grounded, false);
+            isGrounded = false;
         }
 
         if (currentGroundState != lastGroundState)
@@ -435,10 +450,31 @@ public class GenericCharacter : MonoBehaviour
             float y = inputReader.pollMovementInput().y;
 
             velocity.x = 0; //make sure we done have leftover velocity
-            
+
             //deadzone
-            if (Mathf.Abs(x) < 0.1f) x = 0f;
-            if (Mathf.Abs(y) < 0.1f)  y = 0f;
+            if (Mathf.Abs(x) < 0.25f) x = 0f;
+            if (Mathf.Abs(y) < 0.25f) y = 0f;
+
+            if (currentGroundState == playerGroundState.grounded)
+            {
+                bool isMoving = Mathf.Abs(x) > 0.1f;
+
+                if (isMoving && !wasMoving)
+                {
+                    setMoveAnim(-3);
+                    anim.SetTrigger(StartRun);
+                }
+                    
+                if (isMoving && wasMoving)
+                    setMoveAnim(-3);
+
+                if (!isMoving && wasMoving)
+                    setMoveAnim(0);
+
+                wasMoving = isMoving;
+            }
+            
+           
 
             Vector3 horizontal;
 
@@ -452,10 +488,10 @@ public class GenericCharacter : MonoBehaviour
                 fastFalling = false; //turned off the fast fall here because why not
             }
 
-            
 
-            //jump triggers only once per tap/button
-            if (currentGroundState == playerGroundState.grounded && (inputReader.tapJumpPressed || inputReader.jumpPressed))
+
+            //jump triggers only once per tap/button TAP JUMP IS OFF FOR THIS BUID, FIX LATER inputReader.tapJumpPressed
+            if (currentGroundState == playerGroundState.grounded &&  inputReader.jumpPressed &&currentState == playerState.actionable)
             {
                 setMoveAnim(-1); //w magic number 
                 velocity.y = Mathf.Sqrt(jumpPower * 2f * weight);
@@ -703,10 +739,49 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void setMoveAnim(int animID)
     {
-        if (anim)
+        lastAnimId = currentAnim;
+
+        if (anim && animID != currentAnim)
         {
+            currentAnim = animID;
             isInAnimation = true;
+            anim.SetInteger(LastAnimID, lastAnimId);
             anim.SetInteger(AnimationID, animID);
+            
+            if(lastAnimId == 0)
+            {
+                anim.SetBool(LastAnimIdle, true);
+            }
+            else
+            {
+                anim.SetBool(LastAnimIdle, false);
+            }
+
+            if(animID == -3 && runStartTracker == false)
+            {
+                if(lastAnimId != currentAnim)
+                {
+                    anim.SetBool(Running, true);
+                    print("fuck you die");
+                   
+                    runStartTracker = true;
+                }
+                
+            }
+            else
+            {
+                print("fuck you, live");
+                anim.SetBool(Running, false) ;
+            }
+
+            if(animID != -3)
+            {
+                runStartTracker = false;
+            }
+        }
+        else {
+            Debug.Log("Repeat Animaton");
+            return; 
         }
     }
 
@@ -762,6 +837,19 @@ public class GenericCharacter : MonoBehaviour
         }
     }
 
+    public bool getGroundState()
+    {
+        if (doGroundCheck())
+        {
+            return isGrounded;
+        }
+        else
+        {
+            return isGrounded;
+        }
+    }
+
+
     public virtual void doTakePercent(int amount)
     {
         if (!isShieldActive)
@@ -774,8 +862,47 @@ public class GenericCharacter : MonoBehaviour
 
     public void StartAnimation(int animID)
     {
-        isInAnimation = true;
-        anim.SetInteger(AnimationID, animID);
+
+        lastAnimId = anim.GetInteger(AnimationID);
+
+        if (anim && animID != currentAnim)
+        {
+            currentAnim = animID;
+            isInAnimation = true;
+            anim.SetInteger(LastAnimID, lastAnimId);
+            anim.SetInteger(AnimationID, animID);
+
+            if (lastAnimId == 0)
+            {
+                anim.SetBool(LastAnimIdle, true);
+            }
+            else
+            {
+                anim.SetBool(LastAnimIdle, false);
+            }
+
+            if (animID == -3 && runStartTracker == false)
+            {
+                anim.SetBool(Running, true);
+                print("fuck you die");
+                anim.SetTrigger(StartRun);
+                runStartTracker = true;
+            }
+            else
+            {
+                anim.SetBool(Running, false);
+            }
+
+            if (animID != -3)
+            {
+                runStartTracker = false;
+            }
+        }
+        else
+        {
+            Debug.Log("Repeat Animaton");
+            return;
+        }
     }
 
     public void StopAnimation()
