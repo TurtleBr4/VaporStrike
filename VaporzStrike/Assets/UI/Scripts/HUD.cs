@@ -76,6 +76,7 @@ public class HUD : MonoBehaviour
             if (Gamepad.current.startButton.wasPressedThisFrame) {
 
                 SceneManager.LoadScene("CharacterSelect");
+                GameManager.instance.matchResult = GameManager.ResultType.Start;
                 GameManager.instance.onGameStateChanged(gameState.Menu);
             }
         }

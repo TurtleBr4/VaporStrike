@@ -82,6 +82,7 @@ public class GameManager : MonoBehaviour
     public void Init()
     {
         Time.timeScale = 1;
+        matchTimer = 300;
         if (debugFlag) //we're in debug here so the hud never bothers spawning things, default to the old behavior
         {
             onGameStateChanged(gameState);
