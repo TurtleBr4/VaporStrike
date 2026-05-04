@@ -17,6 +17,7 @@ public class Countdown : MonoBehaviour
     }
     public void PreEnd()
     {
+        strikeText.SetActive(true);
         strikeText.GetComponent<Animator>().enabled = true;
     }
     public void End()

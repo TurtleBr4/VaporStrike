@@ -44,7 +44,7 @@ public class GenericCharacter : MonoBehaviour
     [SerializeField] private float jumpPower;
     [SerializeField] private float airSpeed;
     [SerializeField] private float maxFallSpeed; 
-    [SerializeField] private float baseShieldHP;
+    [SerializeField] private float baseShieldHP = 100;
     [SerializeField] private Moveset moveset;
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Transform groundCheck;
@@ -98,6 +98,7 @@ public class GenericCharacter : MonoBehaviour
         hud = FindFirstObjectByType<HUD>();
         getConstantsFromGameManager();
         shield = GetComponentInChildren<Shield>().gameObject;
+        baseShieldHP = 100;
     }
 
     public void getConstantsFromGameManager()
