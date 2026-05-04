@@ -2796,7 +2796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ae2ceee79ff81ef43b6f624f7c81f151, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ae2ceee79ff81ef43b6f624f7c81f151, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2804,7 +2804,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ae2ceee79ff81ef43b6f624f7c81f151, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ae2ceee79ff81ef43b6f624f7c81f151, type: 3}
       propertyPath: m_LocalRotation.z
@@ -2816,7 +2816,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ae2ceee79ff81ef43b6f624f7c81f151, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ae2ceee79ff81ef43b6f624f7c81f151, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -6260,6 +6260,7 @@ MonoBehaviour:
   isShieldActive: 0
   isGrabbing: 0
   isGrabbed: 0
+  isGrounded: 1
   grabbox: {fileID: 0}
   c: {fileID: 8909436837579422272}
   anim: {fileID: 1164069073005198461}
@@ -6280,7 +6281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c93f2043bfb890e2f8e532644a701f33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputBufferFrames: 16
+  inputBufferFrames: 4
   inputBuffer: 
   playerInput: {fileID: 2686339089795282621}
   framesSinceLastInput: 0
@@ -6503,8 +6504,8 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 1.35
+  m_Height: 6.15
+  m_Radius: 1.62
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
