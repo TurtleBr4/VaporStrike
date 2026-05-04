@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
     }
     public void Init()
     {
+        Time.timeScale = 1;
         if (debugFlag) //we're in debug here so the hud never bothers spawning things, default to the old behavior
         {
             onGameStateChanged(gameState);
@@ -164,6 +165,8 @@ public class GameManager : MonoBehaviour
     {
         if (newState == gameState.Game)
         {
+
+
             if (pInputManager)
             {
                 pInputManager.DisableJoining();

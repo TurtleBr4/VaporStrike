@@ -183,10 +183,11 @@ public class GenericCharacter : MonoBehaviour
     public virtual void stateManager()
     {
         if (isGrabbed) { currentState = playerState.hitstun; }
-        if (isGrabbing) { 
+        if (isGrabbing)
+        {
             currentState = playerState.attacking;
         }
-        
+
         //clamp
         if (frameTimer < 0)
             frameTimer = 0;
@@ -200,105 +201,106 @@ public class GenericCharacter : MonoBehaviour
 
             if (frameTimer == 0)
                 currentState = playerState.actionable;
-        
-        if (currentState == playerState.hitstun && frameTimer != 0)
-        {
-            frameTimer--;
-        }
-        //attack
-        else if (currentState == playerState.attacking && !isGrabbing)
-        {
-            if (frameTimer > 0)
+
+            if (currentState == playerState.hitstun && frameTimer != 0)
             {
-                int curFrame = lastUsedMove.moveTime - frameTimer;
-
-                if (curFrame == lastUsedMove.hitboxStartTime)
-                {
-                    isAttackHitboxActive = true;
-                    print("starting hitbox");
-                }
-
-                if (curFrame >= lastUsedMove.hitboxEndTime)
-                {
-                    isAttackHitboxActive = false;
-                    moveHitboxHolders[lastUsedMove.moveID].SetActive(false);
-                    print("ending hitbox");
-                }
-
-                if (isAttackHitboxActive)
-                {
-                    handleAttack(lastUsedMove);
-
-                    if (lastUsedMove.hasDisplacement)
-                    {
-                        doDisplacmentOverride(
-                            lastUsedMove.displacementDirection,
-                            lastUsedMove.displacementMagnitude
-                        );
-                    }
-                }
-
                 frameTimer--;
             }
-
-            if (frameTimer == 0)
+            //attack
+            else if (currentState == playerState.attacking && !isGrabbing)
             {
-                currentState = playerState.actionable;
-                hasHitAttack = false;
-                isAttackHitboxActive = false;
-            }
-        }
-        //block
-        else if (currentState == playerState.blocking)
-        {
-            if (frameTimer == 0)
-                frameTimer = 6;
-
-            frameTimer--;
-
-            if (frameTimer <= 0)
-            {
-                doBlock();
-                frameTimer = 0;
-                currentState = playerState.actionable;
-            }
-        }
-        //parry
-        else if (currentState == playerState.parry)
-        {
-            if (frameTimer == 0)
-                frameTimer = gameManager.parryFrameTime;
-
-            frameTimer--;
-
-            if (frameTimer <= 0)
-            {
-                frameTimer = 0;
-                currentState = playerState.actionable;
-            }
-        }
-
-        //action
-        if (currentState == playerState.actionable)
-        {
-            setMoveAnim(0);
-            foreach(GameObject g in moveHitboxHolders)
-            {
-                if(g != null)
+                if (frameTimer > 0)
                 {
-                    g.SetActive(false);
+                    int curFrame = lastUsedMove.moveTime - frameTimer;
+
+                    if (curFrame == lastUsedMove.hitboxStartTime)
+                    {
+                        isAttackHitboxActive = true;
+                        print("starting hitbox");
+                    }
+
+                    if (curFrame >= lastUsedMove.hitboxEndTime)
+                    {
+                        isAttackHitboxActive = false;
+                        moveHitboxHolders[lastUsedMove.moveID].SetActive(false);
+                        print("ending hitbox");
+                    }
+
+                    if (isAttackHitboxActive)
+                    {
+                        handleAttack(lastUsedMove);
+
+                        if (lastUsedMove.hasDisplacement)
+                        {
+                            doDisplacmentOverride(
+                                lastUsedMove.displacementDirection,
+                                lastUsedMove.displacementMagnitude
+                            );
+                        }
+                    }
+
+                    frameTimer--;
                 }
 
+                if (frameTimer == 0)
+                {
+                    currentState = playerState.actionable;
+                    hasHitAttack = false;
+                    isAttackHitboxActive = false;
+                }
             }
-        }
+            //block
+            else if (currentState == playerState.blocking)
+            {
+                if (frameTimer == 0)
+                    frameTimer = 6;
+
+                frameTimer--;
+
+                if (frameTimer <= 0)
+                {
+                    doBlock();
+                    frameTimer = 0;
+                    currentState = playerState.actionable;
+                }
+            }
+            //parry
+            else if (currentState == playerState.parry)
+            {
+                if (frameTimer == 0)
+                    frameTimer = gameManager.parryFrameTime;
+
+                frameTimer--;
+
+                if (frameTimer <= 0)
+                {
+                    frameTimer = 0;
+                    currentState = playerState.actionable;
+                }
+            }
+
+            //action
+            if (currentState == playerState.actionable)
+            {
+                setMoveAnim(0);
+                foreach (GameObject g in moveHitboxHolders)
+                {
+                    if (g != null)
+                    {
+                        g.SetActive(false);
+                    }
+
+                }
+            }
 
 
-        //another clamp bc lol
-        if (frameTimer < 0)
-        {
-            frameTimer = 0;
+            //another clamp bc lol
+            if (frameTimer < 0)
+            {
+                frameTimer = 0;
+            }
+
         }
-            
     }
     public PlayerData GetPlayerData()
     {
