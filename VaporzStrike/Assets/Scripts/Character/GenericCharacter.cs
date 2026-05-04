@@ -474,7 +474,7 @@ public class GenericCharacter : MonoBehaviour
 
 
             //jump triggers only once per tap/button TAP JUMP IS OFF FOR THIS BUID, FIX LATER inputReader.tapJumpPressed
-            if (currentGroundState == playerGroundState.grounded &&  inputReader.jumpPressed)
+            if (currentGroundState == playerGroundState.grounded &&  inputReader.jumpPressed &&currentState == playerState.actionable)
             {
                 setMoveAnim(-1); //w magic number 
                 velocity.y = Mathf.Sqrt(jumpPower * 2f * weight);
