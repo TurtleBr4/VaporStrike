@@ -51,8 +51,8 @@ public class HUD : MonoBehaviour
         player1Name.text = GameManager.instance.GetPlayer(1).playerName; //game manager shenanagains, sorry
         player2Name.text = GameManager.instance.GetPlayer(0).playerName;
 
-        player1Img.sprite = GameManager.instance.GetPlayer(0).mugshot;
-        player2Img.sprite = GameManager.instance.GetPlayer(1).mugshot;
+        player1Img.sprite = GameManager.instance.GetPlayer(1).mugshot;
+        player2Img.sprite = GameManager.instance.GetPlayer(0).mugshot;
 
         pauseCanvas.SetActive(isPaused);
         Time.timeScale = (isPaused ? 0.0f : 1.0f);

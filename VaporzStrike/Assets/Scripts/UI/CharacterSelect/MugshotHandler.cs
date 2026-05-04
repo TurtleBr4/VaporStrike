@@ -25,6 +25,7 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
     // Update is called once per frame
     void Update()
     {
+
         //if (AreRectsOverlapping(GetComponent<RectTransform>(), element)) { EventSystem.current.SetSelectedGameObject(this.gameObject); }
         if (!playerData.mugshot.Equals(null) && !isStage)
         {
@@ -59,7 +60,8 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void OnSelect(BaseEventData eventData)
     {
-        if(CharacterSelect.instance.selectMode == CharacterSelect.SelectMode.Character)
+        if (!selectable.interactable) return;
+        if (CharacterSelect.instance.selectMode == CharacterSelect.SelectMode.Character)
         {
             Debug.Log(this.gameObject.name + " was selected");
             GameManager.instance.pickPlayer(selectedCursor, charID);
