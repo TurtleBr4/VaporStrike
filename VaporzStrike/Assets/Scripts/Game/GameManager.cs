@@ -183,15 +183,12 @@ public class GameManager : MonoBehaviour
             }
 
             characterArray = FindObjectsByType<GenericCharacter>(FindObjectsSortMode.InstanceID);
-            characterArray[0].transform.position = level.levelSpawns[0].position;
             characterArray[1].transform.position = level.levelSpawns[1].position;
+            characterArray[0].transform.position = level.levelSpawns[0].position;
 
+            assignPlayerDataToPlayer(playerDataArray[1], 0);
+            assignPlayerDataToPlayer(playerDataArray[0], 1);
 
-
-            for (int i = 0; i < playerCount; i++)
-            {
-                assignPlayerDataToPlayer(playerDataArray[i], i);
-            }
 
             level.cam.init();
         }

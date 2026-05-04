@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Xeno
   m_EditorClassIdentifier: 
   playerName: Xeno
-  playerPrefab: {fileID: 6789608814100601710, guid: c2a1543a9393f3a47bdce93a083873c0, type: 3}
+  playerPrefab: {fileID: 2470376594378487075, guid: 3d3daadb47e102a4d988e88f4d1971ab, type: 3}
   playerId: 2
   weight: 75
   moveSpeed: 25
