@@ -65,6 +65,7 @@ public class GenericCharacter : MonoBehaviour
     public bool isShieldActive = false;
     public bool isGrabbing = false;
     public bool isGrabbed = false;
+    public bool isGrounded = true;
     private playerGroundState lastGroundState;
     
     public GameObject grabbox;
@@ -300,11 +301,13 @@ public class GenericCharacter : MonoBehaviour
         {
             currentGroundState = playerGroundState.grounded;
             anim.SetBool(Grounded, true);
+            isGrounded = true;
         }
         else
         {
             currentGroundState = playerGroundState.air;
             anim.SetBool(Grounded, false);
+            isGrounded = false;
         }
 
         if (currentGroundState != lastGroundState)
@@ -779,6 +782,19 @@ public class GenericCharacter : MonoBehaviour
             shieldHP -= hitbox.hitStun;
         }
     }
+
+    public bool getGroundState()
+    {
+        if (doGroundCheck())
+        {
+            return isGrounded;
+        }
+        else
+        {
+            return isGrounded;
+        }
+    }
+
     
     #region Animator Flags
 

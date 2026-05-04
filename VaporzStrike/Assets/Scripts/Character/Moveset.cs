@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Windows;
 
 [CreateAssetMenu(fileName = "Moveset", menuName = "Scriptable Objects/Moveset")]
 public class Moveset : ScriptableObject
 {
     public Move[] moves;
+    public GameObject playerState;
 
     /// <summary>
     /// Checks the input buffer for the **longest matching move** in the moveset.
@@ -23,6 +25,11 @@ public class Moveset : ScriptableObject
             // Compare move sequence from the end of the buffer (most recent inputs)
             for (int i = 0; i < move.inputSequence.Length; i++)
             {
+                //hopefully allows for airieals I just wanted the game to compile for some other testing
+/*                if (i < 5 && !playerState.GetComponent<GenericCharacter>().isGrounded)
+                {
+                    i = 5;
+                }*/
                 if (inputBuffer[i] != move.inputSequence[i])
                 {
                     match = false;
