@@ -13,8 +13,19 @@ MonoBehaviour:
   m_Name: Xeno
   m_EditorClassIdentifier: 
   moves:
+  - {fileID: 11400000, guid: 4f84ab9ea0f00d5449308b4b236228d6, type: 2}
+  - {fileID: 11400000, guid: 01ff66ae9087c764faa6f4f95490881b, type: 2}
+  - {fileID: 11400000, guid: b562ce980bc00ce43a5fff31d88240aa, type: 2}
   - {fileID: 11400000, guid: b1b473702f26178d29024729c2bbfd1b, type: 2}
-  - {fileID: 11400000, guid: 1e4db83e05a10ce119b1ab145fd70cf6, type: 2}
-  - {fileID: 11400000, guid: 3734aee28559bd222877f7b8365f4906, type: 2}
-  - {fileID: 11400000, guid: 44760e224bcca55b3bbdb720a3f743c3, type: 2}
+  - {fileID: 11400000, guid: 088c312d6d609924c933d7f886ed9b12, type: 2}
+  - {fileID: 11400000, guid: 93054022db6f89b44908372f9354f8a0, type: 2}
   - {fileID: 11400000, guid: a3c81de524ff89fb5953bb7e97f127ae, type: 2}
+  - {fileID: 11400000, guid: a891d26cf35a0b544991d231a73707a2, type: 2}
+  - {fileID: 11400000, guid: 40f340610165f5e448205b6d4501ac54, type: 2}
+  - {fileID: 11400000, guid: 1e4db83e05a10ce119b1ab145fd70cf6, type: 2}
+  - {fileID: 11400000, guid: 2488aacc750748640911bd4594c72b0b, type: 2}
+  - {fileID: 11400000, guid: 9bb5919b46eed234f95c8d8c0a1c6bed, type: 2}
+  - {fileID: 11400000, guid: 3734aee28559bd222877f7b8365f4906, type: 2}
+  - {fileID: 11400000, guid: ec455e663c43c444d88732232e43c690, type: 2}
+  - {fileID: 11400000, guid: 44760e224bcca55b3bbdb720a3f743c3, type: 2}
+  - {fileID: 11400000, guid: f8e6c73709f2983409cdd93d886e9e91, type: 2}

@@ -48,8 +48,8 @@ public class HUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        player1Name.text = GameManager.instance.GetPlayer(0).playerName;
-        player2Name.text = GameManager.instance.GetPlayer(1).playerName;
+        player1Name.text = GameManager.instance.GetPlayer(1).playerName; //game manager shenanagains, sorry
+        player2Name.text = GameManager.instance.GetPlayer(0).playerName;
 
         player1Img.sprite = GameManager.instance.GetPlayer(0).mugshot;
         player2Img.sprite = GameManager.instance.GetPlayer(1).mugshot;
