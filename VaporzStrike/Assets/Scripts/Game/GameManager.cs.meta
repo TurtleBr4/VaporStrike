@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: ee1b847d699ccba4a8d56fcb315eaac0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - pInputManager: {instanceID: 0}
+  - playerDatabase: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cf34dddea58176fdbd72dca85e48c71, type: 3}
+  m_Name: TestCharacter
+  m_EditorClassIdentifier: 
+  moves:
+  - {fileID: 11400000, guid: 67aed9a6495b5f84086d77963eb12cc4, type: 2}
+  - {fileID: 11400000, guid: c46ae1e73cfef4748a8e2fc7fcb6fb36, type: 2}
+  - {fileID: 11400000, guid: bce04874f43c59c4ab4fe62d6680afd2, type: 2}
+  - {fileID: 11400000, guid: 9c34ee1014480a64fb8456faf4a241ef, type: 2}
