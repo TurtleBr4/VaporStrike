@@ -22,10 +22,17 @@ public class GenericCharacter : MonoBehaviour
 {
     private static readonly int AnimationID = Animator.StringToHash("Animation ID"); //thanks jetbrains rider for the effecient lookup or whatever
     private static readonly int Grounded = Animator.StringToHash("Grounded");
-    private static readonly int Idle = Animator.StringToHash("Idle");
+    private static readonly int LastAnimIdle = Animator.StringToHash("LastAnimIdle");
     private static readonly int Running = Animator.StringToHash("Running");
+    private static readonly int LastAnimID = Animator.StringToHash("Last Animation ID");
+    private static readonly int StartRun = Animator.StringToHash("Start Run");
 
-    private int lastAnimId = 0;
+
+    public int lastAnimId = 0;
+    private int currentAnim = 0;
+    public bool runStartTracker = false;
+    private bool isMoving = false;
+    private bool wasMoving;
 
     [Header("Static Character Variables")]
     [SerializeField] private GameObject[] moveHitboxHolders;
@@ -80,7 +87,8 @@ public class GenericCharacter : MonoBehaviour
 
     int playerStocks = 3;
     float drag = 1f;
-    
+
+
     private void Start()
     {
         inputReader = GetComponent<InputReader>();
@@ -426,18 +434,30 @@ public class GenericCharacter : MonoBehaviour
 
             velocity.x = 0; //make sure we done have leftover velocity
 
-            if(currentGroundState == playerGroundState.grounded && x != 0) //Handle the running animation
+            //deadzone
+            if (Mathf.Abs(x) < 0.25f) x = 0f;
+            if (Mathf.Abs(y) < 0.25f) y = 0f;
+
+            if (currentGroundState == playerGroundState.grounded)
             {
-                setMoveAnim(-3);
-            }
-            else
-            {
-                setMoveAnim(0);
+                bool isMoving = Mathf.Abs(x) > 0.1f;
+
+                if (isMoving && !wasMoving)
+                {
+                    setMoveAnim(-3);
+                    anim.SetTrigger(StartRun);
+                }
+                    
+                if (isMoving && wasMoving)
+                    setMoveAnim(-3);
+
+                if (!isMoving && wasMoving)
+                    setMoveAnim(0);
+
+                wasMoving = isMoving;
             }
             
-            //deadzone
-            if (Mathf.Abs(x) < 0.1f) x = 0f;
-            if (Mathf.Abs(y) < 0.1f)  y = 0f;
+           
 
             Vector3 horizontal;
 
@@ -702,29 +722,49 @@ public class GenericCharacter : MonoBehaviour
 
     public virtual void setMoveAnim(int animID)
     {
-        if (anim)
+        lastAnimId = currentAnim;
+
+        if (anim && animID != currentAnim)
         {
+            currentAnim = animID;
             isInAnimation = true;
+            anim.SetInteger(LastAnimID, lastAnimId);
             anim.SetInteger(AnimationID, animID);
-            if (animID == 0)
+            
+            if(lastAnimId == 0)
             {
-                anim.SetBool(Idle, true);
-                anim.SetBool(Running, false);
+                anim.SetBool(LastAnimIdle, true);
             }
             else
             {
-                anim.SetBool(Idle, false);
+                anim.SetBool(LastAnimIdle, false);
             }
 
-            if (animID == -3)
+            if(animID == -3 && runStartTracker == false)
             {
-                anim.SetBool(Running, true);
-                anim.SetBool(Idle, false);
+                if(lastAnimId != currentAnim)
+                {
+                    anim.SetBool(Running, true);
+                    print("fuck you die");
+                   
+                    runStartTracker = true;
+                }
+                
             }
             else
             {
-                anim.SetBool(Running, false);
+                print("fuck you, live");
+                anim.SetBool(Running, false) ;
             }
+
+            if(animID != -3)
+            {
+                runStartTracker = false;
+            }
+        }
+        else {
+            Debug.Log("Repeat Animaton");
+            return; 
         }
     }
 
@@ -784,27 +824,46 @@ public class GenericCharacter : MonoBehaviour
 
     public void StartAnimation(int animID)
     {
-        isInAnimation = true;
-        lastAnimId = anim.GetInteger(AnimationID);
-        anim.SetInteger(AnimationID, animID);
-        if (animID == 0)
-        {
-            anim.SetBool(Idle, true);
-            anim.SetBool(Running, false);
-        }
-        else
-        {
-            anim.SetBool(Idle, false);
-        }
 
-        if(animID == -3)
+        lastAnimId = anim.GetInteger(AnimationID);
+
+        if (anim && animID != currentAnim)
         {
-            anim.SetBool(Running, true);
-            anim.SetBool(Idle, false);
+            currentAnim = animID;
+            isInAnimation = true;
+            anim.SetInteger(LastAnimID, lastAnimId);
+            anim.SetInteger(AnimationID, animID);
+
+            if (lastAnimId == 0)
+            {
+                anim.SetBool(LastAnimIdle, true);
+            }
+            else
+            {
+                anim.SetBool(LastAnimIdle, false);
+            }
+
+            if (animID == -3 && runStartTracker == false)
+            {
+                anim.SetBool(Running, true);
+                print("fuck you die");
+                anim.SetTrigger(StartRun);
+                runStartTracker = true;
+            }
+            else
+            {
+                anim.SetBool(Running, false);
+            }
+
+            if (animID != -3)
+            {
+                runStartTracker = false;
+            }
         }
         else
         {
-            anim.SetBool(Running, false);
+            Debug.Log("Repeat Animaton");
+            return;
         }
     }
 
