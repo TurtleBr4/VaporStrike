@@ -200,7 +200,7 @@ public class GameManager : MonoBehaviour
 
             for (int i = 0; i < playerCount; i++)
             {
-                assignPlayerDataToPlayer(playerDataArray[i], i);
+                //assignPlayerDataToPlayer(playerDataArray[i], i);
                 Debug.Log("Player count: " + playerCount);
             }
 
