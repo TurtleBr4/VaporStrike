@@ -29,7 +29,7 @@ public class PlatformBottomDetector : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        if (!bottom && other.GetComponent<GenericCharacter>().dropping) //not the greatest function call no
+        if (!bottom && other.GetComponent<PlayerMovement>().dropping) //not the greatest function call no
         {
             p.handlePlayerFromBottom(other);
         }

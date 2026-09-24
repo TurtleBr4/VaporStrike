@@ -62,6 +62,7 @@ public class NeoInputReader : MonoBehaviour
     private bool jump;
     private bool shield;
     private bool grab;
+    private bool parry;
 
     private InputDirection direction;
 
@@ -114,6 +115,11 @@ public class NeoInputReader : MonoBehaviour
     public void OnGrab(InputAction.CallbackContext context)
     {
         grab = context.ReadValueAsButton();
+    }
+
+    public void OnParry(InputAction.CallbackContext context)
+    {
+        parry = context.ReadValueAsButton();
     }
 
     // =========================================================
@@ -440,6 +446,8 @@ public class NeoInputReader : MonoBehaviour
 
             case GameInput.Grab:
                 return snapshot.grab;
+            case GameInput.Parry:
+                return snapshot.parry;
         }
 
         return false;

@@ -14,6 +14,7 @@ public struct InputSnapshot
     public bool jump;
     public bool shield;
     public bool grab;
+    public bool parry;
 
     public bool attackPressed;
     public bool specialPressed;

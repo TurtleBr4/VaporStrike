@@ -4,7 +4,8 @@ public enum GameInput
     Special,
     Jump,
     Shield,
-    Grab
+    Grab,
+    Parry
 }
 
 public enum InputDirection

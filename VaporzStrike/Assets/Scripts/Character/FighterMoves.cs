@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FighterMoves : MonoBehaviour
 {
-    [SerializeField] private InputReader inputReader;
+    [SerializeField] private NeoInputReader inputReader;
     [SerializeField] private InputBuffer inputBuffer;
     [SerializeField] private InputInterpreter inputInterpreter;
 

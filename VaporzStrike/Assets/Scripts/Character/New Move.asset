@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc15e4d307274d10917ebd3e4323f7f, type: 3}
   m_Name: New Move
   m_EditorClassIdentifier: 
-  moveName: 
+  moveName: NewSystemDemo
   button: 0
-  direction: 0
+  direction: 4
   directionWindow: 6
   buttonWindow: 6
   bufferDuration: 8
