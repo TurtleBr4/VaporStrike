@@ -24,4 +24,12 @@ public class MoveDefinition : ScriptableObject
 
     [Min(0)]
     public int bufferDuration = 8;
+
+    [Header("Animation Data")] 
+    public int animationID = 0;
+    
+    [Header("Data")]
+    public int frameTime;
+    public int endLag;
+    public int hitStun;
 }

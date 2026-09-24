@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(gravityMovement);
     }
+    
     private void Jump()
     {
         if (!controller.isGrounded)

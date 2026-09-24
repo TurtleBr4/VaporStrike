@@ -78,6 +78,7 @@ public class InputInterpreter : MonoBehaviour
         {
             return false;
         }
+        
 
         for (int i = 0; i < moves.Length; i++)
         {
