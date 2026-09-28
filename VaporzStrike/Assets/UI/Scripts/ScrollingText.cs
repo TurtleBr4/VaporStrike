@@ -9,7 +9,8 @@ public class TextScroller : MonoBehaviour
 
     private RectTransform rectTransform;
     private TextMeshProUGUI originalText;
-    public bool isClone =false;
+    public float textWidth;
+    public bool isClone = false;
 
     void Start()
     {
