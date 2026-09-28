@@ -1219,8 +1219,8 @@ MonoBehaviour:
   jumpForce: 13.5
   gravity: 30
   maxFallSpeed: 20
-  jumpSquatLength: 90
-  landingLength: 90
+  jumpSquatLength: 7
+  landingLength: 7
   dropping: 0
 --- !u!114 &871072929
 MonoBehaviour:

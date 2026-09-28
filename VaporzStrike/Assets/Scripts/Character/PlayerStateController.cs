@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class PlayerStateController : MonoBehaviour
 {
-    [SerializeField] private bool isActionable;
-    [SerializeField] private bool isGrounded;
-    [SerializeField] private bool isFacingRight;
-    [SerializeField] private bool isMoving;
+    [SerializeField] private bool isActionable = true;
+    [SerializeField] private bool isGrounded = false;
+    [SerializeField] private bool isFacingRight = true;
+    [SerializeField] private bool isMoving = false;
     public bool justJumped = false;
     public bool justLanded = false;
 

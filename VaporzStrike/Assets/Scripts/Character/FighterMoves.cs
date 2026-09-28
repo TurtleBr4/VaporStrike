@@ -19,21 +19,21 @@ public class FighterMoves : MonoBehaviour
     [SerializeField] private bool isAnimatingAndAttacking = false;
     [SerializeField] private int frameCount = 0;
     [SerializeField] private Animation animControl;
-    [SerializeField] private Dictionary<int, AnimationClip> idToAnimation = new Dictionary<int, AnimationClip>();
-    [SerializeField]private AnimationClip currentAnimation;
+    [SerializeField] private Dictionary<int, AnimationClip> idToAnimation; 
+    [SerializeField] private AnimationClip currentAnimation;
     [SerializeField] private MoveDefinition currentMove;
 
     [Header("Hitbox Data")]
     [SerializeField] private GameObject[] hitboxes; //each index contains an object that holds any relevant hitboxes for the move at the corresponding index
 
-    private void Awake()
-    {
-        psc = GetComponent<PlayerStateController>();
-    }
 
     private void Start()
     {
-        foreach(MoveDefinition m in moves)
+        //TEMP FRAME LIMITER
+        Application.targetFrameRate = 60;
+        idToAnimation = new Dictionary<int, AnimationClip>();
+        psc = GetComponent<PlayerStateController>();
+        foreach (MoveDefinition m in moves)
         {
             idToAnimation[m.animationID] = animations[m.animationID];
         }
@@ -64,6 +64,7 @@ public class FighterMoves : MonoBehaviour
             currentAngles.y = 90f; // Change only the Y axis
             animControl.transform.eulerAngles = currentAngles;
         }
+        Debug.Log(frameCount);
 
     }
 
@@ -138,6 +139,8 @@ public class FighterMoves : MonoBehaviour
         idToAnimation.TryGetValue(move.animationID, out currentAnimation);
         animControl.AddClip(currentAnimation, move.name);
         animControl.Play(move.name);
+
+
         isAnimatingAndAttacking = true;
         frameCount = move.frameTime;
 
@@ -148,12 +151,14 @@ public class FighterMoves : MonoBehaviour
 
     private void AttackingChecks()
     {
-        if(frameCount == 0)
+        if (frameCount == 0)
         {
+           
             psc.setActionability(true);
             isAnimatingAndAttacking = false;
             animControl.clip = null;
             return;
+            
         }
 
         if(frameCount <= currentMove.cancelTime)

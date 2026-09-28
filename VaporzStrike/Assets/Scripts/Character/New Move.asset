@@ -19,7 +19,8 @@ MonoBehaviour:
   buttonWindow: 6
   bufferDuration: 8
   animationID: 0
-  frameTime: 120
-  endLag: 0
+  frameTime: 30
   hitStun: 0
+  hitboxStartFrame: 0
+  hitboxEndFrame: 0
   cancelTime: 10

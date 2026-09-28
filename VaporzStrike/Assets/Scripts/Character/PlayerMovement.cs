@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     int anotherTimer = 100;
     bool lastFrameGrounded;
     public bool dropping = false;
-    private int numberThatTicksUpToCalculateWhenTheJustJumpedVariableShouldBeReset = 800;
+    private int numberThatTicksUpToCalculateWhenTheJustJumpedVariableShouldBeReset = 10;
 
     private CharacterController controller;
 
@@ -29,7 +29,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        controller = GetComponent<CharacterController>(); 
+
+    }
+
+    private void Start()
+    {
+        controller = GetComponent<CharacterController>();
         psc = GetComponent<PlayerStateController>();
         psc.setActionability(true); //temporary, will be set from the new game manager whenever i get around to doing that
     }
@@ -174,15 +179,15 @@ public class PlayerMovement : MonoBehaviour
             timer = jumpSquatLength; //set a timer to account for jumpsquat
 
             psc.justJumped = true;
-            psc.setActionability(false);
+            //psc.setActionability(false);
 
         }
 
         if(timer <= 0)
         {
             verticalVelocity = jumpForce;
-            numberThatTicksUpToCalculateWhenTheJustJumpedVariableShouldBeReset = 100;
-            psc.setActionability(true);
+            numberThatTicksUpToCalculateWhenTheJustJumpedVariableShouldBeReset = 10;
+            //psc.setActionability(true);
             timer = 100;
         }
 
