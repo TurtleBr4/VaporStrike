@@ -31,6 +31,7 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
         {
 
             mugshot.sprite = playerData.mugshot;
+
             GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(false);
         }
         else if (isStage) { }

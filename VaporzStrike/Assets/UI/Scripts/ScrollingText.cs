@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class TextScroller : MonoBehaviour
 {
-    [SerializeField] private float scrollSpeed = 100f; // Pixels per second
-    [SerializeField] private float spacing = 50f;     // Gap size between the original text and its twin
+    [SerializeField] private float scrollSpeed = 100f;
+    [SerializeField] private float spacing = 50f;     
 
     private RectTransform rectTransform;
     private TextMeshProUGUI originalText;
-    private float textWidth;
     public bool isClone =false;
 
     void Start()
@@ -21,21 +20,17 @@ public class TextScroller : MonoBehaviour
         originalText.ForceMeshUpdate();
         textWidth = originalText.preferredWidth;
 
-        // Clone the text element to serve as the tailing twin
-        if (!isClone)
+        if (!isClone) // Only runs once
         {
+            // Clone GameObject for seamless loop
             GameObject cloneGO = Instantiate(gameObject, transform.parent);
 
-            // Strip the looping script and size fitter from the clone to avoid infinite loops/glitches
-            //Destroy(cloneGO.GetComponent<TextScroller>());
-            //Destroy(cloneGO.GetComponent<UnityEngine.UI.ContentSizeFitter>());
+
             cloneGO.GetComponent<TextScroller>().isClone = true;
             RectTransform cloneRect = cloneGO.GetComponent<RectTransform>();
 
-            // Parent the clone directly to the original so they move together seamlessly
-            //cloneRect.SetParent(rectTransform);
 
-            // Position the duplicate exactly at the end of the original text string
+            // Position the duplicate exactly at the end of the original text string (left)
             cloneRect.anchoredPosition = new Vector2(0-spacing, 0);
         }
 
@@ -43,13 +38,13 @@ public class TextScroller : MonoBehaviour
 
     void Update()
     {
-        // Continuously translate leftwards
+        // Continuously translate right
         rectTransform.anchoredPosition += new Vector2(scrollSpeed * Time.deltaTime, 0);
 
-        // The moment the core string clears the left side, reset position by its exact width interval
+        // The moment the core string clears the right side + offset, reset the position
         if (rectTransform.anchoredPosition.x >= 0 + spacing)
         {
-            // Modulo arithmetic or direct addition ensures fractional frame timing isn't lost (eliminates micro-stutter)
+            // Resets the position to the left, offscreen upon reaching the threshold
             rectTransform.anchoredPosition = new Vector2(-412.0546f + (spacing/2), 0);
         }
     }
