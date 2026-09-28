@@ -1,15 +1,20 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
+using Unity.VisualScripting;
 public class TitleScreen : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void Update()
+    public void Start()
     {
-        if (Gamepad.current.startButton.wasReleasedThisFrame)
+        InputSystem.onAnyButtonPress.CallOnce(control =>
         {
-            Play();
-        }
+            if (control.device is Gamepad)
+            {
+                Play();
+            }
+        });
     }
     public void Play()
     {
