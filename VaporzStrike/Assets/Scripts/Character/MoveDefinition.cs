@@ -29,7 +29,9 @@ public class MoveDefinition : ScriptableObject
     public int animationID = 0;
     
     [Header("Data")]
-    public int frameTime;
-    public int endLag;
+    public int frameTime; //this INCLUDES END LAG!
     public int hitStun;
+    public int hitboxStartFrame;
+    public int hitboxEndFrame;
+    public int cancelTime; //leave at 0 for no cancel, note that this is what frame we can act on, NOT how many frames til actionability
 }

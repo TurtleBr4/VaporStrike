@@ -18,3 +18,8 @@ MonoBehaviour:
   directionWindow: 6
   buttonWindow: 6
   bufferDuration: 8
+  animationID: 0
+  frameTime: 120
+  endLag: 0
+  hitStun: 0
+  cancelTime: 10
