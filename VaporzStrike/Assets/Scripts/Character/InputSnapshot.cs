@@ -35,4 +35,7 @@ public struct InputSnapshot
     public int grabHeldFrames;
 
     public int directionHeldFrames;
+    internal int parryHeldFrames;
+    internal bool parryReleased;
+    internal bool parryPressed;
 }

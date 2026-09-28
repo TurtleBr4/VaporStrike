@@ -1,51 +1,28 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-public enum Button
-{
-    Attack,
-    Special,
-    Jump,
-    Shield,
-    Grab,
-    Parry
-}
-
-public enum Direction
-{
-    Neutral,
-    Left,
-    Right,
-    Up,
-    Down
-}
-
-public struct ButtonState
-{
-    public bool held;
-    public bool pressed;
-    public bool released;
-    public int heldFrames;
-}
-
-public struct StickState
-{
-    public Vector2 raw;
-    public Direction direction;
-    public int directionHeldFrames;
-}
 
 public class NeoInputReader : MonoBehaviour
 {
     private const int HISTORY_SIZE = 16;
 
+    [Header("Player Input")]
+    [SerializeField] private PlayerInput playerInput;
+
     [Header("Stick Settings")]
     [SerializeField] private float deadzone = 0.2f;
     [SerializeField] private float directionThreshold = 0.65f;
     [SerializeField] private float directionReleaseThreshold = 0.50f;
-    
-    private int currentFrame = 0;
+
+    private InputAction moveAction;
+    private InputAction rightStickAction;
+    private InputAction attackAction;
+    private InputAction specialAction;
+    private InputAction jumpAction;
+    private InputAction shieldAction;
+    private InputAction grabAction;
+    private InputAction parryAction;
+
+    private int currentFrame;
 
     public int CurrentFrame => currentFrame;
 
@@ -64,17 +41,42 @@ public class NeoInputReader : MonoBehaviour
     private bool grab;
     private bool parry;
 
-    private InputDirection direction;
+    private void Awake()
+    {
+        if (playerInput == null)
+        {
+            playerInput =
+                GetComponent<PlayerInput>();
+        }
 
-    private int attackHeldFrames;
-    private int specialHeldFrames;
-    private int jumpHeldFrames;
-    private int shieldHeldFrames;
-    private int grabHeldFrames;
-    private int directionHeldFrames;
+        moveAction =
+            playerInput.actions["Move"];
+
+        //rightStickAction =
+          //  playerInput.actions["RightStick"];
+
+        attackAction =
+            playerInput.actions["Attack"];
+
+        specialAction =
+            playerInput.actions["Special"];
+
+        jumpAction =
+            playerInput.actions["Jump"];
+
+        shieldAction =
+            playerInput.actions["Block"];
+
+        grabAction =
+            playerInput.actions["Grab"];
+
+        parryAction =
+            playerInput.actions["Parry"];
+    }
 
     private void Update()
     {
+        ReadInput();
         UpdateFrame();
     }
 
@@ -82,44 +84,31 @@ public class NeoInputReader : MonoBehaviour
     // INPUT SYSTEM
     // =========================================================
 
-    public void OnMove(InputAction.CallbackContext context)
+    private void ReadInput()
     {
-        leftStick = context.ReadValue<Vector2>();
-    }
+        leftStick =
+            moveAction.ReadValue<Vector2>();
+        /*
+        rightStick =
+            rightStickAction.ReadValue<Vector2>();*/
 
-    public void OnRightStick(InputAction.CallbackContext context)
-    {
-        rightStick = context.ReadValue<Vector2>();
-    }
+        attack =
+            attackAction.IsPressed();
 
-    public void OnAttack(InputAction.CallbackContext context)
-    {
-        attack = context.ReadValueAsButton();
-    }
+        special =
+            specialAction.IsPressed();
 
-    public void OnSpecial(InputAction.CallbackContext context)
-    {
-        special = context.ReadValueAsButton();
-    }
+        jump =
+            jumpAction.IsPressed();
 
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        jump = context.ReadValueAsButton();
-    }
+        shield =
+            shieldAction.IsPressed();
 
-    public void OnShield(InputAction.CallbackContext context)
-    {
-        shield = context.ReadValueAsButton();
-    }
+        grab =
+            grabAction.IsPressed();
 
-    public void OnGrab(InputAction.CallbackContext context)
-    {
-        grab = context.ReadValueAsButton();
-    }
-
-    public void OnParry(InputAction.CallbackContext context)
-    {
-        parry = context.ReadValueAsButton();
+        parry =
+            parryAction.IsPressed();
     }
 
     // =========================================================
@@ -130,25 +119,46 @@ public class NeoInputReader : MonoBehaviour
     {
         currentFrame++;
 
-        InputSnapshot previous = history[historyIndex];
+        InputSnapshot previous =
+            history[historyIndex];
 
-        InputSnapshot current = new InputSnapshot();
+        InputSnapshot current =
+            new InputSnapshot();
 
-        current.frame = currentFrame;
+        current.frame =
+            currentFrame;
 
-        current.leftStick = leftStick;
-        current.rightStick = rightStick;
+        current.leftStick =
+            leftStick;
 
-        current.direction = GetDirection(
-            leftStick,
-            previous.direction
-        );
+        /*
+        current.rightStick =
+            rightStick;
+        */
 
-        current.attack = attack;
-        current.special = special;
-        current.jump = jump;
-        current.shield = shield;
-        current.grab = grab;
+        current.direction =
+            GetDirection(
+                leftStick,
+                previous.direction
+            );
+
+        current.attack =
+            attack;
+
+        current.special =
+            special;
+
+        current.jump =
+            jump;
+
+        current.shield =
+            shield;
+
+        current.grab =
+            grab;
+
+        current.parry =
+            parry;
 
         current.attackPressed =
             attack && !previous.attack;
@@ -165,6 +175,9 @@ public class NeoInputReader : MonoBehaviour
         current.grabPressed =
             grab && !previous.grab;
 
+        current.parryPressed =
+            parry && !previous.parry;
+
         current.attackReleased =
             !attack && previous.attack;
 
@@ -179,6 +192,9 @@ public class NeoInputReader : MonoBehaviour
 
         current.grabReleased =
             !grab && previous.grab;
+
+        current.parryReleased =
+            !parry && previous.parry;
 
         current.attackHeldFrames =
             attack
@@ -205,6 +221,11 @@ public class NeoInputReader : MonoBehaviour
                 ? previous.grabHeldFrames + 1
                 : 0;
 
+        current.parryHeldFrames =
+            parry
+                ? previous.parryHeldFrames + 1
+                : 0;
+
         current.directionHeldFrames =
             current.direction == previous.direction
                 ? previous.directionHeldFrames + 1
@@ -213,45 +234,8 @@ public class NeoInputReader : MonoBehaviour
         historyIndex =
             (historyIndex + 1) % HISTORY_SIZE;
 
-        history[historyIndex] = current;
-    }
-    
-    public int FindPressedFrame(
-        GameInput input,
-        int window)
-    {
-        window = Mathf.Min(window, HISTORY_SIZE);
-
-        for (int i = 0; i < window; i++)
-        {
-            InputSnapshot snapshot = GetSnapshot(i);
-
-            if (GetButtonPressed(snapshot, input))
-            {
-                return snapshot.frame;
-            }
-        }
-
-        return -1;
-    }
-    
-    public int FindDirectionFrame(
-        InputDirection direction,
-        int window)
-    {
-        window = Mathf.Min(window, HISTORY_SIZE);
-
-        for (int i = 0; i < window; i++)
-        {
-            InputSnapshot snapshot = GetSnapshot(i);
-
-            if (snapshot.direction == direction)
-            {
-                return snapshot.frame;
-            }
-        }
-
-        return -1;
+        history[historyIndex] =
+            current;
     }
 
     // =========================================================
@@ -262,7 +246,8 @@ public class NeoInputReader : MonoBehaviour
         Vector2 stick,
         InputDirection previous)
     {
-        float magnitude = stick.magnitude;
+        float magnitude =
+            stick.magnitude;
 
         if (magnitude < deadzone)
         {
@@ -277,7 +262,6 @@ public class NeoInputReader : MonoBehaviour
         float x = stick.x;
         float y = stick.y;
 
-        // Continue existing direction.
         if (previous == InputDirection.Left &&
             x < -threshold)
         {
@@ -302,7 +286,6 @@ public class NeoInputReader : MonoBehaviour
             return InputDirection.Down;
         }
 
-        // Find a new direction.
         if (Mathf.Abs(x) > Mathf.Abs(y))
         {
             if (x > directionThreshold)
@@ -327,7 +310,8 @@ public class NeoInputReader : MonoBehaviour
     // HISTORY
     // =========================================================
 
-    public InputSnapshot GetSnapshot(int framesAgo)
+    public InputSnapshot GetSnapshot(
+        int framesAgo)
     {
         if (framesAgo < 0 ||
             framesAgo >= HISTORY_SIZE)
@@ -352,35 +336,55 @@ public class NeoInputReader : MonoBehaviour
 
     public bool IsHeld(GameInput input)
     {
-        return GetButton(GetSnapshot(0), input);
+        return GetButton(
+            GetSnapshot(0),
+            input
+        );
     }
 
     public bool WasPressed(GameInput input)
     {
-        return GetButtonPressed(GetSnapshot(0), input);
+        return GetButtonPressed(
+            GetSnapshot(0),
+            input
+        );
     }
 
     public bool WasReleased(GameInput input)
     {
-        return GetButtonReleased(GetSnapshot(0), input);
+        return GetButtonReleased(
+            GetSnapshot(0),
+            input
+        );
     }
 
     public int HeldFrames(GameInput input)
     {
-        return GetHeldFrames(GetSnapshot(0), input);
+        return GetHeldFrames(
+            GetSnapshot(0),
+            input
+        );
     }
 
     // =========================================================
     // GENEROUS INPUT QUERIES
     // =========================================================
 
-    public bool WasPressed(GameInput input, int window)
+    public bool WasPressed(
+        GameInput input,
+        int window)
     {
-        window = Mathf.Min(window, HISTORY_SIZE);
+        window =
+            Mathf.Min(
+                window,
+                HISTORY_SIZE
+            );
 
         for (int i = 0; i < window; i++)
         {
-            if (GetButtonPressed(GetSnapshot(i), input))
+            if (GetButtonPressed(
+                    GetSnapshot(i),
+                    input))
             {
                 return true;
             }
@@ -389,13 +393,21 @@ public class NeoInputReader : MonoBehaviour
         return false;
     }
 
-    public bool WasHeld(GameInput input, int window)
+    public bool WasHeld(
+        GameInput input,
+        int window)
     {
-        window = Mathf.Min(window, HISTORY_SIZE);
+        window =
+            Mathf.Min(
+                window,
+                HISTORY_SIZE
+            );
 
         for (int i = 0; i < window; i++)
         {
-            if (GetButton(GetSnapshot(i), input))
+            if (GetButton(
+                    GetSnapshot(i),
+                    input))
             {
                 return true;
             }
@@ -408,7 +420,11 @@ public class NeoInputReader : MonoBehaviour
         InputDirection wantedDirection,
         int window)
     {
-        window = Mathf.Min(window, HISTORY_SIZE);
+        window =
+            Mathf.Min(
+                window,
+                HISTORY_SIZE
+            );
 
         for (int i = 0; i < window; i++)
         {
@@ -420,6 +436,95 @@ public class NeoInputReader : MonoBehaviour
         }
 
         return false;
+    }
+
+    public bool WasDirectionNearFrame(
+        InputDirection direction,
+        int targetFrame,
+        int window)
+    {
+        for (int i = 0;
+             i < HISTORY_SIZE;
+             i++)
+        {
+            InputSnapshot snapshot =
+                GetSnapshot(i);
+
+            if (snapshot.frame == 0)
+            {
+                continue;
+            }
+
+            int difference =
+                Mathf.Abs(
+                    snapshot.frame -
+                    targetFrame
+                );
+
+            if (difference > window)
+            {
+                continue;
+            }
+
+            if (snapshot.direction ==
+                direction)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public int FindPressedFrame(
+        GameInput input,
+        int window)
+    {
+        window =
+            Mathf.Min(
+                window,
+                HISTORY_SIZE
+            );
+
+        for (int i = 0; i < window; i++)
+        {
+            InputSnapshot snapshot =
+                GetSnapshot(i);
+
+            if (GetButtonPressed(
+                    snapshot,
+                    input))
+            {
+                return snapshot.frame;
+            }
+        }
+
+        return -1;
+    }
+
+    public int FindDirectionFrame(
+        InputDirection direction,
+        int window)
+    {
+        window =
+            Mathf.Min(
+                window,
+                HISTORY_SIZE
+            );
+
+        for (int i = 0; i < window; i++)
+        {
+            InputSnapshot snapshot =
+                GetSnapshot(i);
+
+            if (snapshot.direction ==
+                direction)
+            {
+                return snapshot.frame;
+            }
+        }
+
+        return -1;
     }
 
     // =========================================================
@@ -446,40 +551,9 @@ public class NeoInputReader : MonoBehaviour
 
             case GameInput.Grab:
                 return snapshot.grab;
+
             case GameInput.Parry:
                 return snapshot.parry;
-        }
-
-        return false;
-    }
-    
-    public bool WasDirectionNearFrame(
-        InputDirection direction,
-        int targetFrame,
-        int window)
-    {
-        for (int i = 0; i < HISTORY_SIZE; i++)
-        {
-            InputSnapshot snapshot =
-                GetSnapshot(i);
-
-            if (snapshot.frame == 0)
-            {
-                continue;
-            }
-
-            int difference =
-                Mathf.Abs(snapshot.frame - targetFrame);
-
-            if (difference > window)
-            {
-                continue;
-            }
-
-            if (snapshot.direction == direction)
-            {
-                return true;
-            }
         }
 
         return false;
@@ -505,6 +579,9 @@ public class NeoInputReader : MonoBehaviour
 
             case GameInput.Grab:
                 return snapshot.grabPressed;
+
+            case GameInput.Parry:
+                return snapshot.parryPressed;
         }
 
         return false;
@@ -530,6 +607,9 @@ public class NeoInputReader : MonoBehaviour
 
             case GameInput.Grab:
                 return snapshot.grabReleased;
+
+            case GameInput.Parry:
+                return snapshot.parryReleased;
         }
 
         return false;
@@ -555,6 +635,9 @@ public class NeoInputReader : MonoBehaviour
 
             case GameInput.Grab:
                 return snapshot.grabHeldFrames;
+
+            case GameInput.Parry:
+                return snapshot.parryHeldFrames;
         }
 
         return 0;
@@ -569,18 +652,20 @@ public class NeoInputReader : MonoBehaviour
         return leftStick;
     }
 
-    public Vector2 GetRightStick()
+    /*public Vector2 GetRightStick()
     {
         return rightStick;
     }
+    */
 
     public InputDirection GetDirection()
     {
-        return direction;
+        return GetSnapshot(0).direction;
     }
 
     public int GetDirectionHeldFrames()
     {
-        return GetSnapshot(0).directionHeldFrames;
+        return GetSnapshot(0)
+            .directionHeldFrames;
     }
 }
