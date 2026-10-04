@@ -1,9 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class NeoHitbox : MonoBehaviour
 {
     [SerializeField] private int damage = 5;
     [SerializeField] private float knockback = 10f;
+    [SerializeField] private Vector2 direction;
+
+    private List<Player> hits = new List<Player>();
 
     private Collider hitCollider;
 
@@ -13,13 +17,26 @@ public class NeoHitbox : MonoBehaviour
         hitCollider.enabled = false;
     }
 
-    public void Activate()
+    private void OnCollisionEnter(Collision collision)
     {
-        hitCollider.enabled = true;
+        if (collision.gameObject.CompareTag("Hurtbox"))
+        {
+            NeoHurtbox hurt = collision.gameObject.GetComponent<NeoHurtbox>();
+            if (hits.Contains(hurt.getPlayer()))
+            {
+                return; //we already interacted with this player
+            }
+            else
+            {
+                hits.Add(hurt.getPlayer());
+                hurt.getPlayer(); //hold
+            }
+
+        }
     }
 
-    public void Deactivate()
+    private void OnDisable()
     {
-        hitCollider.enabled = false;
+        hits.Clear();
     }
 }
