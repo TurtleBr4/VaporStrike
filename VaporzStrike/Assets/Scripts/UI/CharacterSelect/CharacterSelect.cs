@@ -56,7 +56,7 @@ public class CharacterSelect : MonoBehaviour
                 case SelectMode.Character:
                     StagePanel.SetActive(false);
                     selectedLevel = "";
-
+                    ThemeScript.instance.mode = 1;
 
                 if (cancel.action.triggered)
                 {
@@ -65,8 +65,8 @@ public class CharacterSelect : MonoBehaviour
                 break;
                 case SelectMode.Stage:
                     StagePanel.SetActive(true);
-
-                    if (cancel.action.triggered)
+                    ThemeScript.instance.mode = 2;
+                if (cancel.action.triggered)
                     {
                         selectMode = SelectMode.Character;
                     }

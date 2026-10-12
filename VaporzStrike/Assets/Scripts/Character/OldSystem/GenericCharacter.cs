@@ -349,14 +349,14 @@ public class GenericCharacter : MonoBehaviour
     {
         if (playerID == 0)
         {
-            hud.p1Percent.text = damagePercent.ToString();
-            hud.p1Stocks.text = "x"+playerStocks.ToString();
+            hud.p1Percent.value = damagePercent;
+            hud.p1Stocks.text = "P1 (" + playerStocks.ToString() + ")";
             GameManager.instance.player1Obj = this;
         }
         else
         {
-            hud.p2Percent.text = damagePercent.ToString();
-            hud.p2Stocks.text = "x" + playerStocks.ToString();
+            hud.p2Percent.value = damagePercent;
+            hud.p2Stocks.text = "P2 (" + playerStocks.ToString()+")";
             GameManager.instance.player2Obj = this;
         }
     }
@@ -836,7 +836,10 @@ public class GenericCharacter : MonoBehaviour
             shieldHP -= hitbox.hitStun;
         }
     }
-
+    public virtual void adjustDamage(int amount)
+    {
+        damagePercent += amount;
+    }
     public bool getGroundState()
     {
         if (doGroundCheck())
