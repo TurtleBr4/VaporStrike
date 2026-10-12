@@ -64,7 +64,7 @@ public class FighterMoves : MonoBehaviour
             currentAngles.y = 90f; // Change only the Y axis
             animControl.transform.eulerAngles = currentAngles;
         }
-        Debug.Log(frameCount);
+       // Debug.Log(frameCount);
 
     }
 
@@ -80,6 +80,12 @@ public class FighterMoves : MonoBehaviour
                 continue;
             }
 
+            if(psc.getGrounded() && move.isAirMove)
+            {
+                print("AirCheck running");
+                frameCount = 0;
+                continue;
+            }
 
             BeginMove(move);
             return;

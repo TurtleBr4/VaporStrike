@@ -27,8 +27,9 @@ public class MoveDefinition : ScriptableObject
 
     [Header("Animation Data")] 
     public int animationID = 0;
-    
+
     [Header("Data")]
+    public bool isAirMove = false;
     public int frameTime; //this INCLUDES END LAG!
     public int hitStun;
     public int hitboxStartFrame;
