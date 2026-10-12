@@ -14,8 +14,8 @@ public class HUD : MonoBehaviour
     public Image player1Img;
     public Image player2Img;
 
-    public TextMeshProUGUI p1Percent;
-    public TextMeshProUGUI p2Percent;
+    public Slider p1Percent;
+    public Slider p2Percent;
 
     public TextMeshProUGUI p1Stocks;
     public TextMeshProUGUI p2Stocks;

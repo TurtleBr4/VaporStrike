@@ -188,15 +188,21 @@ public class GameManager : MonoBehaviour
             Level level = GameObject.Find("LevelData").GetComponent<Level>();
             for(int i = 0; i < level.levelSpawns.Length; i++)
             {
-                guy = Instantiate(playerDataArray[i].playerPrefab);
-                if (guy)
+                Debug.Log("Spawning");
+                if(playerDataArray[i] != null)
                 {
-                    print("Spawned Character Prefab");
+                    guy = Instantiate(playerDataArray[i].playerPrefab);
+                    if (guy)
+                    {
+                        print("Spawned Character Prefab");
+                    }
+                    else
+                    {
+                        Debug.LogError("What the Hell!");
+                    }
                 }
-                else
-                {
-                    Debug.LogError("What the Hell!");
-                }
+
+
                 
             }
 
