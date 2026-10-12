@@ -180,5 +180,9 @@ public class FighterMoves : MonoBehaviour
         frameCount -= 1;
     }
 
+    public MoveDefinition getCurrentMove()
+    {
+        return currentMove;
+    }
    
 }

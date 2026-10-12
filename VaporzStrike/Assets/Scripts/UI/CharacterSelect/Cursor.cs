@@ -49,7 +49,7 @@ public class CursorVirt : MonoBehaviour
         var pointer = new PointerEventData(EventSystem.current) { position = r.anchoredPosition };
         if (GameManager.instance != null)
         {
-            GameManager.instance.DebugTxt = pointer.position.ToString();
+            //GameManager.instance.DebugTxt = pointer.position.ToString();
         }
         List<RaycastResult> raycastResults = new List<RaycastResult>();
         _graphicRaycaster.Raycast(pointer, raycastResults);
@@ -83,7 +83,7 @@ public class CursorVirt : MonoBehaviour
             {
                 if (GameManager.instance != null)
                 {
-                    GameManager.instance.DebugTxt = $"no ui";
+                   // GameManager.instance.DebugTxt = $"no ui";
                 }
             }
         }

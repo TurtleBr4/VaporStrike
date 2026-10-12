@@ -35,15 +35,15 @@ public class HUD : MonoBehaviour
     {
         //player1 = GameObject.Find("TestPlayer");
         GameManager.instance.Init();
-        //GameManager.instance.onGameStateChanged(gameState.Game);
-        GameManager.instance.matchTimer = 200;
+        GameManager.instance.changeState(gameState.Game);
+       //GameManager.instance.matchTimer = 200;
         instance = this;
         GameManager.instance.isMatch = true;
         
     }
     private void Awake()
     {
-        countdown.gameObject.SetActive(true);
+        //countdown.gameObject.SetActive(true);
     }
     // Update is called once per frame
     void Update()
@@ -68,7 +68,7 @@ public class HUD : MonoBehaviour
         }
         timerText.text = GameManager.instance.DisplayTime();
 
-        if(((!GameManager.instance.isMatch) && (GameManager.instance.matchResult != GameManager.ResultType.Start)))
+        if(((!GameManager.instance.isMatch) && (GameManager.instance.matchResult != ResultType.Start)))
         {
             matchResultCanvas.gameObject.SetActive(true);
             Time.timeScale *= (Time.timeScale*0.1f);
@@ -76,7 +76,7 @@ public class HUD : MonoBehaviour
             if (Gamepad.current.startButton.wasPressedThisFrame) {
 
                 SceneManager.LoadScene("CharacterSelect");
-                GameManager.instance.onGameStateChanged(gameState.Menu);
+                GameManager.instance.changeState(gameState.Menu);
             }
         }
         else
@@ -89,13 +89,13 @@ public class HUD : MonoBehaviour
 
             switch (GameManager.instance.matchResult)
             {
-                case GameManager.ResultType.NoContest:
+                case ResultType.NoContest:
                     matchResultTxt.text = "No Contest!";
                     break;
-                case GameManager.ResultType.Player1:
+                case ResultType.Player1:
                     matchResultTxt.text = "Player 1 Wins!";
                     break;
-                case GameManager.ResultType.Player2:
+                case ResultType.Player2:
                     matchResultTxt.text = "Player 2 Wins!";
                     break;
             }

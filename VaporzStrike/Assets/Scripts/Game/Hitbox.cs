@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Hitbox : MonoBehaviour
 {
+    /*
     public HitboxDataStruct data;
     public GenericCharacter self;
     public float damage;
@@ -53,6 +54,7 @@ public class Hitbox : MonoBehaviour
             Debug.LogWarning("Not A Hitbox!");
         }
     }
+    */
 }
 
 public struct HitboxDataStruct

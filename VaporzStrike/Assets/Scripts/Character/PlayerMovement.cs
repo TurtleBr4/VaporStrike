@@ -7,21 +7,30 @@ public class PlayerMovement : MonoBehaviour
     [Header("State Management")]
     public PlayerStateController psc;
 
+    [Header("Data")]
+    [SerializeField] PlayerData data;
+
     [Header("Movement")]
     [SerializeField] private NeoInputReader inputReader;
     [SerializeField] private float moveSpeed = 8f;
 
-    [Header("Jump")]
+    [Header("OldJump")]
     [SerializeField] private float jumpForce = 12f;
     [SerializeField] private float gravity = 30f;
     [SerializeField] private float maxFallSpeed = 20f;
     [SerializeField] private int jumpSquatLength;
     [SerializeField] private int landingLength;
+    private Vector2 knockbackVelocity;
+    private bool inKnockback;
+
+
+
     int timer = 100;
     int anotherTimer = 100;
     bool lastFrameGrounded;
     public bool dropping = false;
     private int numberThatTicksUpToCalculateWhenTheJustJumpedVariableShouldBeReset = 10;
+    private int hitStunTimer = -1;
 
     private CharacterController controller;
 
@@ -46,6 +55,17 @@ public class PlayerMovement : MonoBehaviour
         {
             Move();
 
+        }
+
+        if (psc.getHitstun())
+        {
+            ApplyKnockback();
+            hitStunTimer -= 1;
+            if(hitStunTimer <= 0)
+            {
+                psc.setHitstun(false);
+                hitStunTimer = -1;
+            }
         }
 
         if(timer != 100) //fuck you, vague variables upon ye
@@ -117,6 +137,30 @@ public class PlayerMovement : MonoBehaviour
             movement * Time.deltaTime
         );
     }
+
+
+    public void TakeKnockback(Vector2 movement, int framesOfInaction)
+    {
+        hitStunTimer = framesOfInaction;
+        knockbackVelocity = movement;
+        inKnockback = true;
+        psc.setFacingRight(movement.x > 0);
+        psc.setHitstun(true);
+
+    }
+
+
+    private void ApplyKnockback()
+    {
+        if (!inKnockback)
+            return;
+
+        controller.Move(
+            new Vector3(knockbackVelocity.x, knockbackVelocity.y, 0f)
+            * Time.deltaTime
+        );
+    }
+
 
     private void ApplyGravity()
     {

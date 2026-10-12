@@ -11,6 +11,6 @@ public class DebugText : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetComponent<TextMeshProUGUI>().text = GameManager.instance.DebugTxt;
+       // GetComponent<TextMeshProUGUI>().text = GameManager.instance.DebugTxt;
     }
 }

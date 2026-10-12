@@ -195,6 +195,7 @@ MonoBehaviour:
   damage: 5
   knockback: 10
   direction: {x: 0, y: -0.59}
+  player: {fileID: 0}
 --- !u!65 &232937125
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -269,6 +270,62 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &319118669
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 319118671}
+  - component: {fileID: 319118670}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &319118670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319118669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1b847d699ccba4a8d56fcb315eaac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameFrameRate: 60
+  platformFrameTime: 24
+  fastFallMultiplier: 1.25
+  parryFrameTime: 4
+  debugFlag: 0
+  matchTimer: 120
+  currentState: 0
+  playerCount: 0
+  matchResult: 0
+  playerDataArray: []
+  isMatch: 0
+  playerDatabase: {fileID: 0}
+--- !u!4 &319118671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 319118669}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.3024851, y: -2.121521, z: 13.451853}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &424541817
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,14 +960,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 650224082}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.043478254, y: 0.043478258, z: 0.043478254}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 232937123}
   - {fileID: 2066806749}
-  m_Father: {fileID: 871072931}
+  m_Father: {fileID: 2129203911}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &871072920
 PrefabInstance:
@@ -1118,10 +1175,13 @@ PrefabInstance:
     - {fileID: 2903718161017794666, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
     - {fileID: 113194831781735688, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4258082508430758349, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 3337481924120713883, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
       insertIndex: -1
       addedObject: {fileID: 650224083}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3110932208367537764, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 871072934}
     - targetCorrespondingSourceObject: {fileID: 3110932208367537764, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
       insertIndex: -1
       addedObject: {fileID: 871072932}
@@ -1248,6 +1308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   psc: {fileID: 0}
+  data: {fileID: 0}
   inputReader: {fileID: 871072924}
   moveSpeed: 8
   jumpForce: 13.5
@@ -1462,11 +1523,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!4 &871072931 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4258082508430758349, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
-  m_PrefabInstance: {fileID: 871072920}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &871072932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1483,8 +1539,27 @@ MonoBehaviour:
   isGrounded: 0
   isFacingRight: 0
   isMoving: 0
+  isHitstun: 0
   justJumped: 0
   justLanded: 0
+--- !u!114 &871072934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871072921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cf0bdb7ce193e549aa26808872e5c2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Skye
+  Percent: 0
+  playerID: 0
+  playerState: {fileID: 871072932}
+  playerMove: {fileID: 871072928}
+  moves: {fileID: 871072925}
 --- !u!1001 &1102509061
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1803,6 +1878,7 @@ MonoBehaviour:
   damage: 5
   knockback: 10
   direction: {x: 0, y: 0}
+  player: {fileID: 0}
 --- !u!65 &2066806748
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2025,6 +2101,11 @@ Animation:
   m_AnimatePhysics: 0
   m_UpdateMode: 0
   m_CullingType: 0
+--- !u!4 &2129203911 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3337481924120713883, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
+  m_PrefabInstance: {fileID: 871072920}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2034,3 +2115,4 @@ SceneRoots:
   - {fileID: 633021178}
   - {fileID: 871072920}
   - {fileID: 1102509061}
+  - {fileID: 319118671}

@@ -2809,7 +2809,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3161504507945357589, guid: 8ba58d7e35474484a8323c12ee699396, type: 3}
       propertyPath: debugFlag
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161504507945357589, guid: 8ba58d7e35474484a8323c12ee699396, type: 3}
+      propertyPath: playerCount
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3161504507945357589, guid: 8ba58d7e35474484a8323c12ee699396, type: 3}
       propertyPath: playerDatabase

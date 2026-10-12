@@ -6,6 +6,7 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private bool isGrounded = false;
     [SerializeField] private bool isFacingRight = true;
     [SerializeField] private bool isMoving = false;
+    [SerializeField] private bool isHitstun = false;
     public bool justJumped = false;
     public bool justLanded = false;
 
@@ -49,5 +50,15 @@ public class PlayerStateController : MonoBehaviour
     public void setMovin(bool s)
     {
         isMoving = s;
+    }
+
+    public void setHitstun(bool s)
+    {
+        isHitstun = s;
+    }
+
+    public bool getHitstun()
+    {
+        return isHitstun;
     }
 }

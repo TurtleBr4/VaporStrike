@@ -20,6 +20,7 @@ public enum playerGroundState //all this does is track if a player is in the air
 
 public class GenericCharacter : MonoBehaviour
 {
+    /*
     private static readonly int AnimationID = Animator.StringToHash("Animation ID"); //thanks jetbrains rider for the effecient lookup or whatever
     private static readonly int Grounded = Animator.StringToHash("Grounded");
     private static readonly int LastAnimIdle = Animator.StringToHash("LastAnimIdle");
@@ -178,7 +179,7 @@ public class GenericCharacter : MonoBehaviour
 
 
         }
-        */
+        
     }
 
     public virtual void stateManager()
@@ -725,7 +726,7 @@ public class GenericCharacter : MonoBehaviour
 
         return null;
     }
-    */
+    
 
 
     public void OnDrawGizmosSelected() //visualizes the hitboxes while in the editor
@@ -929,5 +930,5 @@ public class GenericCharacter : MonoBehaviour
 
 
 
-
+*/
 }

@@ -9,9 +9,31 @@ public class Player : MonoBehaviour
     [Header("References")]
     [SerializeField] PlayerStateController playerState;
     [SerializeField] PlayerMovement playerMove;
+    [SerializeField] FighterMoves moves;
 
-    public void takeDamage(int dmg, Vector2 direction)
+    public void takeDamage(float dmg, Vector2 direction, int hitstun)
     {
         Percent += dmg;
+        playerMove.TakeKnockback(direction, hitstun);
+    }
+
+    public MoveDefinition getCurrentMove()
+    {
+        return moves.getCurrentMove();
+    }
+
+    public void takeInPlayerData(PlayerData data)
+    {
+
+    }
+
+    public void doBlastZoneDeath()
+    {
+
+    }
+
+    public int getPlayerID()
+    {
+        return playerID;
     }
 }
