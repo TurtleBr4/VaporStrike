@@ -22,6 +22,6 @@ MonoBehaviour:
   isAirMove: 1
   frameTime: 60
   hitStun: 0
-  hitboxStartFrame: 0
-  hitboxEndFrame: 0
+  hitboxStartFrame: 50
+  hitboxEndFrame: 35
   cancelTime: 30
