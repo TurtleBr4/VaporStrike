@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public PlayerStateController psc;
 
     [Header("Data")]
-    [SerializeField] PlayerData data;
+    [SerializeField] Player player;
 
     [Header("Movement")]
     [SerializeField] private NeoInputReader inputReader;

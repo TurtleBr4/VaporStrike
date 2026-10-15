@@ -3,7 +3,7 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "PlayerData", menuName = "Scriptable Objects/PlayerData")]
 public class PlayerData : ScriptableObject
 {
-
+    [Header("Basic Data")]
     public string playerName;
     public GameObject playerPrefab;
     public int playerId;
@@ -12,13 +12,12 @@ public class PlayerData : ScriptableObject
     public float jumpPower;
     public float airSpeed;
     public float maxFallSpeed;
-    public Moveset moveset;
     public Sprite mugshot;
-    
-    public Move getMoveAtID(int id)
-    {
-        return moveset.moves[id];
-    }
-    
+    [Header("Grab Data in Frames")]
+    public int grabboxStartFrame;
+    public int grabboxEndFrame;
+    public int grabboxDuration;
+
+
 
 }

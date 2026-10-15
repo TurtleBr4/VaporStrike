@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,11 +11,25 @@ public class Player : MonoBehaviour
     [SerializeField] PlayerStateController playerState;
     [SerializeField] PlayerMovement playerMove;
     [SerializeField] FighterMoves moves;
+    [SerializeField] private PlayerData playerData;
+
+    private void Start()
+    {
+        moves.grabboxStart = playerData.grabboxStartFrame;
+        moves.grabboxEnd = playerData.grabboxEndFrame;
+        moves.grabDuration = playerData.grabboxDuration;
+    }
 
     public void takeDamage(float dmg, Vector2 direction, int hitstun)
     {
         Percent += dmg;
         playerMove.TakeKnockback(direction, hitstun);
+    }
+
+    public void getGrabbed(Transform position) //TO DO: link the grabbox's position to the player while being grabbed
+    {
+        playerState.setActionability(false);
+        playerState.setGettingGrabbed(true);
     }
 
     public MoveDefinition getCurrentMove()
@@ -35,5 +50,10 @@ public class Player : MonoBehaviour
     public int getPlayerID()
     {
         return playerID;
+    }
+
+    public PlayerData getPlayerData()
+    {
+        return playerData;
     }
 }

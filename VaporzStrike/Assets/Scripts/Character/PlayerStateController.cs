@@ -7,6 +7,10 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private bool isFacingRight = true;
     [SerializeField] private bool isMoving = false;
     [SerializeField] private bool isHitstun = false;
+    [SerializeField] private bool isParrying = false;
+    [SerializeField] private bool isGrabbing = false;
+    [SerializeField] private bool isGettingGrabbed = false;
+    [SerializeField] private bool isInvincible = false;
     public bool justJumped = false;
     public bool justLanded = false;
 
@@ -60,5 +64,45 @@ public class PlayerStateController : MonoBehaviour
     public bool getHitstun()
     {
         return isHitstun;
+    }
+
+    public bool getInvincible()
+    {
+        return isInvincible;
+    }
+
+    public void setInvincible(bool s)
+    {
+        isInvincible = s;
+    }
+
+    public bool getParrying()
+    {
+        return isParrying;
+    }
+
+    public void setParrying(bool s)
+    {
+        isParrying = s;
+    }
+
+    public bool getGrabbing()
+    {
+        return isGrabbing;
+    }
+
+    public void setGrabbing(bool s)
+    {
+        isGrabbing = s;
+    }
+
+    public bool getGettingGrabbed()
+    {
+        return isGettingGrabbed;
+    }
+
+    public void setGettingGrabbed(bool s)
+    {
+        isGettingGrabbed = s;
     }
 }

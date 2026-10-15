@@ -18,8 +18,7 @@ public class InputInterpreter : MonoBehaviour
             return false;
         }
 
-        if (move.direction ==
-            InputDirection.Neutral)
+        if (move.direction == InputDirection.Neutral)
         {
             return true;
         }
@@ -31,31 +30,42 @@ public class InputInterpreter : MonoBehaviour
         );
     }
 
+    public bool CheckParry(int buttonWindow)
+    {
+        return inputReader.WasPressed(
+            GameInput.Parry,
+            buttonWindow
+        );
+    }
+
+    public bool CheckGrab(int buttonWindow)
+    {
+        return inputReader.WasPressed(
+            GameInput.Grab,
+            buttonWindow
+        );
+    }
+
     public bool CheckBufferedMove(
         BufferedInput bufferedInput,
         MoveDefinition move)
     {
-        if (bufferedInput.button !=
-            move.button)
+        if (bufferedInput.button != move.button)
         {
             return false;
         }
 
-        int currentFrame =
-            inputReader.CurrentFrame;
+        int currentFrame = inputReader.CurrentFrame;
 
         int framesSinceInput =
-            currentFrame -
-            bufferedInput.frame;
+            currentFrame - bufferedInput.frame;
 
-        if (framesSinceInput >
-            move.bufferDuration)
+        if (framesSinceInput > move.bufferDuration)
         {
             return false;
         }
 
-        if (move.direction ==
-            InputDirection.Neutral)
+        if (move.direction == InputDirection.Neutral)
         {
             return true;
         }
@@ -78,24 +88,19 @@ public class InputInterpreter : MonoBehaviour
         {
             return false;
         }
-        
 
         for (int i = 0; i < moves.Length; i++)
         {
             MoveDefinition move = moves[i];
 
-            if (!CheckBufferedMove(
-                    buffered,
-                    move))
+            if (!CheckBufferedMove(buffered, move))
             {
                 continue;
             }
 
             result = move;
 
-            inputBuffer.ConsumeInput(
-                buffered
-            );
+            inputBuffer.ConsumeInput(buffered);
 
             return true;
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class FighterMoves : MonoBehaviour
 {
@@ -15,8 +16,9 @@ public class FighterMoves : MonoBehaviour
 
     [Header("Animation Controls")]
     [SerializeField] private AnimationClip[] animations;
-    [SerializeField] private AnimationClip[] nonAttackingAnimations; //fixed indicies: 0 idle, 1 walk, 2 jump, 3 landing, 4 air idle
+    [SerializeField] private AnimationClip[] nonAttackingAnimations; //fixed indicies: 0 idle, 1 walk, 2 jump, 3 landing, 4 air idle, 5 for grab, 6 for throw, 7 for parry
     [SerializeField] private bool isAnimatingAndAttacking = false;
+    [SerializeField] private bool isInSecondaryAction = false;
     [SerializeField] private int frameCount = 0;
     [SerializeField] private Animation animControl;
     [SerializeField] private Dictionary<int, AnimationClip> idToAnimation; 
@@ -25,8 +27,14 @@ public class FighterMoves : MonoBehaviour
 
     [Header("Hitbox Data")]
     [SerializeField] private GameObject[] hitboxes; //each index contains an object that holds any relevant hitboxes for the move at the corresponding index
+    
+    [Header("Grab Data")]
+    [SerializeField] private GameObject grab;
+    public int grabboxStart;
+    public int grabboxEnd;
+    [FormerlySerializedAs("grabboxDuration")] public int grabDuration;
 
-
+    
     private void Start()
     {
         //TEMP FRAME LIMITER
@@ -45,10 +53,15 @@ public class FighterMoves : MonoBehaviour
         {
             AttackingChecks();
         }
+        else if (!psc.getActionablility() && isInSecondaryAction)
+        {
+            DoSecondaryAction();
+        }
         else
         {
             //print("checking for moves");
             CheckMoves();
+            CheckSecondaryAction();
             CheckOtherAnimations();
         }
 
@@ -90,6 +103,70 @@ public class FighterMoves : MonoBehaviour
             BeginMove(move);
             return;
         }
+    }
+
+    private void CheckSecondaryAction() //parry and grab
+    {
+        if (inputInterpreter.CheckGrab(6))
+        {
+            psc.setActionability(false);
+            psc.setGrabbing(true);
+            
+            isInSecondaryAction = true;
+            currentAnimation = nonAttackingAnimations[5];
+            animControl.AddClip(currentAnimation, "Grab");
+            animControl.Play("Grab");
+            
+            frameCount = grabDuration; 
+        }
+
+        if (inputInterpreter.CheckParry(1))
+        {
+            psc.setActionability(false);
+            psc.setParrying(true);
+            isInSecondaryAction = true;
+            
+            currentAnimation = nonAttackingAnimations[7];
+            animControl.AddClip(currentAnimation, "Parry");
+            animControl.Play("Parry");
+            
+            frameCount = 1;
+        }
+    }
+
+    private void DoSecondaryAction()
+    {
+        if (frameCount == 0)
+        {
+            psc.setActionability(true);
+            isInSecondaryAction = false;
+            
+            psc.setGrabbing(false);
+            psc.setParrying(false);
+            
+            animControl.clip = null;
+            return;
+        }
+        
+        if (animControl.isPlaying)
+        {
+            animControl.Stop();
+        }
+        
+        if (psc.getGrabbing())
+        {
+            if (frameCount == grabboxStart)
+            {
+                grab.SetActive(true);
+            }
+
+            if (frameCount == grabboxEnd)
+            {
+                grab.SetActive(false);
+            }
+        }
+
+        frameCount -= 1;
     }
 
     private void CheckOtherAnimations()
