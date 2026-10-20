@@ -13,7 +13,7 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private bool isInvincible = false;
     public bool justJumped = false;
     public bool justLanded = false;
-
+    
     //Deliberately avoided using the c# get set commands so i can explicitly trace all references using the visual studio reference tracker thing
 
     public bool getActionablility()
