@@ -13,6 +13,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private NeoInputReader inputReader;
     [SerializeField] private float moveSpeed = 8f;
+    
+    [Header("AI Data")]
+    private AiAgent aiController;
+    private Vector2 aiMovementInput;
+    private bool aiJumpRequested;
 
     [Header("OldJump")]
     [SerializeField] private float jumpForce = 12f;
@@ -46,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
         psc = GetComponent<PlayerStateController>();
         psc.setActionability(true); //temporary, will be set from the new game manager whenever i get around to doing that
+        
+        aiController = GetComponent<AiAgent>();
     }
 
     private void Update()
@@ -103,16 +110,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckDropping()
     {
-        Vector2 stick = inputReader.GetLeftStick();
+        Vector2 stick = GetMovementInput();
 
         dropping = stick.y < -0.5f;
     }
     private void Move()
     {
-        Vector2 stick = inputReader.GetLeftStick();
+        Vector2 stick = GetMovementInput();
 
-        Vector3 movement =
-            Vector3.right * stick.x * moveSpeed;
+        Vector3 movement = Vector3.right * stick.x * moveSpeed;
 
         if(movement.x >= .2f || movement.x <= -.2f)
         {
@@ -183,10 +189,7 @@ public class PlayerMovement : MonoBehaviour
                 );
         }
 
-        Vector3 gravityMovement =
-            Vector3.up *
-            verticalVelocity *
-            Time.deltaTime;
+        Vector3 gravityMovement = Vector3.up * verticalVelocity * Time.deltaTime;
 
         controller.Move(gravityMovement);
     }
@@ -208,14 +211,21 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-        bool jumpButton =
-            inputReader.WasPressed(GameInput.Jump, 4);
+        bool isAI = aiController != null && aiController.enabled;
 
-        //print(jumpButton);
+        bool jumpButton;
 
-        bool tapJump =
-            inputReader.GetDirection() == InputDirection.Up &&
-            inputReader.GetDirectionHeldFrames() == 1;
+        if (isAI)
+        {
+            jumpButton = aiJumpRequested;
+            aiJumpRequested = false;
+        }
+        else
+        {
+            jumpButton = inputReader.WasPressed(GameInput.Jump, 4);
+        }
+
+        bool tapJump = !isAI && inputReader.GetDirection() == InputDirection.Up && inputReader.GetDirectionHeldFrames() == 1;
 
         if((jumpButton || tapJump) && psc.getActionablility())
         {
@@ -236,5 +246,25 @@ public class PlayerMovement : MonoBehaviour
         }
 
         return;
+    }
+    
+    public void SetAIMovementInput(Vector2 input)
+    {
+        aiMovementInput = Vector2.ClampMagnitude(input, 1f);
+    }
+
+    public void RequestAIJump()
+    {
+        aiJumpRequested = true;
+    }
+
+    private Vector2 GetMovementInput()
+    {
+        if (aiController != null && aiController.enabled)
+        {
+            return aiMovementInput;
+        }
+
+        return inputReader.GetLeftStick();
     }
 }

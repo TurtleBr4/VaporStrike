@@ -46,6 +46,7 @@ public class InputInterpreter : MonoBehaviour
         );
     }
 
+    
     public bool CheckBufferedMove(
         BufferedInput bufferedInput,
         MoveDefinition move)
@@ -60,7 +61,8 @@ public class InputInterpreter : MonoBehaviour
         int framesSinceInput =
             currentFrame - bufferedInput.frame;
 
-        if (framesSinceInput > move.bufferDuration)
+        if (framesSinceInput < 0 ||
+            framesSinceInput > move.bufferDuration)
         {
             return false;
         }
@@ -70,12 +72,12 @@ public class InputInterpreter : MonoBehaviour
             return true;
         }
 
-        return inputReader.WasDirectionNearFrame(
-            move.direction,
-            bufferedInput.frame,
-            move.directionWindow
-        );
+        //AI inputs supply the intended direction directly
+        //this also works for buffered player inputs because
+        //BufferedInput stores the direction at press time
+        return bufferedInput.direction == move.direction;
     }
+
 
     public bool TryGetMove(
         MoveDefinition[] moves,

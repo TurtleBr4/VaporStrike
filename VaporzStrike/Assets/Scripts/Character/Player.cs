@@ -15,9 +15,13 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        moves.grabboxStart = playerData.grabboxStartFrame;
-        moves.grabboxEnd = playerData.grabboxEndFrame;
-        moves.grabDuration = playerData.grabboxDuration;
+        if (playerData)
+        {
+            moves.grabboxStart = playerData.grabboxStartFrame;
+            moves.grabboxEnd = playerData.grabboxEndFrame;
+            moves.grabDuration = playerData.grabboxDuration;
+        }
+
     }
 
     public void takeDamage(float dmg, Vector2 direction, int hitstun)

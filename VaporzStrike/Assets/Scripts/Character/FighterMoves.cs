@@ -7,6 +7,7 @@ public class FighterMoves : MonoBehaviour
 {
     [Header("State Management")]
     public PlayerStateController psc;
+    [SerializeField] private AiAgent aiController;
 
     [Header("Input")]
     [SerializeField] private NeoInputReader inputReader;
@@ -45,6 +46,8 @@ public class FighterMoves : MonoBehaviour
         {
             idToAnimation[m.animationID] = animations[m.animationID];
         }
+        
+        aiController = GetComponent<AiAgent>();
     }
 
     private void Update()
@@ -81,8 +84,35 @@ public class FighterMoves : MonoBehaviour
 
     }
 
+    
     private void CheckMoves()
     {
+        //AI fighters use buffered inputs.
+        if (aiController != null && aiController.enabled)
+        {
+            MoveDefinition move;
+
+            if (!inputInterpreter.TryGetMove(
+                    moves, out move))
+            {
+                return;
+            }
+
+            if (psc.getGrounded() && move.isAirMove)
+            {
+                return;
+            }
+
+            if (!psc.getGrounded() && !move.isAirMove)
+            {
+                return;
+            }
+
+            BeginMove(move);
+            return;
+        }
+
+        //Existing player-controlled workflow.
         for (int i = 0; i < moves.Length; i++)
         {
             MoveDefinition move = moves[i];
@@ -93,9 +123,8 @@ public class FighterMoves : MonoBehaviour
                 continue;
             }
 
-            if(psc.getGrounded() && move.isAirMove)
+            if (psc.getGrounded() && move.isAirMove)
             {
-                print("AirCheck running");
                 frameCount = 0;
                 continue;
             }
@@ -104,6 +133,12 @@ public class FighterMoves : MonoBehaviour
             return;
         }
     }
+
+    public MoveDefinition[] GetMoves()
+    {
+        return moves;
+    }
+
 
     private void CheckSecondaryAction() //parry and grab
     {
