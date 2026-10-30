@@ -65,11 +65,18 @@ public class CharacterSelect : MonoBehaviour
                 break;
                 case SelectMode.Stage:
                     StagePanel.SetActive(true);
+                if(selectedLevel != null && selectedLevel != ""){
                     ThemeScript.instance.mode = 2;
+                }
+                else
+                {
+                    ThemeScript.instance.mode = 1;
+                }
+
                 if (cancel.action.triggered)
-                    {
-                        selectMode = SelectMode.Character;
-                    }
+                {
+                    selectMode = SelectMode.Character;
+                }
                     break;
         
         }
