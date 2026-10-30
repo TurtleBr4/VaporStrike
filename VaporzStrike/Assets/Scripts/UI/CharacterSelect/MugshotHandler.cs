@@ -27,12 +27,16 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
 
         //if (AreRectsOverlapping(GetComponent<RectTransform>(), element)) { EventSystem.current.SetSelectedGameObject(this.gameObject); }
+        if (!playerData)
+        {
+            gameObject.SetActive(false);
+        }
         if (!playerData.mugshot.Equals(null) && !isStage)
         {
 
             mugshot.sprite = playerData.mugshot;
 
-            GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(false);
+           GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(false);
         }
         else if (isStage) { }
         else { mugshot.sprite = null; GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(true); }
