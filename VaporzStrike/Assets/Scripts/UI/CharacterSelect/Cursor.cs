@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using TMPro;
 public class CursorVirt : MonoBehaviour
 {
     PlayerInput playerControls;
@@ -14,6 +15,15 @@ public class CursorVirt : MonoBehaviour
     public GraphicRaycaster _graphicRaycaster;
     [SerializeField] private int _id = 0;
     [SerializeField] private RectTransform r;
+
+    public Vector2 retroRes = new Vector2(480, 272);
+    public Vector2 screenRes = new Vector2(1920,1080);
+
+    public Vector2 sizeRatio = Vector2.zero;
+
+    public Vector2 currentPos = Vector2.zero;
+    public Vector2 finalPos = Vector2.zero;
+    private TextMeshProUGUI idText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()
@@ -31,7 +41,10 @@ public class CursorVirt : MonoBehaviour
 
             r = GetComponent<RectTransform>();
     }
-
+    private void Start()
+    {
+        idText = GetComponentInChildren<TextMeshProUGUI>();
+    }
     public void SetID(int id)
     {
         cursorID = id;
@@ -44,9 +57,16 @@ public class CursorVirt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        idText.text = (cursorID+1).ToString();
         playerControls.camera = Camera.main;
         r.anchoredPosition += dir * speed;
-        var pointer = new PointerEventData(EventSystem.current) { position = r.anchoredPosition };
+
+        //screenRes = new Vector2 (Screen.width, Screen.height);
+        sizeRatio = retroRes/screenRes;
+
+        currentPos = r.anchoredPosition;
+        finalPos = r.anchoredPosition * sizeRatio;
+    var pointer = new PointerEventData(EventSystem.current) { position = finalPos };
         if (GameManager.instance != null)
         {
             //GameManager.instance.DebugTxt = pointer.position.ToString();
