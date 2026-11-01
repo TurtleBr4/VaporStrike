@@ -20,6 +20,20 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
         //element = GameObject.Find("CursorP1").GetComponent<RectTransform>();
         selectable = GetComponent<Selectable>();
         playerData = GameManager.instance.GetPlayerByID(charID);
+        if (!playerData)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        if (!playerData.mugshot.Equals(null) && !isStage)
+        {
+
+            mugshot.sprite = playerData.mugshot;
+
+            GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(false);
+        }
+        else if (isStage) { }
+        else { mugshot.sprite = null; GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(true); }
     }
 
     // Update is called once per frame
@@ -27,19 +41,7 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
 
         //if (AreRectsOverlapping(GetComponent<RectTransform>(), element)) { EventSystem.current.SetSelectedGameObject(this.gameObject); }
-        if (!playerData)
-        {
-            gameObject.SetActive(false);
-        }
-        if (!playerData.mugshot.Equals(null) && !isStage)
-        {
 
-            mugshot.sprite = playerData.mugshot;
-
-           GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(false);
-        }
-        else if (isStage) { }
-        else { mugshot.sprite = null; GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(true); }
 
 
     }
