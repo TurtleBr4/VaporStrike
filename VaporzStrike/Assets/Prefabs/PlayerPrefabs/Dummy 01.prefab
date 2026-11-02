@@ -813,7 +813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cf0bdb7ce193e549aa26808872e5c2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Skye
+  Name: Dummy
   Percent: 0
   playerID: 1
   playerState: {fileID: 3676325506946823704}
