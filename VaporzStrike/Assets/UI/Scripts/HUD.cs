@@ -64,7 +64,16 @@ public class HUD : MonoBehaviour
 
         if(isPaused && Gamepad.current.selectButton.wasPressedThisFrame) 
         {
-            ToCharacterSelect();
+            if (GameManager.instance.isTraining)
+            {
+                GameManager.instance.isTraining = false;
+                SceneManager.LoadScene("MainMenu");
+            }
+            else
+            {
+                ToCharacterSelect();
+            }
+
         }
         timerText.text = GameManager.instance.DisplayTime();
 

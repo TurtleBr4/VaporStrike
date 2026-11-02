@@ -31,6 +31,7 @@ public class MainMenuScroll : MonoBehaviour
     private Color notSelectedCol = new Color(0.349f, 0.349f, 0.349f, 1);
     public bool isSubmenu = false;
     public SubWindow[] settingsSubwindows = new SubWindow[4];
+    public SubWindow[] moreSubwindows = new SubWindow[4];
 
     [Header("Settings Menu")]
     public int settingsVal = 1;
@@ -200,7 +201,7 @@ public class MainMenuScroll : MonoBehaviour
                         }
                         if (gamepad.buttonSouth.wasPressedThisFrame && cooldown == 0)
                         {
-                            SelectSubmenu(settingsVal);
+                            SelectSubmenu(moreVal);
                         }
 
                         if (gamepad.dpad.up.wasPressedThisFrame)
@@ -237,6 +238,12 @@ public class MainMenuScroll : MonoBehaviour
         {
             isSubmenu = true;
             settingsSubwindows[submenuVal-1].isActive = true;
+        }
+
+        if (menuNum == 2 && moreSubwindows[submenuVal - 1] != null)
+        {
+            isSubmenu = true;
+            moreSubwindows[submenuVal - 1].isActive = true;
         }
     }
     void RunSettings()

@@ -73,7 +73,7 @@ public class CursorVirt : MonoBehaviour
         }
         List<RaycastResult> raycastResults = new List<RaycastResult>();
         _graphicRaycaster.Raycast(pointer, raycastResults);
-        Debug.Log(raycastResults.Count);
+        //Debug.Log(raycastResults.Count);
         if (GameManager.instance != null)
         {
             //GameManager.instance.DebugTxt = raycastResults.Count.ToString();

@@ -20,6 +20,8 @@ public class CharacterSelect : MonoBehaviour
     public GameObject StagePanel;
 
     public InputActionReference cancel;
+
+    public TV tvScreen;
     public enum SelectMode
     {
         Character,
@@ -76,6 +78,7 @@ public class CharacterSelect : MonoBehaviour
                 if (cancel.action.triggered)
                 {
                     selectMode = SelectMode.Character;
+                    tvScreen.ResetScreen();
                 }
                     break;
         

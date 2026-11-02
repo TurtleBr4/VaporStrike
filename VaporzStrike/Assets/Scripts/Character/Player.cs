@@ -24,6 +24,14 @@ public class Player : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        if(playerID == 1)
+        {
+            GetComponent<AiAgent>().enabled = GameManager.instance.isTraining;
+        }
+    }
+
     public void takeDamage(float dmg, Vector2 direction, int hitstun)
     {
         Percent += dmg;
@@ -54,6 +62,10 @@ public class Player : MonoBehaviour
     public int getPlayerID()
     {
         return playerID;
+    }
+    public void setPlayerID(int num)
+    {
+        playerID = num;
     }
 
     public PlayerData getPlayerData()

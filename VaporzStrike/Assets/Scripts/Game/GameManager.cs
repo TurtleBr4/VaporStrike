@@ -283,6 +283,7 @@ public class GameManager : MonoBehaviour
     public ResultType matchResult = ResultType.Start;
     [SerializeField] private PlayerData[] playerDataArray;
     public bool isMatch = false;
+    public bool isTraining = false;
 
     [Header("Multiplayer Management")]
     [SerializeField] private int index;
@@ -344,9 +345,26 @@ public class GameManager : MonoBehaviour
             Application.targetFrameRate = gameFrameRate;
             GameObject guy;
             Level level = GameObject.Find("LevelData").GetComponent<Level>();
+            Vector3 pos1 = level.levelSpawns[0].position;
+            Vector3 pos2 = level.levelSpawns[1].position;
+            int playersSpawned = 0;
             for (int i = 0; i < level.levelSpawns.Length; i++)
             {
-                guy = Instantiate(playerDataArray[i].playerPrefab);
+
+                guy = playerDataArray[i].playerPrefab;
+                guy.GetComponent<Player>().setPlayerID(playersSpawned);
+                playersSpawned++;
+                if (guy.GetComponent<Player>() != null)
+                {
+                    if (guy.GetComponent<Player>().getPlayerID() == 0)
+                    {
+                        Instantiate(guy, pos1, Quaternion.identity);
+                    }
+                    if (guy.GetComponent<Player>().getPlayerID() == 1)
+                    {
+                        Instantiate(guy, pos2, Quaternion.identity);
+                    }
+                }
                 if (guy)
                 {
                     print("Spawned Character Prefab");
@@ -409,6 +427,10 @@ public class GameManager : MonoBehaviour
     public void pickPlayer(int playerIndex, int charID) //called via the menu or something, assigns the player data to its corresponding player slot
     {
         playerDataArray[playerIndex] = playerDatabase.getPlayerById(charID);
+    }
+    public void pickPlayer(int playerIndex, PlayerData chara) //called via the menu or something, assigns the player data to its corresponding player slot
+    {
+        playerDataArray[playerIndex] = chara;
     }
 
     public PlayerData GetPlayer(int playerIndex)
