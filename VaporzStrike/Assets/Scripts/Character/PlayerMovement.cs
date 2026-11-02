@@ -21,7 +21,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform animatedModel;
 
     private bool animationMovementOverride;
-    private Vector3 previousModelLocalPosition;
+    private Vector3 previousModelWorldPosition;
+
 
     [Header("OldJump")]
     [SerializeField] private float jumpForce = 12f;
@@ -36,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     int timer = 100;
     int anotherTimer = 100;
     bool lastFrameGrounded;
-    bool lastFrameDisplacement = false;
+    public bool lastFrameDisplacement = false;
 
     public bool dropping = false;
 
@@ -128,58 +129,39 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+
     private void LateUpdate()
     {
-        FollowAnimationMovement();
+        if (!animationMovementOverride || animatedModel == null)
+            return;
+
+        Vector3 currentPosition = animatedModel.position;
+        Vector3 movement = currentPosition - previousModelWorldPosition;
+
+        movement.z = 0f;
+
+        // Instantly reposition the player instead of using CharacterController.Move().
+        transform.position += movement;
+
+        // Update the reference position after moving the parent.
+        previousModelWorldPosition = animatedModel.position;
     }
 
     // Call when a move should control player movement through animation displacement.
     public void BeginAnimationMovementOverride()
     {
         if (animatedModel == null)
-        {
-            Debug.LogWarning(
-                "PlayerMovement: Animated Model is not assigned.",
-                this
-            );
-
             return;
-        }
 
         animationMovementOverride = true;
-
-        // Record the starting position so only animation displacement is applied.
-        previousModelLocalPosition = animatedModel.localPosition;
+        previousModelWorldPosition = animatedModel.position;
     }
 
-    // Call when animation-driven movement should stop.
     public void EndAnimationMovementOverride()
     {
         animationMovementOverride = false;
     }
 
-    private void FollowAnimationMovement()
-    {
-        if (!animationMovementOverride || animatedModel == null)
-        {
-            return;
-        }
-
-        Vector3 currentModelLocalPosition = animatedModel.localPosition;
-
-        // Calculate how far the animated model moved relative to its parent.
-        Vector3 localDelta =
-            currentModelLocalPosition - previousModelLocalPosition;
-
-        // Convert the displacement into world space.
-        Vector3 worldDelta = transform.TransformVector(localDelta);
-
-        // Move the parent using the CharacterController.
-        controller.Move(worldDelta);
-
-        // Store the current position for the next frame.
-        previousModelLocalPosition = currentModelLocalPosition;
-    }
 
     private void CheckDropping()
     {

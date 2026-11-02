@@ -893,8 +893,8 @@ MonoBehaviour:
   nonAttackingAnimations:
   - {fileID: -7361427651036151181, guid: 2f2102f70f7794d4e9b0711afe702dc0, type: 3}
   - {fileID: -5480419611278045171, guid: 2f2102f70f7794d4e9b0711afe702dc0, type: 3}
-  - {fileID: -512320013847864616, guid: 2f2102f70f7794d4e9b0711afe702dc0, type: 3}
-  - {fileID: 6480610267109901665, guid: d20bc4c17452d9c40842574aa5de8120, type: 3}
+  - {fileID: -512320013847864616, guid: d28dd93fc6e9f1f4ab8426cb20b82f15, type: 3}
+  - {fileID: 1861531197328173456, guid: d28dd93fc6e9f1f4ab8426cb20b82f15, type: 3}
   - {fileID: 1206761502562263275, guid: 2f2102f70f7794d4e9b0711afe702dc0, type: 3}
   isAnimatingAndAttacking: 0
   isInSecondaryAction: 0
@@ -903,40 +903,54 @@ MonoBehaviour:
   currentAnimation: {fileID: 0}
   currentMove: {fileID: 0}
   hitboxes:
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 3378754809597033726}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 3636766792681093015}
     - {fileID: 5520100264579899192}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 3862703113765525014}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 3304620512207185204}
     - {fileID: 8807221939231401321}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 5449099749616116324}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 8197317645889829530}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 1991389206786155757}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 4203613941455539070}
     - {fileID: 1445557138828213434}
     - {fileID: 6047416969998539069}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 5980327922568544491}
     - {fileID: 4083252521656198080}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 6546446534790531154}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 4377999031714915671}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 2311645318434684510}
     - {fileID: 2201003864091018852}
-  - hitboxes:
+  - animationID: 0
+    hitboxes:
     - {fileID: 7920458328960799271}
     - {fileID: 3815891150272675077}
     - {fileID: 4806680722977310728}
+  currentMoveIndex: -1
   grab: {fileID: 620441978757916940}
   grabboxStart: 15
   grabboxEnd: 5
@@ -982,7 +996,7 @@ MonoBehaviour:
   fighterMoves: {fileID: 2746750216088901723}
   inputBuffer: {fileID: 1037118217790228832}
   approachDistance: 3
-  attackRange: 2.5
+  attackRange: 1.47
   attackCooldownMin: 0.8
   attackCooldownMax: 1.5
   jumpCooldownMin: 2
