@@ -326,6 +326,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EvilSkye
       objectReference: {fileID: 0}
+    - target: {fileID: 3110932208367537764, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4258082508430758349, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.48
@@ -964,6 +968,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2044723970830576440, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044723970830576440, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044723970830576440, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044723970830576440, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2044723970830576440, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 3110932208367537764, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
       propertyPath: m_Name
       value: Skye
@@ -1010,7 +1034,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7244625230645881865, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7244625230645881865, guid: 2fa67ecb3e49b384193b12660b99a3ea, type: 3}
       propertyPath: attackRange
@@ -1416,6 +1440,7 @@ MonoBehaviour:
   player: {fileID: 0}
   inputReader: {fileID: 1164144655}
   moveSpeed: 8
+  animatedModel: {fileID: 0}
   jumpForce: 12
   gravity: 30
   maxFallSpeed: 20
@@ -1443,6 +1468,7 @@ MonoBehaviour:
   isGrabbing: 0
   isGettingGrabbed: 0
   isInvincible: 0
+  isInAnimationDisplacement: 0
   justJumped: 0
   justLanded: 0
 --- !u!114 &1164144661

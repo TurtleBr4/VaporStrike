@@ -30,9 +30,13 @@ public class MoveDefinition : ScriptableObject
 
     [Header("Data")]
     public bool isAirMove = false;
-    public int frameTime; //this INCLUDES END LAG!
+    public int frameTime; // Includes end lag.
     public int hitStun;
-    public int hitboxStartFrame;
-    public int hitboxEndFrame;
-    public int cancelTime; //leave at 0 for no cancel, note that this is what frame we can act on, NOT how many frames til actionability
+    public int cancelTime; // Frame when the player can act again. 0 means no cancel.
+    public bool hasDisplacement = false;
+
+    [Header("Hitboxes")]
+    public int[] hitboxIDs;
+    public int[] hitboxStartFrames;
+    public int[] hitboxEndFrames;
 }

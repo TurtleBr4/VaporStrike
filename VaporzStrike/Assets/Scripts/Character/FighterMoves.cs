@@ -27,8 +27,12 @@ public class FighterMoves : MonoBehaviour
     [SerializeField] private MoveDefinition currentMove;
 
     [Header("Hitbox Data")]
-    [SerializeField] private GameObject[] hitboxes; //each index contains an object that holds any relevant hitboxes for the move at the corresponding index
-    
+    [SerializeField] private MoveHitboxGroup[] hitboxes;
+    private Dictionary<int, MoveHitboxGroup> idToHitboxes;
+    public int currentMoveIndex = -1;
+    // Each entry corresponds to the same index in moves.
+    // Each group contains all hitboxes belonging to that move.
+
     [Header("Grab Data")]
     [SerializeField] private GameObject grab;
     public int grabboxStart;
@@ -46,7 +50,14 @@ public class FighterMoves : MonoBehaviour
         {
             idToAnimation[m.animationID] = animations[m.animationID];
         }
-        
+
+        idToHitboxes = new Dictionary<int, MoveHitboxGroup>();
+
+        foreach (MoveHitboxGroup group in hitboxes)
+        {
+            idToHitboxes[group.animationID] = group;
+        }
+
         aiController = GetComponent<AiAgent>();
     }
 
@@ -247,8 +258,6 @@ public class FighterMoves : MonoBehaviour
 
     private void BeginMove(MoveDefinition move)
     {
-        //Debug.Log("Executing move: " + move.moveName);
-
         if (animControl.isPlaying)
         {
             animControl.Stop();
@@ -258,49 +267,91 @@ public class FighterMoves : MonoBehaviour
         animControl.AddClip(currentAnimation, move.name);
         animControl.Play(move.name);
 
-
         isAnimatingAndAttacking = true;
         frameCount = move.frameTime;
 
         currentMove = move;
 
-        psc.setActionability(false); //inactionable
+        if (move.hasDisplacement)
+        {
+            psc.setDisplacement(true);
+        }
+
+        psc.setActionability(false);
     }
 
     private void AttackingChecks()
     {
         if (frameCount == 0)
         {
-           
             psc.setActionability(true);
             isAnimatingAndAttacking = false;
             animControl.clip = null;
+            psc.setDisplacement(false);
+
+            DisableCurrentHitboxes();
+
             return;
-            
         }
 
-        if(frameCount <= currentMove.cancelTime)
+        if (frameCount <= currentMove.cancelTime)
         {
-            psc.setActionability(true); //when the threshold for actionability is reached for a cancelable move, set actionability
+            psc.setActionability(true);
         }
 
-        if(frameCount == currentMove.hitboxStartFrame)
+        if (!idToHitboxes.TryGetValue(currentMove.animationID, out MoveHitboxGroup currentHitboxes))
         {
-            hitboxes[currentMove.animationID].SetActive(true);
-            Debug.Log("Ahh hit");
+            frameCount--;
+            return;
         }
 
-        if (frameCount <= currentMove.hitboxEndFrame)
+        for (int i = 0; i < currentMove.hitboxIDs.Length; i++)
         {
-            hitboxes[currentMove.animationID].SetActive(false);
+            int hitboxID = currentMove.hitboxIDs[i];
+
+            int startFrame = currentMove.hitboxStartFrames[i];
+            int endFrame = currentMove.hitboxEndFrames[i];
+
+            if (frameCount == startFrame)
+            {
+                currentHitboxes.hitboxes[hitboxID].SetActive(true);
+                Debug.Log("Ahh hit");
+            }
+
+            if (frameCount == endFrame)
+            {
+                currentHitboxes.hitboxes[hitboxID].SetActive(false);
+            }
         }
 
-        frameCount -= 1;
+        frameCount--;
+    }
+
+    private void DisableCurrentHitboxes()
+    {
+        if (currentMove == null)
+            return;
+
+        if (!idToHitboxes.TryGetValue(currentMove.animationID, out MoveHitboxGroup group))
+            return;
+
+        foreach (GameObject hitbox in group.hitboxes)
+        {
+            hitbox.SetActive(false);
+        }
     }
 
     public MoveDefinition getCurrentMove()
     {
         return currentMove;
     }
-   
+
+}
+
+
+[System.Serializable]
+public class MoveHitboxGroup
+{
+    public int animationID;
+    public GameObject[] hitboxes;
 }

@@ -60,4 +60,16 @@ public class Player : MonoBehaviour
     {
         return playerData;
     }
+
+    public void toggleDisplacement(bool s)
+    {
+        if (s)
+        {
+            playerMove.BeginAnimationMovementOverride();
+        }
+        else
+        {
+            playerMove.EndAnimationMovementOverride();
+        }
+    }
 }
