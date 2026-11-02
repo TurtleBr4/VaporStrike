@@ -5164,7 +5164,7 @@ MonoBehaviour:
       m_Calls: []
   m_Texture: {fileID: 0}
   fill: 0
-  thickness: -4477.7085
+  thickness: 0
   sides: 3
   rotation: 90
   VerticesDistances:
@@ -13450,7 +13450,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b987ae907052eb54f9e675c4f50cf46f, type: 2}
   - {fileID: 11400000, guid: f5da19221ec85eea88a2c66397bc2ace, type: 2}
   - {fileID: 11400000, guid: e38f3eb5cf218e0469c057009cc6fc94, type: 2}
-  trainingDummy: {fileID: 11400000, guid: b987ae907052eb54f9e675c4f50cf46f, type: 2}
+  trainingDummy: {fileID: 11400000, guid: 49646391299df3249bdfce932e86a40e, type: 2}
   characterHandle: {fileID: 36490524}
 --- !u!1 &1869642203
 GameObject:

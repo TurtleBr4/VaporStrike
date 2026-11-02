@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: Xeno
   m_EditorClassIdentifier: 
   playerName: Xeno
-  playerPrefab: {fileID: 4325994344848086022, guid: c99aaf0c424f4a041bc3b9ea2df8b48b, type: 3}
+  playerPrefab: {fileID: 4367800803003727843, guid: 6edfd0832912654458ec0912569fd292, type: 3}
   playerId: 2
   weight: 75
   moveSpeed: 25
   jumpPower: 5
   airSpeed: 35
   maxFallSpeed: 25
-  moveset: {fileID: 11400000, guid: 8aa7fc562f7bca9eea3733ff3618f555, type: 2}
   mugshot: {fileID: 117760607, guid: ca6a7ddadff484b4dba83813b300c22b, type: 3}
+  grabboxStartFrame: 0
+  grabboxEndFrame: 0
+  grabboxDuration: 0
