@@ -88,7 +88,7 @@ public class Loot : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             Destroy(this.gameObject);
-            other.GetComponent<Player>().takeDamage(currLoot.itemQuality*-1, Vector2.zero, 0);
+            other.GetComponent<Player>().takeDamage(currLoot.itemQuality*1, Vector2.zero, 0);
 
         }
     }

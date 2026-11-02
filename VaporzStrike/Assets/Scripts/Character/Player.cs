@@ -26,8 +26,13 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(playerID == 1)
+        if (playerID == 0)
         {
+            HUD.instance.p1Percent.value = Percent;
+        }
+        if (playerID == 1)
+        {
+            HUD.instance.p2Percent.value = Percent;
             GetComponent<AiAgent>().enabled = GameManager.instance.isTraining;
         }
     }
