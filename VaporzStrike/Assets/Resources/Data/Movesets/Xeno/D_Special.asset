@@ -18,7 +18,7 @@ MonoBehaviour:
   directionWindow: 6
   buttonWindow: 6
   bufferDuration: 8
-  animationID: 0
+  animationID: 4
   isAirMove: 0
   frameTime: 0
   hitStun: 0

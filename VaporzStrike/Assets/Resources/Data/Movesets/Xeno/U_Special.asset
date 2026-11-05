@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fc15e4d307274d10917ebd3e4323f7f, type: 3}
   m_Name: U_Special
   m_EditorClassIdentifier: 
-  moveName: 
+  moveName: Up Special
   button: 0
   direction: 0
   directionWindow: 6
   buttonWindow: 6
   bufferDuration: 8
-  animationID: 0
+  animationID: 3
   isAirMove: 0
   frameTime: 0
   hitStun: 0
