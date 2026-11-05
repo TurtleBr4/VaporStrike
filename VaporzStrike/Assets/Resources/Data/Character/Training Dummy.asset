@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Skye
   playerPrefab: {fileID: 3110932208367537764, guid: 4d7cba93b61a5d440ad06174b4877422, type: 3}
-  playerId: 3
+  playerId: 4
   weight: 45
   moveSpeed: 15
   jumpPower: 6
