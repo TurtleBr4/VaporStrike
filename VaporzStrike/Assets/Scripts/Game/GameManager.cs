@@ -306,20 +306,21 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
         }
+
     }
 
     private void Start()
     {
-        if (debugFlag)
-        {
-            playerDataArray[0] = playerDatabase.getPlayerById(2);
-            playerDataArray[1] = playerDatabase.getPlayerById(3);
-        }
+
     }
 
     public void Update()
     {
-        
+        if (debugFlag)
+        {
+            //playerDataArray[0] = playerDatabase.getPlayerById(2);
+            playerDataArray[1] = playerDatabase.getPlayerById(3);
+        }
     }
 
     public void Init()

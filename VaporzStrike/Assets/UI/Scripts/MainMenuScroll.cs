@@ -12,6 +12,7 @@ public class MainMenuScroll : MonoBehaviour
     private RectTransform rt;
     public int selectionVal = 1;
     public int cooldown = 0;
+    public MainMenu menu;
 
     [Header("Graphical Dimming")]
     public Image settingsImage;
@@ -133,7 +134,7 @@ public class MainMenuScroll : MonoBehaviour
                                 case 1:
                                     //Main Menu
                                     menuNum = 1;
-                                    SceneManager.LoadScene("CharacterSelect");
+                                    menu.Fight();
                                     break;
                                 case 2:
                                     //More
