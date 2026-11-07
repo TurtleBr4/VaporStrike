@@ -691,6 +691,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   isMatch: 0
+  isTraining: 0
   index: 0
   playerDatabase: {fileID: 0}
   pInputManager: {fileID: 518764446}
