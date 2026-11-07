@@ -43,7 +43,7 @@ public class HUD : MonoBehaviour
     }
     private void Awake()
     {
-        //countdown.gameObject.SetActive(true);
+        countdown.gameObject.SetActive(true);
     }
     // Update is called once per frame
     void Update()

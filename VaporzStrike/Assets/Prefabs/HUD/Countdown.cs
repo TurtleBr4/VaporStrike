@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Countdown : MonoBehaviour
 {
-    /*
+    //
     public GameObject hud;
     public GameObject strikeText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -28,5 +28,5 @@ public class Countdown : MonoBehaviour
         GameManager.instance.isMatch = true;
 
     }
-    */
+    //
 }

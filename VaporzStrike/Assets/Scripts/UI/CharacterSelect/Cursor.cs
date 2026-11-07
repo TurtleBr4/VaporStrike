@@ -57,6 +57,7 @@ public class CursorVirt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        r.localScale = new Vector3(9.8f, 9.8f, 9.8f);
         idText.text = (cursorID+1).ToString();
         playerControls.camera = Camera.main;
         r.anchoredPosition += dir * speed;
