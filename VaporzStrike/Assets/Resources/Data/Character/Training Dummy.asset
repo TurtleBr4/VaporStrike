@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cecc3e7b446348e793db656ccb86518, type: 3}
+  m_Name: Training Dummy
+  m_EditorClassIdentifier: 
+  playerName: Skye
+  playerPrefab: {fileID: 3110932208367537764, guid: 4d7cba93b61a5d440ad06174b4877422, type: 3}
+  playerId: 4
+  weight: 45
+  moveSpeed: 15
+  jumpPower: 6
+  airSpeed: 25
+  maxFallSpeed: 35
+  mugshot: {fileID: 21300000, guid: eb5002c8887e7674b8abbf91eee66dfd, type: 3}
+  grabboxStartFrame: 0
+  grabboxEndFrame: 0
+  grabboxDuration: 0

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Hurtbox : MonoBehaviour
 {
+    /*
     private GenericCharacter player;
 
     private void Start()
@@ -14,4 +15,5 @@ public class Hurtbox : MonoBehaviour
     {
         player.doTakeDamage(hitbox);
     }
+    */
 }

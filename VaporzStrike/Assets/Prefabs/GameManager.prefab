@@ -47,16 +47,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameFrameRate: 60
   platformFrameTime: 24
-  ffMult: 2
-  pInputManager: {fileID: 6378236326960609690}
-  index: 0
+  fastFallMultiplier: 1.25
+  parryFrameTime: 4
+  debugFlag: 0
+  matchTimer: 120
+  currentState: 0
+  playerCount: 2
+  matchResult: 0
   playerDataArray:
   - {fileID: 0}
   - {fileID: 0}
-  characterArray:
+  currentPlayerObj:
   - {fileID: 0}
   - {fileID: 0}
+  isMatch: 0
+  isTraining: 0
+  index: 0
   playerDatabase: {fileID: 0}
+  pInputManager: {fileID: 6378236326960609690}
 --- !u!114 &6378236326960609690
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -18,22 +18,13 @@ public class CameraController : MonoBehaviour
 
     void Awake()
     {
-        cam = GetComponent<Camera>();
-        players = new Transform[GameManager.playerCount];
+
     }
 
     private void Start()
     {
- 
-
-        /*
-        int count = 0;
-        foreach(GameObject p in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            players[count] = p.transform;
-            count++;
-        }
-        */
+        cam = GetComponent<Camera>();
+        players = new Transform[GameManager.instance.playerCount];
     }
 
     public void init()
@@ -49,7 +40,7 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (players == null || players.Length == 0)
+        if (players == null || players.Length == 0 || players[0] == null)
         {
             init();
         }

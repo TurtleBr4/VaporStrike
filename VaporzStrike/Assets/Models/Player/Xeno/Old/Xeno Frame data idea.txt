@@ -1,0 +1,54 @@
+Xeno had too much data to be a raw file so I had to zip it, unity might get mad at that
+
+all actions start on frame 1
+Run - 1-30
+Run Start - 1-15
+Walk - 1-60
+Block - 1-12
+Hit_Stun - 1-19
+
+active frame data
+
+Flurry/jab
+
+Attack jab 01 - active frames 6-7
+END FRAME - 15
+Attack jab 02 - active frames 10-11
+END FRAME - 25
+Attack jab 03 - active frames 9-12 (he throws a bomb upwards following his left arm)
+END FRAME - 35
+
+Smash attacks
+
+Up Smash - active frames 16-18	
+END FRAME - 30
+Forward Smash - 16-18
+END FRAME - 30
+Down Smash - 11-13 (causes a small explosion bellow him hitting behind him. See GGST Slayer 2H https://www.dustloop.com/w/GGST/Slayer)
+END FRAME - 22
+
+Specials
+
+Up Special - 11-14 (acts like a DP [gives hyper armor during startup])
+END FRAME - 36
+Down Special - 11-14 (shoots a blast along the ground in front of him. See GGST Sol Badguy Gun Flame  https://www.dustloop.com/w/GGST/Sol_Badguy)
+END FRAME - 26
+Forward Special - 21-26 (launches himself forwards with a rocket powered punch)
+END FRAME - 42
+Neutral Special - 7-8* (shoots a projectile forwards in a straight line)
+END FRAME - 19
+
+Airieals
+
+Up Air - 10-12 (shoots a blast above himself and pushes himself downwards)
+END FRAME - 22
+Back Air - 9-11 and 23-25 (first back hands then kicks behind himself)
+END FRAME - 42
+Down Air - 11-13 (shoots a blast bellow and slightly behind himself)
+END FRAME - 30
+Forward Air - 9-11 and 18-20 (again punches then kicks)
+END FRAME - 30
+Neutral Air - 4-5,6-7,8-9,10-11,12-13,14-15,16-17,18-19 (a series of consecutive blast. 
+See Samus forwards air  https://ultimateframedata.com/samus[this one can probably have the 
+inbetweens removed. inbetweens being 6-7, 10-11, 14-15, 18-19])
+END FRAME - 30

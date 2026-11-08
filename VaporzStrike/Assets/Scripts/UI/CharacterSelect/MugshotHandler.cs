@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements.Experimental;
 using TMPro;
 
 public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
@@ -13,13 +12,33 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
     public Image mugshot;
     public PlayerData playerData;
 
+    public TV displayOnTV;
+
     public bool isStage = false;
+
+    private EventTrigger EventTrigger;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //element = GameObject.Find("CursorP1").GetComponent<RectTransform>();
         selectable = GetComponent<Selectable>();
         playerData = GameManager.instance.GetPlayerByID(charID);
+        if (!playerData)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        if (!playerData.mugshot.Equals(null) && !isStage)
+        {
+
+            mugshot.sprite = playerData.mugshot;
+
+            GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(false);
+        }
+        else if (isStage) { if(GetComponent<Image>().sprite != null) GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(false); }
+        else { mugshot.sprite = null; GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(true); }
+
+        EventTrigger = gameObject.GetComponent<EventTrigger>();
     }
 
     // Update is called once per frame
@@ -27,14 +46,6 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
     {
 
         //if (AreRectsOverlapping(GetComponent<RectTransform>(), element)) { EventSystem.current.SetSelectedGameObject(this.gameObject); }
-        if (!playerData.mugshot.Equals(null) && !isStage)
-        {
-
-            mugshot.sprite = playerData.mugshot;
-            GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(false);
-        }
-        else if (isStage) { }
-        else { mugshot.sprite = null; GetComponentInChildren<TextMeshProUGUI>().gameObject.SetActive(true); }
 
 
     }
@@ -60,12 +71,18 @@ public class MugshotHandler : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void OnSelect(BaseEventData eventData)
     {
-        if (!selectable.interactable) return;
+        Debug.Log("Updating TV");
+        if (displayOnTV != null && GetComponent<Image>().sprite != null) { displayOnTV.SetScreen(GetComponent<Image>().sprite, new Color(0.5f, 0.5f, 0.5f)); }
+        if (!selectable.interactable || isStage) return;
         if (CharacterSelect.instance.selectMode == CharacterSelect.SelectMode.Character)
         {
             Debug.Log(this.gameObject.name + " was selected");
             GameManager.instance.pickPlayer(selectedCursor, charID);
         }
+
+    }
+    public void UpdateTV()
+    {
 
     }
     public void SelectChar(int cursorID)

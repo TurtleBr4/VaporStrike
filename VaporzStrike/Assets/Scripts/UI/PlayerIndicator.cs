@@ -3,12 +3,12 @@ using TMPro;
 
 public class PlayerIndicator : Billboard
 {
-    public GenericCharacter player;
+    public Player player;
     public TMP_Text playerNumber;
 
     private void Start()
     {
-        player = GetComponentInParent<GenericCharacter>();
+        player = GetComponentInParent<Player>();
         playerNumber.text = "P" +(player.getPlayerID() + 1).ToString();
     }
 }

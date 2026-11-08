@@ -8,8 +8,18 @@ public enum gameState
 {
     Menu, Game
 }
+
+public enum ResultType
+{
+    Start,
+    NoContest,
+    Player1,
+    Player2,
+}
 public class GameManager : MonoBehaviour
 {
+    #region OLD GAME MANAGER
+    /*
     [Header("Static/Global Variables/Constants")]
     public int gameFrameRate = 60;
     public float platformFrameTime = 24f;
@@ -178,15 +188,21 @@ public class GameManager : MonoBehaviour
             Level level = GameObject.Find("LevelData").GetComponent<Level>();
             for(int i = 0; i < level.levelSpawns.Length; i++)
             {
-                guy = Instantiate(playerDataArray[i].playerPrefab);
-                if (guy)
+                Debug.Log("Spawning");
+                if(playerDataArray[i] != null)
                 {
-                    print("Spawned Character Prefab");
+                    guy = Instantiate(playerDataArray[i].playerPrefab);
+                    if (guy)
+                    {
+                        print("Spawned Character Prefab");
+                    }
+                    else
+                    {
+                        Debug.LogError("What the Hell!");
+                    }
                 }
-                else
-                {
-                    Debug.LogError("What the Hell!");
-                }
+
+
                 
             }
 
@@ -247,5 +263,230 @@ public class GameManager : MonoBehaviour
     {
         GameObject levelPrefab = levels[chosenLevel.levelID];
         Instantiate(levelPrefab);
+    }
+    */
+    #endregion
+    public static GameManager instance;
+
+
+    [Header("Static/Global Variables/Constants")]
+    public int gameFrameRate = 60;
+    public float platformFrameTime = 24f;
+    public float fastFallMultiplier = 1.25f;
+    public int parryFrameTime = 4;
+    public bool debugFlag = false;
+
+    [Header("Game State")]
+    public float matchTimer = 120;
+    public gameState currentState = gameState.Menu;
+    public int playerCount = 2;
+    public ResultType matchResult = ResultType.Start;
+    [SerializeField] private PlayerData[] playerDataArray;
+    [SerializeField] private GameObject[] currentPlayerObj;
+    public bool isMatch = false;
+    public bool isTraining = false;
+
+    [Header("Multiplayer Management")]
+    [SerializeField] private int index;
+
+    [Header("Dependencies")]
+    [SerializeField] private PlayerDatabase playerDatabase;
+    [SerializeField] private PlayerInputManager pInputManager;
+    [SerializeField] private Item[] lootPool;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            Debug.Log("Destroying");
+        }
+        else
+        {
+            Debug.Log("Creating Instance");
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            playerDatabase = Resources.Load<PlayerDatabase>("Data/Character/PlayerDatabase");
+        }
+
+    }
+
+    public Item[] GetLootPool()
+    {
+        return lootPool;
+    }
+    private void Start()
+    {
+        Time.timeScale = 1.0f;
+    }
+
+    public void Update()
+    {
+        if (debugFlag)
+        {
+            //playerDataArray[0] = playerDatabase.getPlayerById(2);
+            playerDataArray[1] = playerDatabase.getPlayerById(3);
+        }
+
+            if (isMatch && !isTraining)
+            {
+                if (currentPlayerObj[0] != null && currentPlayerObj[1] != null)
+                {
+                    if (matchTimer > 0)
+                    {
+                        // Subtract the time since last frame
+                        matchTimer -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        Debug.Log("Game!");
+                        matchTimer = 0;
+                        isMatch = false;
+
+                        /*
+                        if (currentPlayerObj[1].GetComponent<Player>().GetStocks() == player2Obj.GetStocks())
+                        {
+                            matchResult = ResultType.NoContest;
+                        }
+                        else if (player1Obj.GetStocks() <= 0)
+                        {
+                            matchResult = ResultType.Player2;
+                        }
+                        else
+                        {
+                            matchResult = ResultType.Player1;
+                        }
+                        */
+                    }
+                }
+            }
+            else
+                {
+                    Time.timeScale = HUD.instance.trainingSpeed;
+                }
+       
+    }
+
+    public void Init()
+    {
+        matchResult = ResultType.Start;
+        Time.timeScale = 1.0f;
+        matchTimer = 120;
+        Application.targetFrameRate = gameFrameRate;
+    }
+
+    public void changeState(gameState newState)
+    {
+        if (newState == gameState.Game)
+        {
+            
+            if (pInputManager)
+            {
+                pInputManager.DisableJoining();
+            }
+            pInputManager.enabled = false; //just in case
+            
+
+            Application.targetFrameRate = gameFrameRate;
+            GameObject guy;
+            Level level = GameObject.Find("LevelData").GetComponent<Level>();
+            Vector3 pos1 = level.levelSpawns[0].position;
+            Vector3 pos2 = level.levelSpawns[1].position;
+            int playersSpawned = 0;
+            for (int i = 0; i < level.levelSpawns.Length; i++)
+            {
+
+                guy = playerDataArray[i].playerPrefab;
+                guy.GetComponent<Player>().setPlayerID(playersSpawned);
+                playersSpawned++;
+                if (guy.GetComponent<Player>() != null)
+                {
+                    if (guy.GetComponent<Player>().getPlayerID() == 0)
+                    {
+                        currentPlayerObj[0] = Instantiate(guy, pos1, Quaternion.identity);
+                    }
+                    if (guy.GetComponent<Player>().getPlayerID() == 1)
+                    {
+                        currentPlayerObj[1] = Instantiate(guy, pos2, Quaternion.identity);
+                    }
+                }
+                if (guy)
+                {
+                    print("Spawned Character Prefab");
+                }
+                else
+                {
+                    Debug.LogError("What the Hell!");
+                }
+
+            }
+
+
+            for (int i = 0; i < playerCount; i++)
+            {
+                //assignPlayerDataToPlayer(playerDataArray[i], i);
+                Debug.Log("Player count: " + playerCount);
+            }
+
+            level.cam.init();
+        }
+        else //this is where we handle the cursor spawning fuck shit >:)
+        {
+            
+            if (!pInputManager)
+            {
+                pInputManager = GetComponent<PlayerInputManager>();
+
+            }
+            pInputManager.DisableJoining();
+            index = 0;
+            pInputManager.playerPrefab = playerDataArray[index].playerPrefab;
+            
+        }
+    }
+
+
+    public void switchAndSpawnNext(PlayerInput pi)
+    {
+        index++;
+
+        //Stash the device that was used to spawn this character
+        InputDevice device = pi.GetDevice<InputDevice>();
+        InputReader spawnedCharacter = pi.gameObject.GetComponent<InputReader>();
+        spawnedCharacter.controllerID = device.displayName == "Keyboard" || device.displayName == "Mouse" ? "Mouse" : "Controller";
+
+        pInputManager.playerPrefab = playerDataArray[Mathf.Min(playerCount - 1, index)].playerPrefab;
+
+    }
+
+    public void Reset()
+    {
+        playerDataArray = new PlayerData[playerCount];
+    }
+
+    public PlayerData GetPlayerByID(int id)
+    {
+        return playerDatabase.getPlayerById(id);
+    }
+
+    public void pickPlayer(int playerIndex, int charID) //called via the menu or something, assigns the player data to its corresponding player slot
+    {
+        playerDataArray[playerIndex] = playerDatabase.getPlayerById(charID);
+    }
+    public void pickPlayer(int playerIndex, PlayerData chara) //called via the menu or something, assigns the player data to its corresponding player slot
+    {
+        playerDataArray[playerIndex] = chara;
+    }
+
+    public PlayerData GetPlayer(int playerIndex)
+    {
+        return playerDataArray[playerIndex];
+    }
+
+    public string DisplayTime()
+    {
+        float minutes = Mathf.FloorToInt(matchTimer / 60);
+        float seconds = Mathf.FloorToInt(matchTimer % 60);
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

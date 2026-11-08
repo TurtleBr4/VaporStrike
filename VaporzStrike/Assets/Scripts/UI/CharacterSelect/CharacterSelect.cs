@@ -20,6 +20,17 @@ public class CharacterSelect : MonoBehaviour
     public GameObject StagePanel;
 
     public InputActionReference cancel;
+
+    public Canvas cursorCanvas;
+    private Animator anim;
+
+    public TV tvScreen;
+    public bool debug = false;
+
+    public CanvasGroup header;
+    public CanvasGroup footer;
+
+    public ScreenFlash flash;
     public enum SelectMode
     {
         Character,
@@ -30,12 +41,18 @@ public class CharacterSelect : MonoBehaviour
     public void Start()
     {
         instance = this;
+        anim = GetComponent<Animator>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Update()
     {
+        if (debug)
+        {
+            GameManager.instance.debugFlag = true;
+        }
         if (Gamepad.current != null && Gamepad.current.selectButton.wasPressedThisFrame)
         {
+
             Back();
         }
 
@@ -51,28 +68,65 @@ public class CharacterSelect : MonoBehaviour
             player2Name.text = GameManager.instance.GetPlayer(1).playerName;
             player2Img.sprite = GameManager.instance.GetPlayer(1).mugshot;
         }
-
-        switch (selectMode) { 
-                case SelectMode.Character:
-                    StagePanel.SetActive(false);
-                    selectedLevel = "";
-
+        if (ThemeScript.instance.mode == 2)
+        {
+            header.alpha = 1;
+            footer.alpha = 1;
+        }
+        else
+        {
+            header.alpha = 0;
+            footer.alpha = 0;
+        }
+        switch (selectMode)
+        {
+            case SelectMode.Character:
+                StagePanel.SetActive(false);
+                selectedLevel = "";
+                ThemeScript.instance.mode = 1;
 
                 if (cancel.action.triggered)
                 {
-                    Back();
+                    ActivateAnimator();
+                    cursorCanvas.sortingOrder = -67;
+                    anim.SetTrigger("MainMenu");
                 }
                 break;
-                case SelectMode.Stage:
-                    StagePanel.SetActive(true);
+            case SelectMode.Stage:
+                StagePanel.SetActive(true);
+                if ((selectedLevel != null && selectedLevel != "") && ThemeScript.instance.mode == 1)
+                {
+                    ThemeScript.instance.mode = 2;
+                    flash.Flash(0.25f);
+                }
+                else if (selectedLevel == null || selectedLevel == "")
+                {
+                        ThemeScript.instance.mode = 1;
+                    tvScreen.ResetScreen();
+                }
 
                     if (cancel.action.triggered)
                     {
                         selectMode = SelectMode.Character;
+                        tvScreen.ResetScreen();
                     }
                     break;
-        
-        }
+
+            }
+    }
+    public void DeactivateAnimator()
+    {
+        anim.enabled = false;
+    }
+    public void ActivateAnimator()
+    {
+        anim.enabled = true;
+    }
+    public void MatchTransition()
+    {
+        Destroy(GameObject.Find("Theme"));
+        SceneManager.LoadScene(selectedLevel);
+
     }
     public void MatchStart()
     {
@@ -81,8 +135,8 @@ public class CharacterSelect : MonoBehaviour
         {
 
             if (selectedLevel != null && selectedLevel!="") {
-                Destroy(GameObject.Find("Theme"));
-                SceneManager.LoadScene(selectedLevel);
+                ActivateAnimator();
+                anim.SetBool("MatchStart", true);
             }
             else
             {
@@ -103,6 +157,7 @@ public class CharacterSelect : MonoBehaviour
         GameManager.instance.Reset();
         SceneManager.LoadScene("MainMenu");
     }
+    
 
     [SerializeField] private Transform playerParent; // Assign your container here
     private PlayerInputManager playerInputManager;
@@ -111,6 +166,7 @@ public class CharacterSelect : MonoBehaviour
     {
         playerInputManager = GetComponent<PlayerInputManager>();
         playerInputManager.onPlayerJoined += OnPlayerJoined;
+
     }
 
     public void SelectLevel(string levelHandle)

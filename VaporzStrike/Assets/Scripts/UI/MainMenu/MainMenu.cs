@@ -5,10 +5,18 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public Transform playerParent;
+    private Animator animator;
+    public static MainMenu instance;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        if (ThemeScript.instance != null)
+        {
+            ThemeScript.instance.mode = 0;
+            ThemeScript.instance.PlayAll();
+        }
+        animator = GetComponent<Animator>();
+        instance = this;
     }
 
     // Update is called once per frame
@@ -21,9 +29,15 @@ public class MainMenu : MonoBehaviour
     {
 
     }
-    public void Fight()
+    public void Transition()
     {
         SceneManager.LoadScene("CharacterSelect");
+    }
+    public void Fight()
+    {
+        GameObject.Destroy(GameObject.Find("BlackBack"));
+        GameObject.Destroy(GameObject.Find("BlackFront"));
+        animator.SetBool("Fight", true);
     }
     public void More()
     {
