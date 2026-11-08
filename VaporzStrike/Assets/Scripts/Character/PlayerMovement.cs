@@ -23,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
     private bool animationMovementOverride;
     private Vector3 previousModelWorldPosition;
 
+    [Header("Grab Position")]
+    [SerializeField] private Transform thePlaceWhereYouStayGrabbed;
 
     [Header("OldJump")]
     [SerializeField] private float jumpForce = 12f;
@@ -207,6 +209,11 @@ public class PlayerMovement : MonoBehaviour
         psc.setHitstun(true);
     }
 
+    public void DoDisplacement(Vector2 movement, float magnitude)
+    {
+
+    }
+
     private void ApplyKnockback()
     {
         if (!inKnockback)
@@ -315,5 +322,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
         return inputReader.GetLeftStick();
+    }
+
+    public void takeInGrabPosition(Transform t)
+    {
+        thePlaceWhereYouStayGrabbed = t;
     }
 }

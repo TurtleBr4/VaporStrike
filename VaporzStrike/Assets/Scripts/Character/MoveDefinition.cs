@@ -35,6 +35,12 @@ public class MoveDefinition : ScriptableObject
     public int cancelTime; // Frame when the player can act again. 0 means no cancel.
     public bool hasDisplacement = false;
 
+    [Header("Displacement")]
+    public Vector2 displacementDirection;
+    public float displacementMagnitude;
+    public int displacementStartFrame;
+    public int displacementEndFrame;
+
     [Header("Hitboxes")]
     public int[] hitboxIDs;
     public int[] hitboxStartFrames;

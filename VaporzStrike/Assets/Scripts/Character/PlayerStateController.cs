@@ -12,6 +12,7 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private bool isGettingGrabbed = false;
     [SerializeField] private bool isInvincible = false;
     [SerializeField] private bool isInAnimationDisplacement = false;
+    [SerializeField] private bool isCurrentlyGrabbingAPlayer = false;
     public bool justJumped = false;
     public bool justLanded = false;
     
@@ -115,5 +116,15 @@ public class PlayerStateController : MonoBehaviour
     public bool getDisplacement()
     {
         return isInAnimationDisplacement;
+    }
+
+    public void setSuccessfulGrab(bool s)
+    {
+        isCurrentlyGrabbingAPlayer = s;
+    }
+
+    public bool getSuccessfulGrab()
+    {
+        return isCurrentlyGrabbingAPlayer;
     }
 }

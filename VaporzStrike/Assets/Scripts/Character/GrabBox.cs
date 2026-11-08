@@ -9,6 +9,11 @@ public class GrabBox : MonoBehaviour
     public Vector2 launchDirection;
     public float launchForce;
 
+    private void OnEnable()
+    {
+        GetComponent<BoxCollider>().enabled = true;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Hurtbox"))

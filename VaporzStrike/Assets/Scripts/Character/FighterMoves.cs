@@ -7,6 +7,7 @@ public class FighterMoves : MonoBehaviour
 {
     [Header("State Management")]
     public PlayerStateController psc;
+    public PlayerMovement playerMove;
     [SerializeField] private AiAgent aiController;
 
     [Header("Input")]
@@ -272,10 +273,7 @@ public class FighterMoves : MonoBehaviour
 
         currentMove = move;
 
-        if (move.hasDisplacement)
-        {
-            psc.setDisplacement(true);
-        }
+
 
         psc.setActionability(false);
     }
@@ -294,6 +292,16 @@ public class FighterMoves : MonoBehaviour
             return;
         }
 
+        if (currentMove.hasDisplacement && frameCount == currentMove.displacementStartFrame)
+        {
+            psc.setDisplacement(true);
+        }
+        if (currentMove.hasDisplacement && frameCount == currentMove.displacementEndFrame)
+        {
+            psc.setDisplacement(false);
+        }
+
+
         if (frameCount <= currentMove.cancelTime)
         {
             psc.setActionability(true);
@@ -301,6 +309,7 @@ public class FighterMoves : MonoBehaviour
 
         if (!idToHitboxes.TryGetValue(currentMove.animationID, out MoveHitboxGroup currentHitboxes))
         {
+            Debug.LogWarning("Failed to get hitboxes from id");
             frameCount--;
             return;
         }
