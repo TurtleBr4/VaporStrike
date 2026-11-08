@@ -51,23 +51,20 @@ MonoBehaviour:
   parryFrameTime: 4
   debugFlag: 0
   matchTimer: 120
-  pInputManager: {fileID: 6378236326960609690}
-  index: 0
+  currentState: 0
+  playerCount: 2
+  matchResult: 0
   playerDataArray:
   - {fileID: 0}
   - {fileID: 0}
-  characterArray:
-  - {fileID: 0}
-  - {fileID: 0}
-  playerDatabase: {fileID: 0}
-  playerPercentsArray:
+  currentPlayerObj:
   - {fileID: 0}
   - {fileID: 0}
   isMatch: 0
-  player1Obj: {fileID: 0}
-  player2Obj: {fileID: 0}
-  DebugTxt: 
-  matchResult: 0
+  isTraining: 0
+  index: 0
+  playerDatabase: {fileID: 0}
+  pInputManager: {fileID: 6378236326960609690}
 --- !u!114 &6378236326960609690
 MonoBehaviour:
   m_ObjectHideFlags: 0

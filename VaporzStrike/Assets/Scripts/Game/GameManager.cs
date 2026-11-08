@@ -282,6 +282,7 @@ public class GameManager : MonoBehaviour
     public int playerCount = 2;
     public ResultType matchResult = ResultType.Start;
     [SerializeField] private PlayerData[] playerDataArray;
+    [SerializeField] private GameObject[] currentPlayerObj;
     public bool isMatch = false;
     public bool isTraining = false;
 
@@ -291,6 +292,7 @@ public class GameManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private PlayerDatabase playerDatabase;
     [SerializeField] private PlayerInputManager pInputManager;
+    [SerializeField] private Item[] lootPool;
 
     private void Awake()
     {
@@ -309,9 +311,13 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public Item[] GetLootPool()
+    {
+        return lootPool;
+    }
     private void Start()
     {
-
+        Time.timeScale = 1.0f;
     }
 
     public void Update()
@@ -321,6 +327,44 @@ public class GameManager : MonoBehaviour
             //playerDataArray[0] = playerDatabase.getPlayerById(2);
             playerDataArray[1] = playerDatabase.getPlayerById(3);
         }
+
+            if (isMatch && !isTraining)
+            {
+                if (currentPlayerObj[0] != null && currentPlayerObj[1] != null)
+                {
+                    if (matchTimer > 0)
+                    {
+                        // Subtract the time since last frame
+                        matchTimer -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        Debug.Log("Game!");
+                        matchTimer = 0;
+                        isMatch = false;
+
+                        /*
+                        if (currentPlayerObj[1].GetComponent<Player>().GetStocks() == player2Obj.GetStocks())
+                        {
+                            matchResult = ResultType.NoContest;
+                        }
+                        else if (player1Obj.GetStocks() <= 0)
+                        {
+                            matchResult = ResultType.Player2;
+                        }
+                        else
+                        {
+                            matchResult = ResultType.Player1;
+                        }
+                        */
+                    }
+                }
+            }
+            else
+                {
+                    Time.timeScale = HUD.instance.trainingSpeed;
+                }
+       
     }
 
     public void Init()
@@ -359,11 +403,11 @@ public class GameManager : MonoBehaviour
                 {
                     if (guy.GetComponent<Player>().getPlayerID() == 0)
                     {
-                        Instantiate(guy, pos1, Quaternion.identity);
+                        currentPlayerObj[0] = Instantiate(guy, pos1, Quaternion.identity);
                     }
                     if (guy.GetComponent<Player>().getPlayerID() == 1)
                     {
-                        Instantiate(guy, pos2, Quaternion.identity);
+                        currentPlayerObj[1] = Instantiate(guy, pos2, Quaternion.identity);
                     }
                 }
                 if (guy)

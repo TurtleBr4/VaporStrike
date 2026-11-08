@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: fd48f2564269a3f458942808bcaf6030, type: 3}
   gObject: {fileID: 0}
-  itemName: ???
+  itemName: Bomb
   itemHandle: vanilla.itemHandle
   type: 1
   itemAtk: 0

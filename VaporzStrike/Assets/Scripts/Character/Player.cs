@@ -26,14 +26,21 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (playerID == 0)
+        if (HUD.instance != null)
         {
-            HUD.instance.p1Percent.value = Percent;
+            if (playerID == 0)
+            {
+                HUD.instance.p1Percent.value = Percent;
+            }
+            if (playerID == 1)
+            {
+                HUD.instance.p2Percent.value = Percent;
+                GetComponent<AiAgent>().enabled = GameManager.instance.isTraining && HUD.instance.control == HUD.PracticeControl.AI;
+            }
         }
-        if (playerID == 1)
+        else
         {
-            HUD.instance.p2Percent.value = Percent;
-            GetComponent<AiAgent>().enabled = GameManager.instance.isTraining;
+            Debug.Log("HUD is null");
         }
     }
 

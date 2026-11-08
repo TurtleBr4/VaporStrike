@@ -14353,6 +14353,18 @@ PrefabInstance:
       propertyPath: playerDatabase
       value: 
       objectReference: {fileID: 11400000, guid: 115a3e18ce27187df917b2bbb3832f11, type: 2}
+    - target: {fileID: 3161504507945357589, guid: 8ba58d7e35474484a8323c12ee699396, type: 3}
+      propertyPath: lootPool.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3161504507945357589, guid: 8ba58d7e35474484a8323c12ee699396, type: 3}
+      propertyPath: 'lootPool.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 87863e5ea045a0b44ab094feb6a8ee07, type: 2}
+    - target: {fileID: 3161504507945357589, guid: 8ba58d7e35474484a8323c12ee699396, type: 3}
+      propertyPath: 'lootPool.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 91624288c72d475428e9d9b064ce3d45, type: 2}
     - target: {fileID: 6378236326960609690, guid: 8ba58d7e35474484a8323c12ee699396, type: 3}
       propertyPath: m_Enabled
       value: 0
