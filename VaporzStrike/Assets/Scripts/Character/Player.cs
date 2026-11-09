@@ -52,8 +52,16 @@ public class Player : MonoBehaviour
 
     public void getGrabbed(Transform position) //TO DO: link the grabbox's position to the player while being grabbed
     {
+        playerMove.takeInGrabPosition(position);
         playerState.setActionability(false);
         playerState.setGettingGrabbed(true);
+    }
+
+    public void doAGrab() //set the player to a state where they can choose to throw
+    {
+        playerState.setActionability(false);
+        playerState.setSuccessfulGrab(true);
+        print("grabbed a guy!");
     }
 
     public MoveDefinition getCurrentMove()
@@ -83,17 +91,5 @@ public class Player : MonoBehaviour
     public PlayerData getPlayerData()
     {
         return playerData;
-    }
-
-    public void toggleDisplacement(bool s)
-    {
-        if (s)
-        {
-            playerMove.BeginAnimationMovementOverride();
-        }
-        else
-        {
-            playerMove.EndAnimationMovementOverride();
-        }
     }
 }

@@ -364,6 +364,8 @@ public class GameManager : MonoBehaviour
                 {
                     Time.timeScale = HUD.instance.trainingSpeed;
                 }
+
+        print(GetFPS());
        
     }
 
@@ -488,5 +490,10 @@ public class GameManager : MonoBehaviour
         float minutes = Mathf.FloorToInt(matchTimer / 60);
         float seconds = Mathf.FloorToInt(matchTimer % 60);
         return string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public static float GetFPS()
+    {
+        return 1f / Time.unscaledDeltaTime;
     }
 }

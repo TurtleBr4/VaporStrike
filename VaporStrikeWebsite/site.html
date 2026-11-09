@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAPORSTRIKE</title>
+    <style>
+        :root {
+            --win-bg: #082842; /* Classic Teal Desktop */
+            --win-gray: #c0c0c0;
+            --win-blue: #000080;
+            --win-blue-light: #1084d0;
+            --win-text: #000000;
+            --border-light: #ffffff;
+            --border-dark: #808080;
+            --border-darkest: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Tahoma", "MS Sans Serif", Geneva, sans-serif;
+            background-color: var(--win-bg);
+            color: var(--win-text);
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Classic Windows Raised Bevel */
+        .win-box {
+            background-color: var(--win-gray);
+            border-top: 2px solid var(--border-light);
+            border-left: 2px solid var(--border-light);
+            border-right: 2px solid var(--border-darkest);
+            border-bottom: 2px solid var(--border-darkest);
+            box-shadow: inset -1px -1px 0px var(--border-dark), inset 1px 1px 0px var(--border-light);
+        }
+
+        /* Classic Windows Sunken Bevel (for text boxes / image frames) */
+        .win-sunken {
+            border-top: 2px solid var(--border-dark);
+            border-left: 2px solid var(--border-dark);
+            border-right: 2px solid var(--border-light);
+            border-bottom: 2px solid var(--border-light);
+            box-shadow: inset 1px 1px 0px var(--border-darkest);
+            background-color: #ffffff;
+        }
+
+        .window {
+            max-width: 950px;
+            width: 100%;
+            padding: 3px;
+        }
+
+        /* Window Title Bar */
+        .title-bar {
+            background: linear-gradient(90deg, var(--win-blue), var(--win-blue-light));
+            padding: 4px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        .title-bar-buttons {
+            display: flex;
+            gap: 2px;
+        }
+
+        .win-btn-small {
+            width: 16px;
+            height: 14px;
+            background-color: var(--win-gray);
+            font-size: 9px;
+            font-weight: bold;
+            line-height: 10px;
+            text-align: center;
+            cursor: default;
+            color: black;
+            border-top: 1px solid var(--border-light);
+            border-left: 1px solid var(--border-light);
+            border-right: 1px solid var(--border-darkest);
+            border-bottom: 1px solid var(--border-darkest);
+        }
+
+        .window-body {
+            padding: 2rem;
+        }
+
+        .header-banner {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-dark);
+            padding-bottom: 1rem;
+        }
+
+        .game-icon {
+            width: 100px;
+            height: 100px;
+            padding: 3px;
+            flex-shrink: 0;
+            background-color: #c0c0c0; /* optional: background color behind icon */
+        }
+
+        .game-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* keeps your icon pixel-perfect without stretching */
+            display: block;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: bold;
+        }
+
+        p.tagline {
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        /* Screenshot Banner */
+        .media-frame {
+            padding: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .media-frame img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 450px;
+            object-fit: cover;
+        }
+
+        /* Setup-Style Content Sections */
+        .fieldset {
+            border-top: 1px solid var(--border-light);
+            border-left: 1px solid var(--border-light);
+            border-right: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-dark);
+            padding: 1.25rem 1rem 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .fieldset-legend {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background-color: var(--win-gray);
+            padding: 0 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .features-list {
+            list-style: none;
+            font-size: 0.95rem;
+        }
+
+        .features-list li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+
+        .features-list li::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            font-size: 0.7rem;
+            top: 3px;
+            color: var(--win-blue);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            padding: 3px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Team Section Styles */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .team-card {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            align-items: flex-start;
+        }
+
+        .avatar-frame {
+            width: 56px;
+            height: 56px;
+            padding: 2px;
+            flex-shrink: 0;
+        }
+
+        .avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .team-info h3 {
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+
+        .team-role {
+            font-size: 0.75rem;
+            color: var(--win-blue);
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .team-bio {
+            font-size: 0.85rem;
+            line-height: 1.3;
+            color: #333;
+        }
+
+        /* Buttons & Footer Controls */
+        .footer-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            border-top: 1px solid var(--border-dark);
+            padding-top: 1.25rem;
+        }
+
+        .btn {
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 0.45rem 1.5rem;
+            background-color: var(--win-gray);
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+            border-top: 2px solid var(--border-light);
+            border-left: 2px solid var(--border-light);
+            border-right: 2px solid var(--border-darkest);
+            border-bottom: 2px solid var(--border-darkest);
+            outline: none;
+        }
+
+        .btn:active {
+            border-top: 2px solid var(--border-darkest);
+            border-left: 2px solid var(--border-darkest);
+            border-right: 2px solid var(--border-light);
+            border-bottom: 2px solid var(--border-light);
+            padding: 0.5rem 1.45rem 0.4rem 1.55rem;
+        }
+
+        .btn-primary {
+            font-weight: bold;
+            outline: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="window win-box">
+        <!-- Title Bar -->
+        <div class="title-bar">
+            <span>Setup - VAPORSTRIKE</span>
+            <div class="title-bar-buttons">
+                <div class="win-btn-small">_</div>
+                <div class="win-btn-small">□</div>
+                <div class="win-btn-small">✕</div>
+            </div>
+        </div>
+
+        <!-- Window Inner Body -->
+        <div class="window-body">
+            
+            <header class="header-banner">
+                <div class="game-icon win-sunken">
+                    <img src="data/vaporstrikeLogo.png" alt="Game Icon">
+                </div>
+                <div>
+                    <h1>VAPORSRTIKE</h1>
+                    <p class="tagline">DEMO</p>
+                </div>
+            </header>
+
+            <main>
+                <!-- Featured Screenshot -->
+                <div class="media-frame win-sunken">
+                    <img src="data/title.png" alt="Game Screenshot">
+                </div>
+
+                <!-- Description Fieldset -->
+                <div class="fieldset">
+                    <span class="fieldset-legend">INFORMATION</span>
+                    <p style="font-size: 0.95rem; margin-bottom: 0.75rem;">
+                        Welcome to the official showcase for VAPORSTRIKE.
+                    </p>
+                    <ul class="features-list">
+                        <li><strong>MECHANICS:</strong> A full 2 player battle system featuring special attacks, blocks, grabs, parries, and platform movement</li>
+                        <li><strong>UI/UX:</strong> Smooth, easy to use, and visually striking UI</li>
+                        <li><strong>AUDIO</strong> A completely original soundtrack and crisp battle interaction sounds</li>
+                    </ul>
+                </div>
+
+                <!-- Tech -->
+                <div class="fieldset">
+                    <span class="fieldset-legend">SPECIFICATIONS</span>
+                    <p style="font-size: 0.95rem; margin-bottom: 0.75rem;">
+                        VAPORSTRIKE is powered by:
+                    </p>
+                    <ul class="features-list">
+                        <li><strong>ENGINE:</strong> Unity Engine ver. 6000.0.34f1</li>
+                        <li><strong>ASSETS:</strong> Maya 2025, Blender 5.2, Krita</li>
+                        <li><strong>MISC:</strong> Supports Windows and Debian Linux</li>
+                    </ul>
+                </div>
+
+                <!-- Screenshots Fieldset -->
+                <div class="fieldset">
+                    <span class="fieldset-legend">Preview Gallery</span>
+                    <div class="gallery">
+                        <div class="gallery-item win-sunken">
+                            <img src="data/char.png" alt="Preview 1">
+                        </div>
+                        <div class="gallery-item win-sunken">
+                            <img src="data/menu.png" alt="Preview 2">
+                        </div>
+                        <div class="gallery-item win-sunken">
+                            <img src="data/mun.png" alt="Preview 3">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Information Fieldset -->
+                <div class="fieldset">
+                    <span class="fieldset-legend">Development Team</span>
+                    <div class="team-grid">
+                        
+                        <div class="team-card win-sunken">
+                            <div class="avatar-frame win-sunken">
+                                <img src="https://via.placeholder.com/56x56/000080/ffffff?text=DEV1" alt="Developer Avatar
