@@ -61,51 +61,55 @@ public class FighterMoves : MonoBehaviour
 
         aiController = GetComponent<AiAgent>();
     }
-
-    private void Update()
+private void Update()
+{
+    // Always advance an active attack.
+    if (isAnimatingAndAttacking)
     {
-        if (!psc.getActionablility() && isAnimatingAndAttacking) //if we arent actionable and we're attacking run these checks
+        AttackingChecks();
+
+        // Allow cancels without stopping the current attack's frame counter.
+        if (isAnimatingAndAttacking && psc.getActionablility())
         {
-            AttackingChecks();
-        }
-        else if (!psc.getActionablility() && isInSecondaryAction)
-        {
-            DoSecondaryAction();
-        }
-        else
-        {
-            //print("checking for moves");
             CheckMoves();
             CheckSecondaryAction();
-            CheckOtherAnimations();
         }
-
-        if (!psc.getFacingRight())
-        {
-            Vector3 currentAngles = animControl.transform.eulerAngles;
-            currentAngles.y = -90f; // Change only the Y axis
-            animControl.transform.eulerAngles = currentAngles;
-        }
-        else
-        {
-            Vector3 currentAngles = animControl.transform.eulerAngles;
-            currentAngles.y = 90f; // Change only the Y axis
-            animControl.transform.eulerAngles = currentAngles;
-        }
-       // Debug.Log(frameCount);
-
+    }
+    else if (!psc.getActionablility() && isInSecondaryAction)
+    {
+        DoSecondaryAction();
+    }
+    else
+    {
+        CheckMoves();
+        CheckSecondaryAction();
+        CheckOtherAnimations();
     }
 
-    
+    if (!psc.getFacingRight())
+    {
+        Vector3 currentAngles = animControl.transform.eulerAngles;
+        currentAngles.y = -90f;
+        animControl.transform.eulerAngles = currentAngles;
+    }
+    else
+    {
+        Vector3 currentAngles = animControl.transform.eulerAngles;
+        currentAngles.y = 90f;
+        animControl.transform.eulerAngles = currentAngles;
+    }
+}
+
+
+
     private void CheckMoves()
     {
-        //AI fighters use buffered inputs.
+        // AI fighters use buffered inputs.
         if (aiController != null && aiController.enabled)
         {
             MoveDefinition move;
 
-            if (!inputInterpreter.TryGetMove(
-                    moves, out move))
+            if (!inputInterpreter.TryGetMove(moves, out move))
             {
                 return;
             }
@@ -124,20 +128,23 @@ public class FighterMoves : MonoBehaviour
             return;
         }
 
-        //Existing player-controlled workflow.
+        // Existing player-controlled workflow.
         for (int i = 0; i < moves.Length; i++)
         {
             MoveDefinition move = moves[i];
 
             if (!inputInterpreter.CheckMove(move))
             {
-                frameCount = 0;
                 continue;
             }
 
             if (psc.getGrounded() && move.isAirMove)
             {
-                frameCount = 0;
+                continue;
+            }
+
+            if (!psc.getGrounded() && !move.isAirMove)
+            {
                 continue;
             }
 
@@ -145,6 +152,7 @@ public class FighterMoves : MonoBehaviour
             return;
         }
     }
+
 
     public MoveDefinition[] GetMoves()
     {
@@ -280,6 +288,58 @@ public class FighterMoves : MonoBehaviour
 
     private void AttackingChecks()
     {
+        if (currentMove == null)
+            return;
+
+        // DISPLACEMENT
+        if (currentMove.hasDisplacement)
+        {
+            int startFrame = currentMove.displacementStartFrame;
+            int endFrame = currentMove.displacementEndFrame;
+
+            // Displacement begins.
+            if (frameCount == startFrame)
+            {
+                psc.setDisplacement(true);
+            }
+
+            // Calculate whether we're currently inside the displacement window.
+            int firstFrame = Mathf.Max(startFrame, endFrame);
+            int lastFrame = Mathf.Min(startFrame, endFrame);
+
+            if (frameCount <= firstFrame && frameCount >= lastFrame)
+            {
+                // Calculate total number of active frames.
+                int duration = Mathf.Abs(startFrame - endFrame) + 1;
+
+                // Account for which direction the player is facing.
+                Vector2 direction = currentMove.displacementDirection;
+
+                if (!psc.getFacingRight())
+                {
+                    direction.x *= -1f;
+                }
+
+                direction.Normalize();
+
+                // Apply a fraction of the total displacement each frame.
+                float distancePerFrame =
+                    currentMove.displacementMagnitude / duration;
+
+                playerMove.DoDisplacement(
+                    direction,
+                    distancePerFrame
+                );
+            }
+
+            // Displacement ends.
+            if (frameCount == endFrame)
+            {
+                psc.setDisplacement(false);
+            }
+        }
+
+        // MOVE END
         if (frameCount == 0)
         {
             psc.setActionability(true);
@@ -292,21 +352,13 @@ public class FighterMoves : MonoBehaviour
             return;
         }
 
-        if (currentMove.hasDisplacement && frameCount == currentMove.displacementStartFrame)
-        {
-            psc.setDisplacement(true);
-        }
-        if (currentMove.hasDisplacement && frameCount == currentMove.displacementEndFrame)
-        {
-            psc.setDisplacement(false);
-        }
-
-
+        // CANCEL TIME
         if (frameCount <= currentMove.cancelTime)
         {
             psc.setActionability(true);
         }
 
+        // HITBOXES
         if (!idToHitboxes.TryGetValue(currentMove.animationID, out MoveHitboxGroup currentHitboxes))
         {
             Debug.LogWarning("Failed to get hitboxes from id");
@@ -324,7 +376,6 @@ public class FighterMoves : MonoBehaviour
             if (frameCount == startFrame)
             {
                 currentHitboxes.hitboxes[hitboxID].SetActive(true);
-                Debug.Log("Ahh hit");
             }
 
             if (frameCount == endFrame)

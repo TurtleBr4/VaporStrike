@@ -61,6 +61,7 @@ public class Player : MonoBehaviour
     {
         playerState.setActionability(false);
         playerState.setSuccessfulGrab(true);
+        print("grabbed a guy!");
     }
 
     public MoveDefinition getCurrentMove()

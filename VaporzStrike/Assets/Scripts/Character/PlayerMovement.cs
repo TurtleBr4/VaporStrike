@@ -17,11 +17,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 aiMovementInput;
     private bool aiJumpRequested;
 
-    [Header("Animation Movement Override")]
-    [SerializeField] private Transform animatedModel;
-
-    private bool animationMovementOverride;
-    private Vector3 previousModelWorldPosition;
 
     [Header("Grab Position")]
     [SerializeField] private Transform thePlaceWhereYouStayGrabbed;
@@ -65,20 +60,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (!animationMovementOverride)
-        {
-            if(psc.getDisplacement() && !lastFrameDisplacement)
+            if (psc.getSuccessfulGrab())
             {
-                lastFrameDisplacement = true;
-                BeginAnimationMovementOverride();
+                psc.setActionability(false); //override to make sure we can move when we've grabbed someone
             }
-
-            if(!psc.getDisplacement() && lastFrameDisplacement)
-            {
-                lastFrameDisplacement = false;
-                EndAnimationMovementOverride();
-            }
-
             if (psc.getActionablility())
             {
                 Move();
@@ -111,7 +96,7 @@ public class PlayerMovement : MonoBehaviour
             Jump();
             CheckDropping();
             ApplyGravity();
-        }
+        
 
         lastFrameGrounded = psc.getGrounded();
         psc.setGrounded(controller.isGrounded);
@@ -132,37 +117,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    private void LateUpdate()
-    {
-        if (!animationMovementOverride || animatedModel == null)
-            return;
 
-        Vector3 currentPosition = animatedModel.position;
-        Vector3 movement = currentPosition - previousModelWorldPosition;
-
-        movement.z = 0f;
-
-        // Instantly reposition the player instead of using CharacterController.Move().
-        transform.position += movement;
-
-        // Update the reference position after moving the parent.
-        previousModelWorldPosition = animatedModel.position;
-    }
-
-    // Call when a move should control player movement through animation displacement.
-    public void BeginAnimationMovementOverride()
-    {
-        if (animatedModel == null)
-            return;
-
-        animationMovementOverride = true;
-        previousModelWorldPosition = animatedModel.position;
-    }
-
-    public void EndAnimationMovementOverride()
-    {
-        animationMovementOverride = false;
-    }
 
 
     private void CheckDropping()
@@ -208,12 +163,20 @@ public class PlayerMovement : MonoBehaviour
         psc.setFacingRight(movement.x > 0);
         psc.setHitstun(true);
     }
-
-    public void DoDisplacement(Vector2 movement, float magnitude)
+    public void DoDisplacement(Vector2 direction, float distance)
     {
+        if (controller == null)
+            return;
 
+        Vector3 movement = new Vector3(
+            direction.x,
+            direction.y,
+            0f
+        );
+
+        // Apply directly as a distance, not a velocity.
+        controller.Move(movement * distance);
     }
-
     private void ApplyKnockback()
     {
         if (!inKnockback)
@@ -282,6 +245,7 @@ public class PlayerMovement : MonoBehaviour
 
         bool tapJump =
             !isAI &&
+            !psc.getDisplacement() &&
             inputReader.GetDirection() == InputDirection.Up &&
             inputReader.GetDirectionHeldFrames() == 1;
 

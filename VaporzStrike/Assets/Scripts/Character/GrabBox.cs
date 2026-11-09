@@ -27,6 +27,7 @@ public class GrabBox : MonoBehaviour
             {
                 hits.Add(hurt.getPlayer());
                 hurt.getPlayer().getGrabbed(transform);
+                player.doAGrab();
             }
 
         }
