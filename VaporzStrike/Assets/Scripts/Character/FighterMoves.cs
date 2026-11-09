@@ -61,44 +61,44 @@ public class FighterMoves : MonoBehaviour
 
         aiController = GetComponent<AiAgent>();
     }
-private void Update()
-{
-    // Always advance an active attack.
-    if (isAnimatingAndAttacking)
+    private void Update()
     {
-        AttackingChecks();
+        // Always advance an active attack.
+        if (isAnimatingAndAttacking)
+        {
+            AttackingChecks();
 
-        // Allow cancels without stopping the current attack's frame counter.
-        if (isAnimatingAndAttacking && psc.getActionablility())
+            // Allow cancels without stopping the current attack's frame counter.
+            if (isAnimatingAndAttacking && psc.getActionablility())
+            {
+                CheckMoves();
+                CheckSecondaryAction();
+            }
+        }
+        else if (!psc.getActionablility() && isInSecondaryAction)
+        {
+            DoSecondaryAction();
+        }
+        else
         {
             CheckMoves();
             CheckSecondaryAction();
+            CheckOtherAnimations();
+        }
+
+        if (!psc.getFacingRight())
+        {
+            Vector3 currentAngles = animControl.transform.eulerAngles;
+            currentAngles.y = -90f;
+            animControl.transform.eulerAngles = currentAngles;
+        }
+        else
+        {
+            Vector3 currentAngles = animControl.transform.eulerAngles;
+            currentAngles.y = 90f;
+            animControl.transform.eulerAngles = currentAngles;
         }
     }
-    else if (!psc.getActionablility() && isInSecondaryAction)
-    {
-        DoSecondaryAction();
-    }
-    else
-    {
-        CheckMoves();
-        CheckSecondaryAction();
-        CheckOtherAnimations();
-    }
-
-    if (!psc.getFacingRight())
-    {
-        Vector3 currentAngles = animControl.transform.eulerAngles;
-        currentAngles.y = -90f;
-        animControl.transform.eulerAngles = currentAngles;
-    }
-    else
-    {
-        Vector3 currentAngles = animControl.transform.eulerAngles;
-        currentAngles.y = 90f;
-        animControl.transform.eulerAngles = currentAngles;
-    }
-}
 
 
 
