@@ -6145,7 +6145,7 @@ MonoBehaviour:
   player: {fileID: 0}
   inputReader: {fileID: 0}
   moveSpeed: 8
-  animatedModel: {fileID: 0}
+  thePlaceWhereYouStayGrabbed: {fileID: 0}
   jumpForce: 12
   gravity: 30
   maxFallSpeed: 20
@@ -6166,6 +6166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   psc: {fileID: 0}
+  playerMove: {fileID: 0}
   aiController: {fileID: 0}
   inputReader: {fileID: 0}
   inputBuffer: {fileID: 0}
@@ -6207,6 +6208,7 @@ MonoBehaviour:
   isGettingGrabbed: 0
   isInvincible: 0
   isInAnimationDisplacement: 0
+  isCurrentlyGrabbingAPlayer: 0
   justJumped: 0
   justLanded: 0
 --- !u!114 &1688456822
