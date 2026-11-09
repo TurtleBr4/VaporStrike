@@ -1,11 +1,11 @@
+
+using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HitboxData", menuName = "Scriptable Objects/HitboxData")]
-public class HitboxData : ScriptableObject //probably dont use this anymore?
+[Serializable]
+public class HitboxData
 {
-    public float radius;
-    public float damage;
-    public float knockback;
-    public int hitStun;
-    public Vector2 launchDirection;
+    public int hitboxID;
+    public int startFrame;
+    public int endFrame;
 }

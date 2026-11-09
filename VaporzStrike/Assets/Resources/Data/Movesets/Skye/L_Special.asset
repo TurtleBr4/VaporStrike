@@ -22,6 +22,12 @@ MonoBehaviour:
   isAirMove: 0
   frameTime: 50
   hitStun: 0
-  hitboxStartFrame: 0
-  hitboxEndFrame: 0
   cancelTime: 10
+  hasDisplacement: 1
+  displacementDirection: {x: 1, y: 0}
+  displacementMagnitude: 7
+  displacementStartFrame: 27
+  displacementEndFrame: 10
+  hitboxIDs: 
+  hitboxStartFrames: 
+  hitboxEndFrames: 

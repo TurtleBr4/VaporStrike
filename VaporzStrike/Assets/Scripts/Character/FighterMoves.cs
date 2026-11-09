@@ -7,6 +7,7 @@ public class FighterMoves : MonoBehaviour
 {
     [Header("State Management")]
     public PlayerStateController psc;
+    public PlayerMovement playerMove;
     [SerializeField] private AiAgent aiController;
 
     [Header("Input")]
@@ -60,12 +61,19 @@ public class FighterMoves : MonoBehaviour
 
         aiController = GetComponent<AiAgent>();
     }
-
     private void Update()
     {
-        if (!psc.getActionablility() && isAnimatingAndAttacking) //if we arent actionable and we're attacking run these checks
+        // Always advance an active attack.
+        if (isAnimatingAndAttacking)
         {
             AttackingChecks();
+
+            // Allow cancels without stopping the current attack's frame counter.
+            if (isAnimatingAndAttacking && psc.getActionablility())
+            {
+                CheckMoves();
+                CheckSecondaryAction();
+            }
         }
         else if (!psc.getActionablility() && isInSecondaryAction)
         {
@@ -73,7 +81,6 @@ public class FighterMoves : MonoBehaviour
         }
         else
         {
-            //print("checking for moves");
             CheckMoves();
             CheckSecondaryAction();
             CheckOtherAnimations();
@@ -82,29 +89,27 @@ public class FighterMoves : MonoBehaviour
         if (!psc.getFacingRight())
         {
             Vector3 currentAngles = animControl.transform.eulerAngles;
-            currentAngles.y = -90f; // Change only the Y axis
+            currentAngles.y = -90f;
             animControl.transform.eulerAngles = currentAngles;
         }
         else
         {
             Vector3 currentAngles = animControl.transform.eulerAngles;
-            currentAngles.y = 90f; // Change only the Y axis
+            currentAngles.y = 90f;
             animControl.transform.eulerAngles = currentAngles;
         }
-       // Debug.Log(frameCount);
-
     }
 
-    
+
+
     private void CheckMoves()
     {
-        //AI fighters use buffered inputs.
+        // AI fighters use buffered inputs.
         if (aiController != null && aiController.enabled)
         {
             MoveDefinition move;
 
-            if (!inputInterpreter.TryGetMove(
-                    moves, out move))
+            if (!inputInterpreter.TryGetMove(moves, out move))
             {
                 return;
             }
@@ -123,20 +128,23 @@ public class FighterMoves : MonoBehaviour
             return;
         }
 
-        //Existing player-controlled workflow.
+        // Existing player-controlled workflow.
         for (int i = 0; i < moves.Length; i++)
         {
             MoveDefinition move = moves[i];
 
             if (!inputInterpreter.CheckMove(move))
             {
-                frameCount = 0;
                 continue;
             }
 
             if (psc.getGrounded() && move.isAirMove)
             {
-                frameCount = 0;
+                continue;
+            }
+
+            if (!psc.getGrounded() && !move.isAirMove)
+            {
                 continue;
             }
 
@@ -144,6 +152,7 @@ public class FighterMoves : MonoBehaviour
             return;
         }
     }
+
 
     public MoveDefinition[] GetMoves()
     {
@@ -272,16 +281,65 @@ public class FighterMoves : MonoBehaviour
 
         currentMove = move;
 
-        if (move.hasDisplacement)
-        {
-            psc.setDisplacement(true);
-        }
+
 
         psc.setActionability(false);
     }
 
     private void AttackingChecks()
     {
+        if (currentMove == null)
+            return;
+
+        // DISPLACEMENT
+        if (currentMove.hasDisplacement)
+        {
+            int startFrame = currentMove.displacementStartFrame;
+            int endFrame = currentMove.displacementEndFrame;
+
+            // Displacement begins.
+            if (frameCount == startFrame)
+            {
+                psc.setDisplacement(true);
+            }
+
+            // Calculate whether we're currently inside the displacement window.
+            int firstFrame = Mathf.Max(startFrame, endFrame);
+            int lastFrame = Mathf.Min(startFrame, endFrame);
+
+            if (frameCount <= firstFrame && frameCount >= lastFrame)
+            {
+                // Calculate total number of active frames.
+                int duration = Mathf.Abs(startFrame - endFrame) + 1;
+
+                // Account for which direction the player is facing.
+                Vector2 direction = currentMove.displacementDirection;
+
+                if (!psc.getFacingRight())
+                {
+                    direction.x *= -1f;
+                }
+
+                direction.Normalize();
+
+                // Apply a fraction of the total displacement each frame.
+                float distancePerFrame =
+                    currentMove.displacementMagnitude / duration;
+
+                playerMove.DoDisplacement(
+                    direction,
+                    distancePerFrame
+                );
+            }
+
+            // Displacement ends.
+            if (frameCount == endFrame)
+            {
+                psc.setDisplacement(false);
+            }
+        }
+
+        // MOVE END
         if (frameCount == 0)
         {
             psc.setActionability(true);
@@ -294,13 +352,16 @@ public class FighterMoves : MonoBehaviour
             return;
         }
 
+        // CANCEL TIME
         if (frameCount <= currentMove.cancelTime)
         {
             psc.setActionability(true);
         }
 
+        // HITBOXES
         if (!idToHitboxes.TryGetValue(currentMove.animationID, out MoveHitboxGroup currentHitboxes))
         {
+            Debug.LogWarning("Failed to get hitboxes from id");
             frameCount--;
             return;
         }
@@ -315,7 +376,6 @@ public class FighterMoves : MonoBehaviour
             if (frameCount == startFrame)
             {
                 currentHitboxes.hitboxes[hitboxID].SetActive(true);
-                Debug.Log("Ahh hit");
             }
 
             if (frameCount == endFrame)

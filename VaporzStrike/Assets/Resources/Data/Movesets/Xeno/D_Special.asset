@@ -23,7 +23,9 @@ MonoBehaviour:
   frameTime: 0
   hitStun: 0
   cancelTime: 0
-  hasDisplacement: 0
+  hasDisplacement: 1
+  displacementDirection: {x: 0, y: 0}
+  displacementMagnitude: 0
   hitboxIDs: 
   hitboxStartFrames: 
   hitboxEndFrames: 
