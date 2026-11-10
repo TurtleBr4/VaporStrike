@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     public void takeDamage(float dmg, Vector2 direction, int hitstun)
     {
         Percent += dmg;
-        playerMove.TakeKnockback(direction, hitstun);
+        playerMove.TakeKnockback(direction, hitstun, Percent);
     }
 
     public void getGrabbed(Transform position) //TO DO: link the grabbox's position to the player while being grabbed

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -11,22 +12,22 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private NeoInputReader inputReader;
     [SerializeField] private float moveSpeed = 8f;
+    [SerializeField] private float jumpForce = 12f;
+    public float weight;  //determines knockback, fall speed
+    public float airSpeed;
+    public float maxFallSpeed = 20f;
+    [SerializeField] private int jumpSquatLength;
+    [SerializeField] private int landingLength;
+    [SerializeField] private float gravity = 30f;
 
     [Header("AI Data")]
     private AiAgent aiController;
     private Vector2 aiMovementInput;
     private bool aiJumpRequested;
 
-
     [Header("Grab Position")]
     [SerializeField] private Transform thePlaceWhereYouStayGrabbed;
 
-    [Header("OldJump")]
-    [SerializeField] private float jumpForce = 12f;
-    [SerializeField] private float gravity = 30f;
-    [SerializeField] private float maxFallSpeed = 20f;
-    [SerializeField] private int jumpSquatLength;
-    [SerializeField] private int landingLength;
 
     private Vector2 knockbackVelocity;
     private bool inKnockback;
@@ -154,10 +155,10 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(movement * Time.deltaTime);
     }
 
-    public void TakeKnockback(Vector2 movement, int framesOfInaction)
+    public void TakeKnockback(Vector2 movement, int framesOfInaction, float currentPercent)
     {
         hitStunTimer = framesOfInaction;
-        knockbackVelocity = movement;
+        knockbackVelocity = movement * (Mathf.Clamp(currentPercent - 10, 1, 10)); //max knockback mult of x10
         inKnockback = true;
 
         psc.setFacingRight(movement.x > 0);
