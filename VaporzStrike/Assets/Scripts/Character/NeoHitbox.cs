@@ -21,6 +21,10 @@ public class NeoHitbox : MonoBehaviour
     private void OnEnable()
     {
         GetComponent<BoxCollider>().enabled = true;
+        if (!player.getFacingRight())
+        {
+            direction.x *= -1;
+        }
     }
     /*
 
@@ -65,5 +69,9 @@ public class NeoHitbox : MonoBehaviour
     private void OnDisable()
     {
         hits.Clear();
+        if (!player.getFacingRight())
+        {
+            direction.x *= -1;
+        }
     }
 }

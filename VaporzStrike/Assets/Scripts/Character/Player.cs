@@ -79,6 +79,11 @@ public class Player : MonoBehaviour
 
     }
 
+    public bool getFacingRight()
+    {
+        return playerState.getFacingRight();
+    }
+
     public int getPlayerID()
     {
         return playerID;

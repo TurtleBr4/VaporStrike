@@ -402,7 +402,7 @@ MonoBehaviour:
   playerState: {fileID: 1123984203882803650}
   playerMove: {fileID: 4260916278592699840}
   moves: {fileID: 4273250249091547805}
-  playerData: {fileID: 0}
+  playerData: {fileID: 11400000, guid: f5da19221ec85eea88a2c66397bc2ace, type: 2}
 --- !u!114 &1123984203882803650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,6 +425,7 @@ MonoBehaviour:
   isGettingGrabbed: 0
   isInvincible: 0
   isInAnimationDisplacement: 0
+  isCurrentlyGrabbingAPlayer: 0
   justJumped: 0
   justLanded: 0
 --- !u!114 &4273250249091547805
@@ -440,6 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   psc: {fileID: 0}
+  playerMove: {fileID: 0}
   aiController: {fileID: 0}
   inputReader: {fileID: 3579923142792103593}
   inputBuffer: {fileID: 2711843921579728246}
@@ -554,15 +556,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   psc: {fileID: 1123984203882803650}
-  player: {fileID: 0}
+  playerData: {fileID: 0}
   inputReader: {fileID: 3579923142792103593}
-  moveSpeed: 8
-  animatedModel: {fileID: 5156565086837081859}
-  jumpForce: 13.5
   gravity: 30
-  maxFallSpeed: 20
-  jumpSquatLength: 7
-  landingLength: 7
+  thePlaceWhereYouStayGrabbed: {fileID: 0}
   lastFrameDisplacement: 0
   dropping: 0
 --- !u!114 &7330241544818802329

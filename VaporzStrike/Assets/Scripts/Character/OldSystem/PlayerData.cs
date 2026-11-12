@@ -17,6 +17,9 @@ public class PlayerData : ScriptableObject
     public int grabboxStartFrame;
     public int grabboxEndFrame;
     public int grabboxDuration;
+    [Header("Jumpsquat and Landing")]
+    [SerializeField] public int jumpSquatLength;
+    [SerializeField] public int landingLength;
 
 
 

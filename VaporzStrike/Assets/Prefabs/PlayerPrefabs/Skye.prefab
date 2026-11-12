@@ -963,7 +963,7 @@ MonoBehaviour:
   playerState: {fileID: 3676325506946823704}
   playerMove: {fileID: 5787352164172695301}
   moves: {fileID: 2746750216088901723}
-  playerData: {fileID: 0}
+  playerData: {fileID: 11400000, guid: b987ae907052eb54f9e675c4f50cf46f, type: 2}
 --- !u!114 &3676325506946823704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1117,15 +1117,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   psc: {fileID: 0}
-  player: {fileID: 0}
+  playerData: {fileID: 0}
   inputReader: {fileID: 4217348889030916467}
-  moveSpeed: 8
-  thePlaceWhereYouStayGrabbed: {fileID: 3307866614339124171}
-  jumpForce: 13.5
   gravity: 30
-  maxFallSpeed: 20
-  jumpSquatLength: 7
-  landingLength: 7
+  thePlaceWhereYouStayGrabbed: {fileID: 3307866614339124171}
   lastFrameDisplacement: 0
   dropping: 0
 --- !u!114 &7244625230645881865

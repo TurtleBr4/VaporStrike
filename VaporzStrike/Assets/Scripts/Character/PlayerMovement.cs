@@ -1,3 +1,4 @@
+
 using System;
 using UnityEngine;
 
@@ -7,17 +8,10 @@ public class PlayerMovement : MonoBehaviour
     public PlayerStateController psc;
 
     [Header("Data")]
-    [SerializeField] private Player player;
+    [SerializeField] private PlayerData playerData;
 
     [Header("Movement")]
     [SerializeField] private NeoInputReader inputReader;
-    [SerializeField] private float moveSpeed = 8f;
-    [SerializeField] private float jumpForce = 12f;
-    public float weight;  //determines knockback, fall speed
-    public float airSpeed;
-    public float maxFallSpeed = 20f;
-    [SerializeField] private int jumpSquatLength;
-    [SerializeField] private int landingLength;
     [SerializeField] private float gravity = 30f;
 
     [Header("AI Data")]
@@ -28,13 +22,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Grab Position")]
     [SerializeField] private Transform thePlaceWhereYouStayGrabbed;
 
-
     private Vector2 knockbackVelocity;
     private bool inKnockback;
 
-    int timer = 100;
-    int anotherTimer = 100;
-    bool lastFrameGrounded;
+    private int timer = 100;
+    private int anotherTimer = 100;
+
+    private bool lastFrameGrounded;
     public bool lastFrameDisplacement = false;
 
     public bool dropping = false;
@@ -61,43 +55,43 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-            if (psc.getSuccessfulGrab())
+        if (psc.getSuccessfulGrab())
+        {
+            psc.setActionability(false);
+        }
+
+        if (psc.getActionablility())
+        {
+            Move();
+        }
+
+        if (psc.getHitstun())
+        {
+            ApplyKnockback();
+
+            hitStunTimer--;
+
+            if (hitStunTimer <= 0)
             {
-                psc.setActionability(false); //override to make sure we can move when we've grabbed someone
+                psc.setHitstun(false);
+                hitStunTimer = -1;
+                inKnockback = false;
             }
-            if (psc.getActionablility())
-            {
-                Move();
-            }
+        }
 
-            if (psc.getHitstun())
-            {
-                ApplyKnockback();
+        if (timer != 100)
+        {
+            timer -= 1;
+        }
 
-                hitStunTimer--;
+        if (anotherTimer != 100)
+        {
+            anotherTimer -= 1;
+        }
 
-                if (hitStunTimer <= 0)
-                {
-                    psc.setHitstun(false);
-                    hitStunTimer = -1;
-                    inKnockback = false;
-                }
-            }
-
-            if (timer != 100)
-            {
-                timer -= 1;
-            }
-
-            if (anotherTimer != 100)
-            {
-                anotherTimer -= 1;
-            }
-
-            Jump();
-            CheckDropping();
-            ApplyGravity();
-        
+        Jump();
+        CheckDropping();
+        ApplyGravity();
 
         lastFrameGrounded = psc.getGrounded();
         psc.setGrounded(controller.isGrounded);
@@ -105,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
         if (!lastFrameGrounded && psc.getGrounded())
         {
             psc.justLanded = true;
-            anotherTimer = landingLength;
+            anotherTimer = playerData.landingLength;
             psc.setActionability(false);
         }
 
@@ -116,10 +110,6 @@ public class PlayerMovement : MonoBehaviour
             anotherTimer = 100;
         }
     }
-
-
-
-
 
     private void CheckDropping()
     {
@@ -132,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 stick = GetMovementInput();
 
-        Vector3 movement = Vector3.right * stick.x * moveSpeed;
+        Vector3 movement = Vector3.right * stick.x * playerData.moveSpeed;
 
         if (movement.x >= 0.2f || movement.x <= -0.2f)
         {
@@ -158,12 +148,15 @@ public class PlayerMovement : MonoBehaviour
     public void TakeKnockback(Vector2 movement, int framesOfInaction, float currentPercent)
     {
         hitStunTimer = framesOfInaction;
-        knockbackVelocity = movement * (Mathf.Clamp(currentPercent - 10, 1, 10)); //max knockback mult of x10
+
+        knockbackVelocity = movement * Mathf.Clamp(currentPercent - 10, 1, 10);
+
         inKnockback = true;
 
         psc.setFacingRight(movement.x > 0);
         psc.setHitstun(true);
     }
+
     public void DoDisplacement(Vector2 direction, float distance)
     {
         if (controller == null)
@@ -175,15 +168,13 @@ public class PlayerMovement : MonoBehaviour
             0f
         );
 
-        // Apply directly as a distance, not a velocity.
         controller.Move(movement * distance);
     }
+
     private void ApplyKnockback()
     {
         if (!inKnockback)
-        {
             return;
-        }
 
         controller.Move(
             new Vector3(knockbackVelocity.x, knockbackVelocity.y, 0f)
@@ -206,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
 
             verticalVelocity = Mathf.Max(
                 verticalVelocity,
-                -maxFallSpeed
+                -playerData.maxFallSpeed
             );
         }
 
@@ -252,14 +243,14 @@ public class PlayerMovement : MonoBehaviour
 
         if ((jumpButton || tapJump) && psc.getActionablility())
         {
-            timer = jumpSquatLength;
+            timer = playerData.jumpSquatLength;
 
             psc.justJumped = true;
         }
 
         if (timer <= 0)
         {
-            verticalVelocity = jumpForce;
+            verticalVelocity = playerData.jumpPower;
 
             numberThatTicksUpToCalculateWhenTheJustJumpedVariableShouldBeReset = 10;
 
