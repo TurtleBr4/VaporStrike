@@ -1117,7 +1117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   psc: {fileID: 0}
-  playerData: {fileID: 0}
+  playerData: {fileID: 11400000, guid: b987ae907052eb54f9e675c4f50cf46f, type: 2}
   inputReader: {fileID: 4217348889030916467}
   gravity: 30
   thePlaceWhereYouStayGrabbed: {fileID: 3307866614339124171}

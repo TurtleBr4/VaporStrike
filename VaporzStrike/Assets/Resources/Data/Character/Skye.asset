@@ -21,8 +21,8 @@ MonoBehaviour:
   airSpeed: 25
   maxFallSpeed: 35
   mugshot: {fileID: 21300000, guid: b080cad907674224cb13c00223f7d490, type: 3}
-  grabboxStartFrame: 0
-  grabboxEndFrame: 0
-  grabboxDuration: 0
+  grabboxStartFrame: 15
+  grabboxEndFrame: 5
+  grabboxDuration: 20
   jumpSquatLength: 7
   landingLength: 7
