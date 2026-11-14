@@ -24,3 +24,5 @@ MonoBehaviour:
   grabboxStartFrame: 0
   grabboxEndFrame: 0
   grabboxDuration: 0
+  jumpSquatLength: 7
+  landingLength: 7

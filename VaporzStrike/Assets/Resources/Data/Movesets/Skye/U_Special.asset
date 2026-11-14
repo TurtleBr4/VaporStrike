@@ -28,6 +28,6 @@ MonoBehaviour:
   displacementMagnitude: 5
   displacementStartFrame: 39
   displacementEndFrame: 20
-  hitboxIDs: 
-  hitboxStartFrames: 
-  hitboxEndFrames: 
+  hitboxIDs: 0000000001000000
+  hitboxStartFrames: 090000000f000000
+  hitboxEndFrames: 0e00000014000000

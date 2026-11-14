@@ -20,8 +20,14 @@ MonoBehaviour:
   bufferDuration: 8
   animationID: 6
   isAirMove: 1
-  frameTime: 80
+  frameTime: 20
   hitStun: 0
-  hitboxStartFrame: 0
-  hitboxEndFrame: 0
-  cancelTime: 30
+  cancelTime: 15
+  hasDisplacement: 0
+  displacementDirection: {x: 0, y: 0}
+  displacementMagnitude: 0
+  displacementStartFrame: 0
+  displacementEndFrame: 0
+  hitboxIDs: 00000000
+  hitboxStartFrames: 09000000
+  hitboxEndFrames: 0f000000
