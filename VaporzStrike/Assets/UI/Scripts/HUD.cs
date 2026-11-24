@@ -87,6 +87,9 @@ public class HUD : MonoBehaviour
         player1Name.text = GameManager.instance.GetPlayer(1).playerName; //game manager shenanagains, sorry
         player2Name.text = GameManager.instance.GetPlayer(0).playerName;
 
+        p1Stocks.text = $"P1 ({GameManager.instance.GetPlayerObj(0).GetStocks()})" ; //game manager shenanagains, sorry
+        p2Stocks.text = $"P2 ({GameManager.instance.GetPlayerObj(1).GetStocks()})";
+
         player1Img.sprite = GameManager.instance.GetPlayer(1).mugshot;
         player2Img.sprite = GameManager.instance.GetPlayer(0).mugshot;
 
@@ -131,7 +134,7 @@ public class HUD : MonoBehaviour
         }
         timerText.text = GameManager.instance.DisplayTime();
 
-        if(((!GameManager.instance.isMatch) && (GameManager.instance.matchResult != ResultType.Start)))
+        if((!(GameManager.instance.isMatch) && (GameManager.instance.matchResult != ResultType.Start)))
         {
             matchResultCanvas.gameObject.SetActive(true);
             Time.timeScale *= (Time.timeScale*0.1f);
@@ -260,19 +263,20 @@ public class HUD : MonoBehaviour
         control = (PracticeControl)Math.Clamp((int)control, 0, 2);
         selectedItem = Mathf.Clamp(selectedItem, 0, GameManager.instance.GetLootPool().Length-1);
         trainingSpeed = Mathf.Clamp(trainingSpeed, 0, 2f);
-        selectionTexts.text = $"Game Speed: {trainingSpeed}x\r\n\r\nPractice Control: {control.ToString()}\r\n\r\nSpawn Item: {GameManager.instance.GetLootPool()[selectedItem].itemName}";
         switch (GameManager.instance.matchResult)
-            {
-                case ResultType.NoContest:
-                    matchResultTxt.text = "No Contest!";
-                    break;
-                case ResultType.Player1:
-                    matchResultTxt.text = "Player 1 Wins!";
-                    break;
-                case ResultType.Player2:
-                    matchResultTxt.text = "Player 2 Wins!";
-                    break;
-            }
+        {
+            case ResultType.NoContest:
+                matchResultTxt.text = "No Contest!";
+                break;
+            case ResultType.Player1:
+                matchResultTxt.text = "Player 1 Wins!";
+                break;
+            case ResultType.Player2:
+                matchResultTxt.text = "Player 2 Wins!";
+                break;
+        }
+        if (selectionTexts != null) selectionTexts.text = $"Game Speed: {trainingSpeed}x\r\n\r\nPractice Control: {control.ToString()}\r\n\r\nSpawn Item: {GameManager.instance.GetLootPool()[selectedItem].itemName}";
+
     }
     public void Increment(int index, int amount)
     {

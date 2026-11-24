@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using System.Linq;
+using Unity.VisualScripting;
 
 public enum gameState
 {
@@ -336,19 +337,29 @@ public class GameManager : MonoBehaviour
                     {
                         // Subtract the time since last frame
                         matchTimer -= Time.deltaTime;
+                    if (currentPlayerObj[1].GetComponent<Player>().GetStocks() == 0)
+                    {
+                        isMatch = false;
+                        matchResult = ResultType.Player2;
                     }
+                    if (currentPlayerObj[0].GetComponent<Player>().GetStocks() == 0)
+                    {
+                        isMatch = false;
+                        matchResult = ResultType.Player1;
+                    }
+                }
                     else
                     {
                         Debug.Log("Game!");
                         matchTimer = 0;
                         isMatch = false;
 
-                        /*
-                        if (currentPlayerObj[1].GetComponent<Player>().GetStocks() == player2Obj.GetStocks())
-                        {
+                        //
+                        if (currentPlayerObj[0].GetComponent<Player>().GetStocks() == currentPlayerObj[1].GetComponent<Player>().GetStocks())
+                    {
                             matchResult = ResultType.NoContest;
                         }
-                        else if (player1Obj.GetStocks() <= 0)
+                        else if (currentPlayerObj[1].GetComponent<Player>().GetStocks() > currentPlayerObj[0].GetComponent<Player>().GetStocks())
                         {
                             matchResult = ResultType.Player2;
                         }
@@ -356,12 +367,13 @@ public class GameManager : MonoBehaviour
                         {
                             matchResult = ResultType.Player1;
                         }
-                        */
+                        //
                     }
                 }
             }
             else
                 {
+            if (HUD.instance == null) return;
                     Time.timeScale = HUD.instance.trainingSpeed;
                 }
 
@@ -484,7 +496,10 @@ public class GameManager : MonoBehaviour
     {
         return playerDataArray[playerIndex];
     }
-
+    public Player GetPlayerObj(int playerIndex)
+    {
+        return currentPlayerObj[playerIndex].GetComponent<Player>();
+    }
     public string DisplayTime()
     {
         float minutes = Mathf.FloorToInt(matchTimer / 60);

@@ -55,7 +55,7 @@ public class CharacterSelect : MonoBehaviour
 
             Back();
         }
-
+        GameManager.instance.matchResult = ResultType.Start;
 
         if (GameManager.instance.GetPlayer(0))
         {

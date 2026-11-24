@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     [Header("Information")]
     [SerializeField] private string Name;
     [SerializeField] private float Percent;
+    [SerializeField] private int stocks = 3;
     [SerializeField] private int playerID;
     [Header("References")]
     [SerializeField] PlayerStateController playerState;
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour
             moves.grabboxEnd = playerData.grabboxEndFrame;
             moves.grabDuration = playerData.grabboxDuration;
         }
+        stocks = 3;
 
     }
 
@@ -44,6 +46,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    public int GetStocks()
+    {
+        return stocks;
+    }
     public void takeDamage(float dmg, Vector2 direction, int hitstun)
     {
         Percent += dmg;
@@ -76,7 +82,8 @@ public class Player : MonoBehaviour
 
     public void doBlastZoneDeath()
     {
-
+        stocks--;
+        Percent = 0;
     }
 
     public bool getFacingRight()
